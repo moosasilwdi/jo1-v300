@@ -1,0 +1,1693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="JO1 V300 - screens peptides against 117 HLA class II types using neural networks trained on measured binding.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='78' font-size='78'>&#129516;</text></svg>">
+<style>:root{color-scheme:light}html,body{height:100%}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>JO1 V300</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JO1 V300">
+<meta name="theme-color" content="#eceff3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e131a" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/3dmol@2.5.5/build/3Dmol-min.js"></script>
+<style>
+/* Layout: app shell — fixed bar, tab strip, one scrolling view at a time. */
+:root{
+  --bg:#eceff3; --panel:#fff; --sunk:#f5f7f9; --ink:#141922; --mute:#5a6472; --line:#d2d8e0;
+  --p1:#1f7a8c; --p4:#b5791a; --p6:#2f5fa8; --p9:#6b4fbd; --tcr:#9a4f8f;
+  --gold:#b5791a; --ok:#1a6b4a; --warn:#b3261e; --warnbg:#fdeceb;
+  --mono:'IBM Plex Mono','DejaVu Sans Mono',monospace;
+  --sans:'IBM Plex Sans','DejaVu Sans',sans-serif;
+  --barh:52px; --tabh:46px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e131a; --panel:#171e28; --sunk:#111823; --ink:#e7ecf3; --mute:#95a1b2; --line:#283241;
+  --p1:#5fc0d0; --p4:#e8b14a; --p6:#78a8e8; --p9:#a98ced; --tcr:#dd8fcf;
+  --gold:#e8b14a; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e131a; --panel:#171e28; --sunk:#111823; --ink:#e7ecf3; --mute:#95a1b2; --line:#283241;
+  --p1:#5fc0d0; --p4:#e8b14a; --p6:#78a8e8; --p9:#a98ced; --tcr:#dd8fcf;
+  --gold:#e8b14a; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.45;font-size:14px;
+  display:flex;flex-direction:column;overflow:hidden}
+
+/* top bar */
+.appbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;height:var(--barh);
+  background:var(--panel);border-bottom:1px solid var(--line);
+  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+.appbar .brand{font-weight:700;letter-spacing:-.01em;font-size:15px;white-space:nowrap}
+.appbar .dot{width:7px;height:7px;border-radius:50%;background:var(--mute);flex:0 0 auto}
+.appbar .dot.on{background:var(--ok)}
+.appbar select{flex:1 1 auto;min-width:0;max-width:300px;margin-left:auto}
+
+/* tabs */
+.tabstrip{flex:0 0 auto;display:flex;height:var(--tabh);background:var(--panel);
+  border-bottom:1px solid var(--line);
+  padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+.tabstrip button{flex:1;min-width:0;border:0;background:transparent;color:var(--mute);
+  font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;border-radius:0;
+  border-bottom:2px solid transparent;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabstrip button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--gold);background:transparent}
+.tabstrip button:hover{color:var(--ink)}
+.tabstrip button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+
+/* views */
+.views{flex:1 1 auto;min-height:0;position:relative}
+.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));
+  padding-block:14px calc(22px + env(safe-area-inset-bottom,0px))}
+.view[hidden]{display:none}
+.view>.inner{max-width:900px;margin:0 auto}
+#view-3d{padding:0}
+
+h2{font-size:15px;font-weight:600;margin:0}
+h3{font-size:11px;font-weight:600;margin:0 0 6px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+p{margin:0 0 9px}
+.tiny{font-size:12px;color:var(--mute)}
+.mono{font-family:var(--mono)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px;min-width:0;margin-bottom:12px}
+.panel:last-child{margin-bottom:0}
+
+.ctrls{display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0;max-width:100%}
+.fld span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+select,input[type=text],textarea{font-family:var(--mono);font-size:13px;background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0;max-width:100%}
+textarea{width:100%;min-height:76px;resize:vertical;line-height:1.6;font-size:11.5px}
+input[type=text]{width:min(320px,100%)}
+button{font-family:var(--sans);font-size:13px;background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer}
+button:hover{border-color:var(--gold)}
+button[aria-pressed="true"]{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);font-weight:600}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button.go{background:var(--ink);color:var(--panel);border-color:var(--ink);font-weight:600;padding:10px 18px}
+button.go:hover{opacity:.9}
+button:disabled{opacity:.5;cursor:default}
+label.drop{font-size:12px;color:var(--mute);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+label.drop:hover{border-color:var(--gold);color:var(--ink)}
+input[type=file]{display:none}
+.segs{display:flex;gap:7px;margin-bottom:11px}
+.segs button{flex:1;min-width:0}
+.prog{height:3px;background:var(--sunk);border-radius:2px;overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .12s linear}
+
+/* result list — cards, not a table, at every width */
+.rowlist{display:flex;flex-direction:column;gap:8px}
+.card{display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.card:hover{border-color:var(--gold)}
+.card[aria-selected="true"]{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.card .pos{font-size:11.5px;color:var(--mute);font-family:var(--mono)}
+.card .side{font-size:11.5px;font-family:var(--mono);color:var(--mute);justify-self:end;text-align:right}
+.card .pep{grid-column:1/-1;font-family:var(--mono);font-size:13.5px;letter-spacing:.03em;
+  overflow-x:auto;white-space:nowrap;padding-bottom:1px}
+.card .meter{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:3px}
+.card .trk{flex:1;height:5px;background:var(--sunk);border-radius:3px;overflow:hidden;min-width:40px}
+.card .vl{display:block;height:100%;background:var(--gold)}
+.card .nmv{font-family:var(--mono);font-size:13px;font-weight:600;min-width:46px;text-align:right}
+.card .tagrow{grid-column:1/-1;margin-top:5px}
+.vd{font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:4px;white-space:nowrap;display:inline-block}
+.vd.better{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.vd.same{background:color-mix(in srgb,var(--p6) 16%,transparent);color:var(--p6)}
+.vd.weak{background:var(--sunk);color:var(--mute)}
+.yn{font-family:var(--mono);font-size:11px}
+.yn.y{color:var(--ok);font-weight:600}
+.yn.n{color:var(--mute)}
+.empty{color:var(--mute);font-size:13px;padding:14px;text-align:center;
+  border:1px dashed var(--line);border-radius:10px}
+
+/* detail sheet */
+.sheet{position:sticky;bottom:0;margin-top:12px;background:var(--panel);
+  border:1px solid var(--line);border-radius:12px;padding:11px 13px;
+  box-shadow:0 -8px 22px color-mix(in srgb,var(--ink) 14%,transparent)}
+.sheet .grip{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.sheet .grip h3{margin:0;flex:0 0 auto}
+.sheet .grip .sum{flex:1;min-width:0;font-family:var(--mono);font-size:12px;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheet .grip .chev{flex:0 0 auto;color:var(--mute);font-size:12px;font-family:var(--mono)}
+.sheet .body{margin-top:10px}
+.sheet[data-open="0"] .body{display:none}
+.rowlist{padding-bottom:4px}
+.pocketbars{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-top:9px}
+.pb{background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.pb .h{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.pb .r{font-family:var(--mono);font-size:18px;font-weight:600;line-height:1.2}
+.pb .n{font-size:11px;color:var(--mute);margin-top:2px}
+
+/* register strip */
+.reg{overflow-x:auto;padding-bottom:4px}
+.regrow{display:flex;gap:3px;min-width:max-content}
+.res{width:28px;flex:0 0 28px;text-align:center;border-radius:5px;padding:4px 0 3px;background:var(--sunk);border:1px solid var(--line)}
+.res .aa{font-family:var(--mono);font-weight:600;font-size:13px;line-height:1.1}
+.res .ps{font-family:var(--mono);font-size:8.5px;color:var(--mute);line-height:1.3}
+.res.a1{background:color-mix(in srgb,var(--p1) 16%,transparent);border-color:var(--p1);color:var(--p1)}
+.res.a4{background:color-mix(in srgb,var(--p4) 16%,transparent);border-color:var(--p4);color:var(--p4)}
+.res.a6{background:color-mix(in srgb,var(--p6) 16%,transparent);border-color:var(--p6);color:var(--p6)}
+.res.a9{background:color-mix(in srgb,var(--p9) 16%,transparent);border-color:var(--p9);color:var(--p9)}
+.res.up{background:color-mix(in srgb,var(--tcr) 13%,transparent);border-color:var(--tcr);color:var(--tcr)}
+.key{display:flex;gap:11px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:9px}
+.key i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+.pk{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13px;align-items:baseline}
+.pk dt{font-family:var(--mono);font-weight:600}
+.pk dd{margin:0;color:var(--mute)}
+.pk .y{color:var(--ink)}
+
+/* 3D fills its view */
+#mol{position:absolute;inset:0;width:100%;height:100%;background:var(--sunk);overflow:hidden}
+.vtools{position:absolute;left:0;right:0;bottom:0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;
+  padding:10px max(12px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(to top, var(--panel) 62%, transparent);
+  border-top:1px solid var(--line)}
+#view-3d .caption{position:absolute;top:10px;left:12px;right:12px;font-size:11px;color:var(--mute);
+  font-family:var(--mono);pointer-events:none}
+
+.note{background:var(--sunk);border:1px solid var(--line);border-left:3px solid var(--p6);border-radius:9px;padding:11px 13px;margin-bottom:12px}
+.note h3{color:var(--p6)}
+.warn{background:var(--warnbg);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);
+  border-left:3px solid var(--warn);border-radius:9px;padding:11px 13px;margin-bottom:12px}
+.warn h3{color:var(--warn)}
+ul{margin:0;padding-left:17px}li{margin-bottom:4px}
+.refs{font-family:var(--mono);font-size:10.5px;color:var(--mute);line-height:1.6}
+.refs a{color:var(--p6);word-break:break-word}
+.hint{font-size:12px;color:var(--mute);margin-bottom:10px}
+@media (max-width:620px){
+  .appbar .brand{font-size:14px}
+  .appbar select{max-width:none}
+  .tabstrip button{font-size:12px}
+  button.go{width:100%}
+  .ctrls .fld{flex:1 1 100%}
+  .ctrls .fld select{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="appbar">
+  <span class="dot" id="statdot"></span>
+  <span class="brand">JO1&nbsp;V300</span>
+  <select id="allele" aria-label="HLA type"></select>
+</div>
+
+<nav class="tabstrip">
+  <button type="button" id="t-prot" aria-pressed="true">Protein</button>
+  <button type="button" id="t-dec" aria-pressed="false">Decoy</button>
+  <button type="button" id="t-3d" aria-pressed="false">Groove</button>
+  <button type="button" id="t-info" aria-pressed="false">Notes</button>
+</nav>
+
+<div class="views">
+
+  <div class="view" id="view-work">
+    <div class="inner">
+      <p class="tiny" id="installhint" style="display:none;margin:0 0 10px">Keep it as an app: tap <b>Share</b>, then <b>Add to Home Screen</b>.</p>
+
+      <div class="note" id="howto-prot">
+        <h3>What to do here</h3>
+        <p style="margin:0">A protein is already loaded &mdash; Jo-1, all 509 letters. Press <b>Scan</b>. The app cuts it into every 15-letter slice and lists them, tightest grip first. Tap any slice, then open the <b>Groove</b> tab to see that slice sitting in the holder.</p>
+      </div>
+
+      <div class="panel" id="pane-prot">
+        <h3>Protein</h3>
+        <textarea id="protseq" spellcheck="false" aria-label="Protein sequence"></textarea>
+        <div class="ctrls" style="margin-top:9px">
+          <button type="button" id="loadjo1">Load Jo-1</button>
+          <label class="drop" for="fastain">FASTA file</label>
+          <input type="file" id="fastain" accept=".fasta,.fa,.txt,.seq">
+          <label class="fld"><span>Window</span>
+            <select id="win"><option>15</option><option>14</option><option>16</option><option>18</option><option>20</option></select>
+          </label>
+          <button type="button" class="go" id="runprot">Scan</button>
+        </div>
+        <div class="prog"><i id="progbar"></i></div>
+      </div>
+
+      <div class="note" id="howto-dec" hidden>
+        <h3>What to do here</h3>
+        <p style="margin:0">The Jo-1 slice is in the box. Press <b>Scan variants</b>. The app swaps every letter for all 19 others and keeps the ones that still grip the holder but show the T cell a different face. Tap one, then press <b>Check across all 117 types</b> to see whether it grips other people's holders too.</p>
+      </div>
+
+      <div class="panel" id="pane-dec" hidden>
+        <h3>One slice</h3>
+        <input type="text" id="pepseq" value="LKAQLGPDESKQKFV" spellcheck="false" aria-label="Peptide">
+        <div class="ctrls" style="margin-top:9px">
+          <label class="fld"><span>Keep</span>
+            <select id="filt">
+              <option value="decoy">Same grip, new face</option>
+              <option value="better">Tighter grip</option>
+              <option value="all">Everything</option>
+            </select>
+          </label>
+          <button type="button" class="go" id="rundec">Scan variants</button>
+        </div>
+      </div>
+
+      <p class="tiny" id="count" style="margin:0 0 10px"></p>
+      <div class="rowlist" id="rows"></div>
+
+      <div class="sheet" id="sheetwrap">
+        <div class="grip" id="sheetgrip" role="button" tabindex="0" aria-expanded="false">
+          <h3>Selected</h3>
+          <span class="sum" id="sheetsum">—</span>
+          <span class="chev" id="sheetchev">open</span>
+        </div>
+        <div class="body">
+          <div id="detail"><p class="tiny" style="margin:0">Run a scan.</p></div>
+          <div class="ctrls" style="margin-top:10px">
+            <button type="button" id="crosscheck">Check across all 117 types</button>
+            <span class="tiny" id="ccstat"></span>
+          </div>
+          <div class="prog"><i id="ccbar"></i></div>
+          <div id="ccout"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="view-3d" hidden>
+    <div id="mol"></div>
+    <div class="caption" id="molsrc">scaled geometric model</div>
+    <div class="vtools">
+      <button type="button" id="b-anch" aria-pressed="true">Anchors</button>
+      <button type="button" id="b-surf" aria-pressed="false">Surface</button>
+      <button type="button" id="b-spin" aria-pressed="false">Spin</button>
+      <button type="button" id="b-reset">Reset</button>
+      <label class="drop" for="pdbin">Load .pdb</label>
+      <input type="file" id="pdbin" accept=".pdb,.ent,.cif,.mmcif">
+      <span class="key" style="margin:0 0 0 auto">
+        <span><i style="background:#1f7a8c"></i>P1</span>
+        <span><i style="background:#b5791a"></i>P4</span>
+        <span><i style="background:#2f5fa8"></i>P6</span>
+        <span><i style="background:#6b4fbd"></i>P9</span>
+        <span><i style="background:#9a4f8f"></i>T cell face</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="view" id="view-info" hidden>
+    <div class="inner">
+      <div class="panel">
+        <h3>Known pairs, checked live</h3>
+        <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
+        <p class="tiny" style="margin:0" id="validnote"></p>
+      </div>
+
+      <div class="note">
+        <h3>What the number is</h3>
+        <p style="margin:0 0 7px"><b>Tightness is only half the question.</b> A peptide that grips many HLA types would also blunt normal defence against germs. The button under a selected slice scores it against all 117 networks. Across the 61 Jo-1 decoys this reorders the list: the tightest are often the least selective.</p>
+        <p style="margin:0">A predicted binding strength in nanomolar from the MHCnuggets network for that HLA type, trained on measured binding data. It is a prediction, not a measurement. A lab would also run NetMHCIIpan and then test in cells. Treat a result here as a shortlist.</p>
+      </div>
+
+      <div class="warn">
+        <h3>Warning &mdash; this strategy has harmed patients</h3>
+        <p style="margin:0 0 6px">Peptides designed to occupy the same groove have gone to trial in multiple sclerosis, and both were stopped:</p>
+        <ul>
+          <li><b>CGP77116</b> &mdash; halted after 8 patients; 3 had disease flares caused by the treatment, with a rise in reactive T cells in blood and spinal fluid.</li>
+          <li><b>NBI-5788</b> &mdash; suspended after hypersensitivity reactions in 9% of patients.</li>
+        </ul>
+        <p style="margin:6px 0 0">A peptide that binds the groove can wake the very cells it was meant to quiet.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Register of the selected slice</h3>
+        <div class="reg"><div class="regrow" id="regrow"></div></div>
+        <div class="key">
+          <span><i style="background:var(--p1)"></i>P1</span>
+          <span><i style="background:var(--p4)"></i>P4</span>
+          <span><i style="background:var(--p6)"></i>P6</span>
+          <span><i style="background:var(--p9)"></i>P9</span>
+          <span><i style="background:var(--tcr)"></i>Faces the T cell</span>
+        </div>
+        <p class="tiny" style="margin-top:9px" id="regnote"></p>
+      </div>
+
+      <div class="panel">
+        <h3>Pockets of the selected holder</h3>
+        <div id="pocketlive"></div>
+        <p class="tiny" style="margin:9px 0 0">Read from the IPD-IMGT/HLA protein alignments, release 3.66.0. These are the polymorphic &beta;-chain positions that line each pocket: P1 = &beta;85, &beta;86; P4 = &beta;13, &beta;70, &beta;71, &beta;74; P6 = &beta;11, &beta;30; P9 = &beta;9, &beta;57. For DQ and DP only the &beta; chain is shown; the &alpha; chain also contributes.</p>
+      </div>
+
+      <div class="panel">
+        <h3>What the DR3 pockets prefer</h3>
+        <dl class="pk">
+          <dt style="color:var(--p1)">P1</dt><dd><span class="y">L I V M</span> &gt; F Y. Val85 + Val86 make it a smaller pocket than other DR types. Charged, G, P excluded.</dd>
+          <dt style="color:var(--p4)">P4</dt><dd><span class="y">D</span> strongly, then E. Lys71 + Arg74 make it electropositive, so K and R are shut out.</dd>
+          <dt style="color:var(--p6)">P6</dt><dd><span class="y">K R H</span>. Electronegative. Small polar residues also sit here and leave P9 open.</dd>
+          <dt style="color:var(--p9)">P9</dt><dd>No published residue list for DR3. Electronegative (Glu9, Asp57), so acidic disfavoured.</dd>
+        </dl>
+        <p class="tiny" style="margin-top:9px">Geluk 1994 gives two alternative submotifs. This rule-based reading is a cross-check on the network; across 285 Jo-1 variants the two agree only weakly (Spearman 0.17), so the network is what the ranking uses.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Sources</h3>
+        <div class="refs">
+          Predictor: Shao XM, Bhattacharya S, Fu J, et al. High-throughput prediction of MHC class I and II neoantigens with MHCnuggets. <i>Cancer Immunol Res</i> 2020;8(3):396&ndash;408. Models from MHCnuggets 2.4.1 (Apache-2.0); the 117 class II binding-affinity networks ship with this page and are evaluated here.<br>
+          The Jo-1 slice: Galindo-Feria AS, Sharma RK, Dubnovitsky A, et al. <i>Ann Rheum Dis</i> 2026;85(2):360&ndash;369. <a href="https://doi.org/10.1016/j.ard.2025.09.015">doi:10.1016/j.ard.2025.09.015</a><br>
+          DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
+          Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
+          Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
+          JO1 V300 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script id="groovepdb" type="text/plain">HEADER    MHC CLASS II GROOVE (SCALED MODEL)
+TITLE     GEOMETRIC MODEL OF AN HLA-DR PEPTIDE-BINDING GROOVE WITH HISRS 41-55
+REMARK  1 NOT A CRYSTAL STRUCTURE. GEOMETRY AT REAL SCALE.
+HELIX    1   1 ALA B  105  ALA B  130  1                                 26
+HELIX    2   2 ALA B  131  ALA B  156  1                                 26
+SHEET    1   A 8 ALA A    1  ALA A   13  0
+SHEET    2   A 8 ALA A   14  ALA A   26  -1
+SHEET    3   A 8 ALA A   27  ALA A   39  1
+SHEET    4   A 8 ALA A   40  ALA A   52  -1
+SHEET    5   A 8 ALA A   53  ALA A   65  1
+SHEET    6   A 8 ALA A   66  ALA A   78  -1
+SHEET    7   A 8 ALA A   79  ALA A   91  1
+SHEET    8   A 8 ALA A   92  ALA A  104  -1
+ATOM      1  N   ALA A   1     -21.157 -16.800 -10.184  1.00 20.00           N
+ATOM      2  CA  ALA A   1     -19.800 -16.800  -9.650  1.00 20.00           C
+ATOM      3  C   ALA A   1     -18.381 -16.800  -9.091  1.00 20.00           C
+ATOM      4  O   ALA A   1     -18.381 -16.800  -9.091  1.00 20.00           O
+ATOM      5  N   ALA A   2     -17.665 -16.800  -9.226  1.00 20.00           N
+ATOM      6  CA  ALA A   2     -16.500 -16.800  -8.350  1.00 20.00           C
+ATOM      7  C   ALA A   2     -15.281 -16.800  -9.267  1.00 20.00           C
+ATOM      8  O   ALA A   2     -15.732 -16.800 -10.412  1.00 20.00           O
+ATOM      9  N   ALA A   3     -14.365 -16.800  -8.774  1.00 20.00           N
+ATOM     10  CA  ALA A   3     -13.200 -16.800  -9.650  1.00 20.00           C
+ATOM     11  C   ALA A   3     -11.981 -16.800  -8.733  1.00 20.00           C
+ATOM     12  O   ALA A   3     -12.432 -16.800  -7.588  1.00 20.00           O
+ATOM     13  N   ALA A   4     -11.065 -16.800  -9.226  1.00 20.00           N
+ATOM     14  CA  ALA A   4      -9.900 -16.800  -8.350  1.00 20.00           C
+ATOM     15  C   ALA A   4      -8.681 -16.800  -9.267  1.00 20.00           C
+ATOM     16  O   ALA A   4      -9.132 -16.800 -10.412  1.00 20.00           O
+ATOM     17  N   ALA A   5      -7.765 -16.800  -8.774  1.00 20.00           N
+ATOM     18  CA  ALA A   5      -6.600 -16.800  -9.650  1.00 20.00           C
+ATOM     19  C   ALA A   5      -5.381 -16.800  -8.733  1.00 20.00           C
+ATOM     20  O   ALA A   5      -5.832 -16.800  -7.588  1.00 20.00           O
+ATOM     21  N   ALA A   6      -4.465 -16.800  -9.226  1.00 20.00           N
+ATOM     22  CA  ALA A   6      -3.300 -16.800  -8.350  1.00 20.00           C
+ATOM     23  C   ALA A   6      -2.081 -16.800  -9.267  1.00 20.00           C
+ATOM     24  O   ALA A   6      -2.532 -16.800 -10.412  1.00 20.00           O
+ATOM     25  N   ALA A   7      -1.165 -16.800  -8.774  1.00 20.00           N
+ATOM     26  CA  ALA A   7      -0.000 -16.800  -9.650  1.00 20.00           C
+ATOM     27  C   ALA A   7       1.219 -16.800  -8.733  1.00 20.00           C
+ATOM     28  O   ALA A   7       0.768 -16.800  -7.588  1.00 20.00           O
+ATOM     29  N   ALA A   8       2.135 -16.800  -9.226  1.00 20.00           N
+ATOM     30  CA  ALA A   8       3.300 -16.800  -8.350  1.00 20.00           C
+ATOM     31  C   ALA A   8       4.519 -16.800  -9.267  1.00 20.00           C
+ATOM     32  O   ALA A   8       4.068 -16.800 -10.412  1.00 20.00           O
+ATOM     33  N   ALA A   9       5.435 -16.800  -8.774  1.00 20.00           N
+ATOM     34  CA  ALA A   9       6.600 -16.800  -9.650  1.00 20.00           C
+ATOM     35  C   ALA A   9       7.819 -16.800  -8.733  1.00 20.00           C
+ATOM     36  O   ALA A   9       7.368 -16.800  -7.588  1.00 20.00           O
+ATOM     37  N   ALA A  10       8.735 -16.800  -9.226  1.00 20.00           N
+ATOM     38  CA  ALA A  10       9.900 -16.800  -8.350  1.00 20.00           C
+ATOM     39  C   ALA A  10      11.119 -16.800  -9.267  1.00 20.00           C
+ATOM     40  O   ALA A  10      10.668 -16.800 -10.412  1.00 20.00           O
+ATOM     41  N   ALA A  11      12.035 -16.800  -8.774  1.00 20.00           N
+ATOM     42  CA  ALA A  11      13.200 -16.800  -9.650  1.00 20.00           C
+ATOM     43  C   ALA A  11      14.419 -16.800  -8.733  1.00 20.00           C
+ATOM     44  O   ALA A  11      13.968 -16.800  -7.588  1.00 20.00           O
+ATOM     45  N   ALA A  12      15.335 -16.800  -9.226  1.00 20.00           N
+ATOM     46  CA  ALA A  12      16.500 -16.800  -8.350  1.00 20.00           C
+ATOM     47  C   ALA A  12      17.719 -16.800  -9.267  1.00 20.00           C
+ATOM     48  O   ALA A  12      17.268 -16.800 -10.412  1.00 20.00           O
+ATOM     49  N   ALA A  13      18.443 -16.800  -9.116  1.00 20.00           N
+ATOM     50  CA  ALA A  13      19.800 -16.800  -9.650  1.00 20.00           C
+ATOM     51  C   ALA A  13      21.219 -16.800 -10.209  1.00 20.00           C
+ATOM     52  O   ALA A  13      21.219 -16.800 -10.209  1.00 20.00           O
+ATOM     53  N   ALA A  14      21.157 -12.000 -10.184  1.00 20.00           N
+ATOM     54  CA  ALA A  14      19.800 -12.000  -9.650  1.00 20.00           C
+ATOM     55  C   ALA A  14      18.381 -12.000  -9.091  1.00 20.00           C
+ATOM     56  O   ALA A  14      18.381 -12.000  -9.091  1.00 20.00           O
+ATOM     57  N   ALA A  15      17.665 -12.000  -9.226  1.00 20.00           N
+ATOM     58  CA  ALA A  15      16.500 -12.000  -8.350  1.00 20.00           C
+ATOM     59  C   ALA A  15      15.281 -12.000  -9.267  1.00 20.00           C
+ATOM     60  O   ALA A  15      15.732 -12.000 -10.412  1.00 20.00           O
+ATOM     61  N   ALA A  16      14.365 -12.000  -8.774  1.00 20.00           N
+ATOM     62  CA  ALA A  16      13.200 -12.000  -9.650  1.00 20.00           C
+ATOM     63  C   ALA A  16      11.981 -12.000  -8.733  1.00 20.00           C
+ATOM     64  O   ALA A  16      12.432 -12.000  -7.588  1.00 20.00           O
+ATOM     65  N   ALA A  17      11.065 -12.000  -9.226  1.00 20.00           N
+ATOM     66  CA  ALA A  17       9.900 -12.000  -8.350  1.00 20.00           C
+ATOM     67  C   ALA A  17       8.681 -12.000  -9.267  1.00 20.00           C
+ATOM     68  O   ALA A  17       9.132 -12.000 -10.412  1.00 20.00           O
+ATOM     69  N   ALA A  18       7.765 -12.000  -8.774  1.00 20.00           N
+ATOM     70  CA  ALA A  18       6.600 -12.000  -9.650  1.00 20.00           C
+ATOM     71  C   ALA A  18       5.381 -12.000  -8.733  1.00 20.00           C
+ATOM     72  O   ALA A  18       5.832 -12.000  -7.588  1.00 20.00           O
+ATOM     73  N   ALA A  19       4.465 -12.000  -9.226  1.00 20.00           N
+ATOM     74  CA  ALA A  19       3.300 -12.000  -8.350  1.00 20.00           C
+ATOM     75  C   ALA A  19       2.081 -12.000  -9.267  1.00 20.00           C
+ATOM     76  O   ALA A  19       2.532 -12.000 -10.412  1.00 20.00           O
+ATOM     77  N   ALA A  20       1.165 -12.000  -8.774  1.00 20.00           N
+ATOM     78  CA  ALA A  20      -0.000 -12.000  -9.650  1.00 20.00           C
+ATOM     79  C   ALA A  20      -1.219 -12.000  -8.733  1.00 20.00           C
+ATOM     80  O   ALA A  20      -0.768 -12.000  -7.588  1.00 20.00           O
+ATOM     81  N   ALA A  21      -2.135 -12.000  -9.226  1.00 20.00           N
+ATOM     82  CA  ALA A  21      -3.300 -12.000  -8.350  1.00 20.00           C
+ATOM     83  C   ALA A  21      -4.519 -12.000  -9.267  1.00 20.00           C
+ATOM     84  O   ALA A  21      -4.068 -12.000 -10.412  1.00 20.00           O
+ATOM     85  N   ALA A  22      -5.435 -12.000  -8.774  1.00 20.00           N
+ATOM     86  CA  ALA A  22      -6.600 -12.000  -9.650  1.00 20.00           C
+ATOM     87  C   ALA A  22      -7.819 -12.000  -8.733  1.00 20.00           C
+ATOM     88  O   ALA A  22      -7.368 -12.000  -7.588  1.00 20.00           O
+ATOM     89  N   ALA A  23      -8.735 -12.000  -9.226  1.00 20.00           N
+ATOM     90  CA  ALA A  23      -9.900 -12.000  -8.350  1.00 20.00           C
+ATOM     91  C   ALA A  23     -11.119 -12.000  -9.267  1.00 20.00           C
+ATOM     92  O   ALA A  23     -10.668 -12.000 -10.412  1.00 20.00           O
+ATOM     93  N   ALA A  24     -12.035 -12.000  -8.774  1.00 20.00           N
+ATOM     94  CA  ALA A  24     -13.200 -12.000  -9.650  1.00 20.00           C
+ATOM     95  C   ALA A  24     -14.419 -12.000  -8.733  1.00 20.00           C
+ATOM     96  O   ALA A  24     -13.968 -12.000  -7.588  1.00 20.00           O
+ATOM     97  N   ALA A  25     -15.335 -12.000  -9.226  1.00 20.00           N
+ATOM     98  CA  ALA A  25     -16.500 -12.000  -8.350  1.00 20.00           C
+ATOM     99  C   ALA A  25     -17.719 -12.000  -9.267  1.00 20.00           C
+ATOM    100  O   ALA A  25     -17.268 -12.000 -10.412  1.00 20.00           O
+ATOM    101  N   ALA A  26     -18.443 -12.000  -9.116  1.00 20.00           N
+ATOM    102  CA  ALA A  26     -19.800 -12.000  -9.650  1.00 20.00           C
+ATOM    103  C   ALA A  26     -21.219 -12.000 -10.209  1.00 20.00           C
+ATOM    104  O   ALA A  26     -21.219 -12.000 -10.209  1.00 20.00           O
+ATOM    105  N   ALA A  27     -21.157  -7.200 -10.184  1.00 20.00           N
+ATOM    106  CA  ALA A  27     -19.800  -7.200  -9.650  1.00 20.00           C
+ATOM    107  C   ALA A  27     -18.381  -7.200  -9.091  1.00 20.00           C
+ATOM    108  O   ALA A  27     -18.381  -7.200  -9.091  1.00 20.00           O
+ATOM    109  N   ALA A  28     -17.665  -7.200  -9.226  1.00 20.00           N
+ATOM    110  CA  ALA A  28     -16.500  -7.200  -8.350  1.00 20.00           C
+ATOM    111  C   ALA A  28     -15.281  -7.200  -9.267  1.00 20.00           C
+ATOM    112  O   ALA A  28     -15.732  -7.200 -10.412  1.00 20.00           O
+ATOM    113  N   ALA A  29     -14.365  -7.200  -8.774  1.00 20.00           N
+ATOM    114  CA  ALA A  29     -13.200  -7.200  -9.650  1.00 20.00           C
+ATOM    115  C   ALA A  29     -11.981  -7.200  -8.733  1.00 20.00           C
+ATOM    116  O   ALA A  29     -12.432  -7.200  -7.588  1.00 20.00           O
+ATOM    117  N   ALA A  30     -11.065  -7.200  -9.226  1.00 20.00           N
+ATOM    118  CA  ALA A  30      -9.900  -7.200  -8.350  1.00 20.00           C
+ATOM    119  C   ALA A  30      -8.681  -7.200  -9.267  1.00 20.00           C
+ATOM    120  O   ALA A  30      -9.132  -7.200 -10.412  1.00 20.00           O
+ATOM    121  N   ALA A  31      -7.765  -7.200  -8.774  1.00 20.00           N
+ATOM    122  CA  ALA A  31      -6.600  -7.200  -9.650  1.00 20.00           C
+ATOM    123  C   ALA A  31      -5.381  -7.200  -8.733  1.00 20.00           C
+ATOM    124  O   ALA A  31      -5.832  -7.200  -7.588  1.00 20.00           O
+ATOM    125  N   ALA A  32      -4.465  -7.200  -9.226  1.00 20.00           N
+ATOM    126  CA  ALA A  32      -3.300  -7.200  -8.350  1.00 20.00           C
+ATOM    127  C   ALA A  32      -2.081  -7.200  -9.267  1.00 20.00           C
+ATOM    128  O   ALA A  32      -2.532  -7.200 -10.412  1.00 20.00           O
+ATOM    129  N   ALA A  33      -1.165  -7.200  -8.774  1.00 20.00           N
+ATOM    130  CA  ALA A  33      -0.000  -7.200  -9.650  1.00 20.00           C
+ATOM    131  C   ALA A  33       1.219  -7.200  -8.733  1.00 20.00           C
+ATOM    132  O   ALA A  33       0.768  -7.200  -7.588  1.00 20.00           O
+ATOM    133  N   ALA A  34       2.135  -7.200  -9.226  1.00 20.00           N
+ATOM    134  CA  ALA A  34       3.300  -7.200  -8.350  1.00 20.00           C
+ATOM    135  C   ALA A  34       4.519  -7.200  -9.267  1.00 20.00           C
+ATOM    136  O   ALA A  34       4.068  -7.200 -10.412  1.00 20.00           O
+ATOM    137  N   ALA A  35       5.435  -7.200  -8.774  1.00 20.00           N
+ATOM    138  CA  ALA A  35       6.600  -7.200  -9.650  1.00 20.00           C
+ATOM    139  C   ALA A  35       7.819  -7.200  -8.733  1.00 20.00           C
+ATOM    140  O   ALA A  35       7.368  -7.200  -7.588  1.00 20.00           O
+ATOM    141  N   ALA A  36       8.735  -7.200  -9.226  1.00 20.00           N
+ATOM    142  CA  ALA A  36       9.900  -7.200  -8.350  1.00 20.00           C
+ATOM    143  C   ALA A  36      11.119  -7.200  -9.267  1.00 20.00           C
+ATOM    144  O   ALA A  36      10.668  -7.200 -10.412  1.00 20.00           O
+ATOM    145  N   ALA A  37      12.035  -7.200  -8.774  1.00 20.00           N
+ATOM    146  CA  ALA A  37      13.200  -7.200  -9.650  1.00 20.00           C
+ATOM    147  C   ALA A  37      14.419  -7.200  -8.733  1.00 20.00           C
+ATOM    148  O   ALA A  37      13.968  -7.200  -7.588  1.00 20.00           O
+ATOM    149  N   ALA A  38      15.335  -7.200  -9.226  1.00 20.00           N
+ATOM    150  CA  ALA A  38      16.500  -7.200  -8.350  1.00 20.00           C
+ATOM    151  C   ALA A  38      17.719  -7.200  -9.267  1.00 20.00           C
+ATOM    152  O   ALA A  38      17.268  -7.200 -10.412  1.00 20.00           O
+ATOM    153  N   ALA A  39      18.443  -7.200  -9.116  1.00 20.00           N
+ATOM    154  CA  ALA A  39      19.800  -7.200  -9.650  1.00 20.00           C
+ATOM    155  C   ALA A  39      21.219  -7.200 -10.209  1.00 20.00           C
+ATOM    156  O   ALA A  39      21.219  -7.200 -10.209  1.00 20.00           O
+ATOM    157  N   ALA A  40      21.157  -2.400 -10.184  1.00 20.00           N
+ATOM    158  CA  ALA A  40      19.800  -2.400  -9.650  1.00 20.00           C
+ATOM    159  C   ALA A  40      18.381  -2.400  -9.091  1.00 20.00           C
+ATOM    160  O   ALA A  40      18.381  -2.400  -9.091  1.00 20.00           O
+ATOM    161  N   ALA A  41      17.665  -2.400  -9.226  1.00 20.00           N
+ATOM    162  CA  ALA A  41      16.500  -2.400  -8.350  1.00 20.00           C
+ATOM    163  C   ALA A  41      15.281  -2.400  -9.267  1.00 20.00           C
+ATOM    164  O   ALA A  41      15.732  -2.400 -10.412  1.00 20.00           O
+ATOM    165  N   ALA A  42      14.365  -2.400  -8.774  1.00 20.00           N
+ATOM    166  CA  ALA A  42      13.200  -2.400  -9.650  1.00 20.00           C
+ATOM    167  C   ALA A  42      11.981  -2.400  -8.733  1.00 20.00           C
+ATOM    168  O   ALA A  42      12.432  -2.400  -7.588  1.00 20.00           O
+ATOM    169  N   ALA A  43      11.065  -2.400  -9.226  1.00 20.00           N
+ATOM    170  CA  ALA A  43       9.900  -2.400  -8.350  1.00 20.00           C
+ATOM    171  C   ALA A  43       8.681  -2.400  -9.267  1.00 20.00           C
+ATOM    172  O   ALA A  43       9.132  -2.400 -10.412  1.00 20.00           O
+ATOM    173  N   ALA A  44       7.765  -2.400  -8.774  1.00 20.00           N
+ATOM    174  CA  ALA A  44       6.600  -2.400  -9.650  1.00 20.00           C
+ATOM    175  C   ALA A  44       5.381  -2.400  -8.733  1.00 20.00           C
+ATOM    176  O   ALA A  44       5.832  -2.400  -7.588  1.00 20.00           O
+ATOM    177  N   ALA A  45       4.465  -2.400  -9.226  1.00 20.00           N
+ATOM    178  CA  ALA A  45       3.300  -2.400  -8.350  1.00 20.00           C
+ATOM    179  C   ALA A  45       2.081  -2.400  -9.267  1.00 20.00           C
+ATOM    180  O   ALA A  45       2.532  -2.400 -10.412  1.00 20.00           O
+ATOM    181  N   ALA A  46       1.165  -2.400  -8.774  1.00 20.00           N
+ATOM    182  CA  ALA A  46      -0.000  -2.400  -9.650  1.00 20.00           C
+ATOM    183  C   ALA A  46      -1.219  -2.400  -8.733  1.00 20.00           C
+ATOM    184  O   ALA A  46      -0.768  -2.400  -7.588  1.00 20.00           O
+ATOM    185  N   ALA A  47      -2.135  -2.400  -9.226  1.00 20.00           N
+ATOM    186  CA  ALA A  47      -3.300  -2.400  -8.350  1.00 20.00           C
+ATOM    187  C   ALA A  47      -4.519  -2.400  -9.267  1.00 20.00           C
+ATOM    188  O   ALA A  47      -4.068  -2.400 -10.412  1.00 20.00           O
+ATOM    189  N   ALA A  48      -5.435  -2.400  -8.774  1.00 20.00           N
+ATOM    190  CA  ALA A  48      -6.600  -2.400  -9.650  1.00 20.00           C
+ATOM    191  C   ALA A  48      -7.819  -2.400  -8.733  1.00 20.00           C
+ATOM    192  O   ALA A  48      -7.368  -2.400  -7.588  1.00 20.00           O
+ATOM    193  N   ALA A  49      -8.735  -2.400  -9.226  1.00 20.00           N
+ATOM    194  CA  ALA A  49      -9.900  -2.400  -8.350  1.00 20.00           C
+ATOM    195  C   ALA A  49     -11.119  -2.400  -9.267  1.00 20.00           C
+ATOM    196  O   ALA A  49     -10.668  -2.400 -10.412  1.00 20.00           O
+ATOM    197  N   ALA A  50     -12.035  -2.400  -8.774  1.00 20.00           N
+ATOM    198  CA  ALA A  50     -13.200  -2.400  -9.650  1.00 20.00           C
+ATOM    199  C   ALA A  50     -14.419  -2.400  -8.733  1.00 20.00           C
+ATOM    200  O   ALA A  50     -13.968  -2.400  -7.588  1.00 20.00           O
+ATOM    201  N   ALA A  51     -15.335  -2.400  -9.226  1.00 20.00           N
+ATOM    202  CA  ALA A  51     -16.500  -2.400  -8.350  1.00 20.00           C
+ATOM    203  C   ALA A  51     -17.719  -2.400  -9.267  1.00 20.00           C
+ATOM    204  O   ALA A  51     -17.268  -2.400 -10.412  1.00 20.00           O
+ATOM    205  N   ALA A  52     -18.443  -2.400  -9.116  1.00 20.00           N
+ATOM    206  CA  ALA A  52     -19.800  -2.400  -9.650  1.00 20.00           C
+ATOM    207  C   ALA A  52     -21.219  -2.400 -10.209  1.00 20.00           C
+ATOM    208  O   ALA A  52     -21.219  -2.400 -10.209  1.00 20.00           O
+ATOM    209  N   ALA A  53     -21.157   2.400 -10.184  1.00 20.00           N
+ATOM    210  CA  ALA A  53     -19.800   2.400  -9.650  1.00 20.00           C
+ATOM    211  C   ALA A  53     -18.381   2.400  -9.091  1.00 20.00           C
+ATOM    212  O   ALA A  53     -18.381   2.400  -9.091  1.00 20.00           O
+ATOM    213  N   ALA A  54     -17.665   2.400  -9.226  1.00 20.00           N
+ATOM    214  CA  ALA A  54     -16.500   2.400  -8.350  1.00 20.00           C
+ATOM    215  C   ALA A  54     -15.281   2.400  -9.267  1.00 20.00           C
+ATOM    216  O   ALA A  54     -15.732   2.400 -10.412  1.00 20.00           O
+ATOM    217  N   ALA A  55     -14.365   2.400  -8.774  1.00 20.00           N
+ATOM    218  CA  ALA A  55     -13.200   2.400  -9.650  1.00 20.00           C
+ATOM    219  C   ALA A  55     -11.981   2.400  -8.733  1.00 20.00           C
+ATOM    220  O   ALA A  55     -12.432   2.400  -7.588  1.00 20.00           O
+ATOM    221  N   ALA A  56     -11.065   2.400  -9.226  1.00 20.00           N
+ATOM    222  CA  ALA A  56      -9.900   2.400  -8.350  1.00 20.00           C
+ATOM    223  C   ALA A  56      -8.681   2.400  -9.267  1.00 20.00           C
+ATOM    224  O   ALA A  56      -9.132   2.400 -10.412  1.00 20.00           O
+ATOM    225  N   ALA A  57      -7.765   2.400  -8.774  1.00 20.00           N
+ATOM    226  CA  ALA A  57      -6.600   2.400  -9.650  1.00 20.00           C
+ATOM    227  C   ALA A  57      -5.381   2.400  -8.733  1.00 20.00           C
+ATOM    228  O   ALA A  57      -5.832   2.400  -7.588  1.00 20.00           O
+ATOM    229  N   ALA A  58      -4.465   2.400  -9.226  1.00 20.00           N
+ATOM    230  CA  ALA A  58      -3.300   2.400  -8.350  1.00 20.00           C
+ATOM    231  C   ALA A  58      -2.081   2.400  -9.267  1.00 20.00           C
+ATOM    232  O   ALA A  58      -2.532   2.400 -10.412  1.00 20.00           O
+ATOM    233  N   ALA A  59      -1.165   2.400  -8.774  1.00 20.00           N
+ATOM    234  CA  ALA A  59      -0.000   2.400  -9.650  1.00 20.00           C
+ATOM    235  C   ALA A  59       1.219   2.400  -8.733  1.00 20.00           C
+ATOM    236  O   ALA A  59       0.768   2.400  -7.588  1.00 20.00           O
+ATOM    237  N   ALA A  60       2.135   2.400  -9.226  1.00 20.00           N
+ATOM    238  CA  ALA A  60       3.300   2.400  -8.350  1.00 20.00           C
+ATOM    239  C   ALA A  60       4.519   2.400  -9.267  1.00 20.00           C
+ATOM    240  O   ALA A  60       4.068   2.400 -10.412  1.00 20.00           O
+ATOM    241  N   ALA A  61       5.435   2.400  -8.774  1.00 20.00           N
+ATOM    242  CA  ALA A  61       6.600   2.400  -9.650  1.00 20.00           C
+ATOM    243  C   ALA A  61       7.819   2.400  -8.733  1.00 20.00           C
+ATOM    244  O   ALA A  61       7.368   2.400  -7.588  1.00 20.00           O
+ATOM    245  N   ALA A  62       8.735   2.400  -9.226  1.00 20.00           N
+ATOM    246  CA  ALA A  62       9.900   2.400  -8.350  1.00 20.00           C
+ATOM    247  C   ALA A  62      11.119   2.400  -9.267  1.00 20.00           C
+ATOM    248  O   ALA A  62      10.668   2.400 -10.412  1.00 20.00           O
+ATOM    249  N   ALA A  63      12.035   2.400  -8.774  1.00 20.00           N
+ATOM    250  CA  ALA A  63      13.200   2.400  -9.650  1.00 20.00           C
+ATOM    251  C   ALA A  63      14.419   2.400  -8.733  1.00 20.00           C
+ATOM    252  O   ALA A  63      13.968   2.400  -7.588  1.00 20.00           O
+ATOM    253  N   ALA A  64      15.335   2.400  -9.226  1.00 20.00           N
+ATOM    254  CA  ALA A  64      16.500   2.400  -8.350  1.00 20.00           C
+ATOM    255  C   ALA A  64      17.719   2.400  -9.267  1.00 20.00           C
+ATOM    256  O   ALA A  64      17.268   2.400 -10.412  1.00 20.00           O
+ATOM    257  N   ALA A  65      18.443   2.400  -9.116  1.00 20.00           N
+ATOM    258  CA  ALA A  65      19.800   2.400  -9.650  1.00 20.00           C
+ATOM    259  C   ALA A  65      21.219   2.400 -10.209  1.00 20.00           C
+ATOM    260  O   ALA A  65      21.219   2.400 -10.209  1.00 20.00           O
+ATOM    261  N   ALA A  66      21.157   7.200 -10.184  1.00 20.00           N
+ATOM    262  CA  ALA A  66      19.800   7.200  -9.650  1.00 20.00           C
+ATOM    263  C   ALA A  66      18.381   7.200  -9.091  1.00 20.00           C
+ATOM    264  O   ALA A  66      18.381   7.200  -9.091  1.00 20.00           O
+ATOM    265  N   ALA A  67      17.665   7.200  -9.226  1.00 20.00           N
+ATOM    266  CA  ALA A  67      16.500   7.200  -8.350  1.00 20.00           C
+ATOM    267  C   ALA A  67      15.281   7.200  -9.267  1.00 20.00           C
+ATOM    268  O   ALA A  67      15.732   7.200 -10.412  1.00 20.00           O
+ATOM    269  N   ALA A  68      14.365   7.200  -8.774  1.00 20.00           N
+ATOM    270  CA  ALA A  68      13.200   7.200  -9.650  1.00 20.00           C
+ATOM    271  C   ALA A  68      11.981   7.200  -8.733  1.00 20.00           C
+ATOM    272  O   ALA A  68      12.432   7.200  -7.588  1.00 20.00           O
+ATOM    273  N   ALA A  69      11.065   7.200  -9.226  1.00 20.00           N
+ATOM    274  CA  ALA A  69       9.900   7.200  -8.350  1.00 20.00           C
+ATOM    275  C   ALA A  69       8.681   7.200  -9.267  1.00 20.00           C
+ATOM    276  O   ALA A  69       9.132   7.200 -10.412  1.00 20.00           O
+ATOM    277  N   ALA A  70       7.765   7.200  -8.774  1.00 20.00           N
+ATOM    278  CA  ALA A  70       6.600   7.200  -9.650  1.00 20.00           C
+ATOM    279  C   ALA A  70       5.381   7.200  -8.733  1.00 20.00           C
+ATOM    280  O   ALA A  70       5.832   7.200  -7.588  1.00 20.00           O
+ATOM    281  N   ALA A  71       4.465   7.200  -9.226  1.00 20.00           N
+ATOM    282  CA  ALA A  71       3.300   7.200  -8.350  1.00 20.00           C
+ATOM    283  C   ALA A  71       2.081   7.200  -9.267  1.00 20.00           C
+ATOM    284  O   ALA A  71       2.532   7.200 -10.412  1.00 20.00           O
+ATOM    285  N   ALA A  72       1.165   7.200  -8.774  1.00 20.00           N
+ATOM    286  CA  ALA A  72      -0.000   7.200  -9.650  1.00 20.00           C
+ATOM    287  C   ALA A  72      -1.219   7.200  -8.733  1.00 20.00           C
+ATOM    288  O   ALA A  72      -0.768   7.200  -7.588  1.00 20.00           O
+ATOM    289  N   ALA A  73      -2.135   7.200  -9.226  1.00 20.00           N
+ATOM    290  CA  ALA A  73      -3.300   7.200  -8.350  1.00 20.00           C
+ATOM    291  C   ALA A  73      -4.519   7.200  -9.267  1.00 20.00           C
+ATOM    292  O   ALA A  73      -4.068   7.200 -10.412  1.00 20.00           O
+ATOM    293  N   ALA A  74      -5.435   7.200  -8.774  1.00 20.00           N
+ATOM    294  CA  ALA A  74      -6.600   7.200  -9.650  1.00 20.00           C
+ATOM    295  C   ALA A  74      -7.819   7.200  -8.733  1.00 20.00           C
+ATOM    296  O   ALA A  74      -7.368   7.200  -7.588  1.00 20.00           O
+ATOM    297  N   ALA A  75      -8.735   7.200  -9.226  1.00 20.00           N
+ATOM    298  CA  ALA A  75      -9.900   7.200  -8.350  1.00 20.00           C
+ATOM    299  C   ALA A  75     -11.119   7.200  -9.267  1.00 20.00           C
+ATOM    300  O   ALA A  75     -10.668   7.200 -10.412  1.00 20.00           O
+ATOM    301  N   ALA A  76     -12.035   7.200  -8.774  1.00 20.00           N
+ATOM    302  CA  ALA A  76     -13.200   7.200  -9.650  1.00 20.00           C
+ATOM    303  C   ALA A  76     -14.419   7.200  -8.733  1.00 20.00           C
+ATOM    304  O   ALA A  76     -13.968   7.200  -7.588  1.00 20.00           O
+ATOM    305  N   ALA A  77     -15.335   7.200  -9.226  1.00 20.00           N
+ATOM    306  CA  ALA A  77     -16.500   7.200  -8.350  1.00 20.00           C
+ATOM    307  C   ALA A  77     -17.719   7.200  -9.267  1.00 20.00           C
+ATOM    308  O   ALA A  77     -17.268   7.200 -10.412  1.00 20.00           O
+ATOM    309  N   ALA A  78     -18.443   7.200  -9.116  1.00 20.00           N
+ATOM    310  CA  ALA A  78     -19.800   7.200  -9.650  1.00 20.00           C
+ATOM    311  C   ALA A  78     -21.219   7.200 -10.209  1.00 20.00           C
+ATOM    312  O   ALA A  78     -21.219   7.200 -10.209  1.00 20.00           O
+ATOM    313  N   ALA A  79     -21.157  12.000 -10.184  1.00 20.00           N
+ATOM    314  CA  ALA A  79     -19.800  12.000  -9.650  1.00 20.00           C
+ATOM    315  C   ALA A  79     -18.381  12.000  -9.091  1.00 20.00           C
+ATOM    316  O   ALA A  79     -18.381  12.000  -9.091  1.00 20.00           O
+ATOM    317  N   ALA A  80     -17.665  12.000  -9.226  1.00 20.00           N
+ATOM    318  CA  ALA A  80     -16.500  12.000  -8.350  1.00 20.00           C
+ATOM    319  C   ALA A  80     -15.281  12.000  -9.267  1.00 20.00           C
+ATOM    320  O   ALA A  80     -15.732  12.000 -10.412  1.00 20.00           O
+ATOM    321  N   ALA A  81     -14.365  12.000  -8.774  1.00 20.00           N
+ATOM    322  CA  ALA A  81     -13.200  12.000  -9.650  1.00 20.00           C
+ATOM    323  C   ALA A  81     -11.981  12.000  -8.733  1.00 20.00           C
+ATOM    324  O   ALA A  81     -12.432  12.000  -7.588  1.00 20.00           O
+ATOM    325  N   ALA A  82     -11.065  12.000  -9.226  1.00 20.00           N
+ATOM    326  CA  ALA A  82      -9.900  12.000  -8.350  1.00 20.00           C
+ATOM    327  C   ALA A  82      -8.681  12.000  -9.267  1.00 20.00           C
+ATOM    328  O   ALA A  82      -9.132  12.000 -10.412  1.00 20.00           O
+ATOM    329  N   ALA A  83      -7.765  12.000  -8.774  1.00 20.00           N
+ATOM    330  CA  ALA A  83      -6.600  12.000  -9.650  1.00 20.00           C
+ATOM    331  C   ALA A  83      -5.381  12.000  -8.733  1.00 20.00           C
+ATOM    332  O   ALA A  83      -5.832  12.000  -7.588  1.00 20.00           O
+ATOM    333  N   ALA A  84      -4.465  12.000  -9.226  1.00 20.00           N
+ATOM    334  CA  ALA A  84      -3.300  12.000  -8.350  1.00 20.00           C
+ATOM    335  C   ALA A  84      -2.081  12.000  -9.267  1.00 20.00           C
+ATOM    336  O   ALA A  84      -2.532  12.000 -10.412  1.00 20.00           O
+ATOM    337  N   ALA A  85      -1.165  12.000  -8.774  1.00 20.00           N
+ATOM    338  CA  ALA A  85      -0.000  12.000  -9.650  1.00 20.00           C
+ATOM    339  C   ALA A  85       1.219  12.000  -8.733  1.00 20.00           C
+ATOM    340  O   ALA A  85       0.768  12.000  -7.588  1.00 20.00           O
+ATOM    341  N   ALA A  86       2.135  12.000  -9.226  1.00 20.00           N
+ATOM    342  CA  ALA A  86       3.300  12.000  -8.350  1.00 20.00           C
+ATOM    343  C   ALA A  86       4.519  12.000  -9.267  1.00 20.00           C
+ATOM    344  O   ALA A  86       4.068  12.000 -10.412  1.00 20.00           O
+ATOM    345  N   ALA A  87       5.435  12.000  -8.774  1.00 20.00           N
+ATOM    346  CA  ALA A  87       6.600  12.000  -9.650  1.00 20.00           C
+ATOM    347  C   ALA A  87       7.819  12.000  -8.733  1.00 20.00           C
+ATOM    348  O   ALA A  87       7.368  12.000  -7.588  1.00 20.00           O
+ATOM    349  N   ALA A  88       8.735  12.000  -9.226  1.00 20.00           N
+ATOM    350  CA  ALA A  88       9.900  12.000  -8.350  1.00 20.00           C
+ATOM    351  C   ALA A  88      11.119  12.000  -9.267  1.00 20.00           C
+ATOM    352  O   ALA A  88      10.668  12.000 -10.412  1.00 20.00           O
+ATOM    353  N   ALA A  89      12.035  12.000  -8.774  1.00 20.00           N
+ATOM    354  CA  ALA A  89      13.200  12.000  -9.650  1.00 20.00           C
+ATOM    355  C   ALA A  89      14.419  12.000  -8.733  1.00 20.00           C
+ATOM    356  O   ALA A  89      13.968  12.000  -7.588  1.00 20.00           O
+ATOM    357  N   ALA A  90      15.335  12.000  -9.226  1.00 20.00           N
+ATOM    358  CA  ALA A  90      16.500  12.000  -8.350  1.00 20.00           C
+ATOM    359  C   ALA A  90      17.719  12.000  -9.267  1.00 20.00           C
+ATOM    360  O   ALA A  90      17.268  12.000 -10.412  1.00 20.00           O
+ATOM    361  N   ALA A  91      18.443  12.000  -9.116  1.00 20.00           N
+ATOM    362  CA  ALA A  91      19.800  12.000  -9.650  1.00 20.00           C
+ATOM    363  C   ALA A  91      21.219  12.000 -10.209  1.00 20.00           C
+ATOM    364  O   ALA A  91      21.219  12.000 -10.209  1.00 20.00           O
+ATOM    365  N   ALA A  92      21.157  16.800 -10.184  1.00 20.00           N
+ATOM    366  CA  ALA A  92      19.800  16.800  -9.650  1.00 20.00           C
+ATOM    367  C   ALA A  92      18.381  16.800  -9.091  1.00 20.00           C
+ATOM    368  O   ALA A  92      18.381  16.800  -9.091  1.00 20.00           O
+ATOM    369  N   ALA A  93      17.665  16.800  -9.226  1.00 20.00           N
+ATOM    370  CA  ALA A  93      16.500  16.800  -8.350  1.00 20.00           C
+ATOM    371  C   ALA A  93      15.281  16.800  -9.267  1.00 20.00           C
+ATOM    372  O   ALA A  93      15.732  16.800 -10.412  1.00 20.00           O
+ATOM    373  N   ALA A  94      14.365  16.800  -8.774  1.00 20.00           N
+ATOM    374  CA  ALA A  94      13.200  16.800  -9.650  1.00 20.00           C
+ATOM    375  C   ALA A  94      11.981  16.800  -8.733  1.00 20.00           C
+ATOM    376  O   ALA A  94      12.432  16.800  -7.588  1.00 20.00           O
+ATOM    377  N   ALA A  95      11.065  16.800  -9.226  1.00 20.00           N
+ATOM    378  CA  ALA A  95       9.900  16.800  -8.350  1.00 20.00           C
+ATOM    379  C   ALA A  95       8.681  16.800  -9.267  1.00 20.00           C
+ATOM    380  O   ALA A  95       9.132  16.800 -10.412  1.00 20.00           O
+ATOM    381  N   ALA A  96       7.765  16.800  -8.774  1.00 20.00           N
+ATOM    382  CA  ALA A  96       6.600  16.800  -9.650  1.00 20.00           C
+ATOM    383  C   ALA A  96       5.381  16.800  -8.733  1.00 20.00           C
+ATOM    384  O   ALA A  96       5.832  16.800  -7.588  1.00 20.00           O
+ATOM    385  N   ALA A  97       4.465  16.800  -9.226  1.00 20.00           N
+ATOM    386  CA  ALA A  97       3.300  16.800  -8.350  1.00 20.00           C
+ATOM    387  C   ALA A  97       2.081  16.800  -9.267  1.00 20.00           C
+ATOM    388  O   ALA A  97       2.532  16.800 -10.412  1.00 20.00           O
+ATOM    389  N   ALA A  98       1.165  16.800  -8.774  1.00 20.00           N
+ATOM    390  CA  ALA A  98      -0.000  16.800  -9.650  1.00 20.00           C
+ATOM    391  C   ALA A  98      -1.219  16.800  -8.733  1.00 20.00           C
+ATOM    392  O   ALA A  98      -0.768  16.800  -7.588  1.00 20.00           O
+ATOM    393  N   ALA A  99      -2.135  16.800  -9.226  1.00 20.00           N
+ATOM    394  CA  ALA A  99      -3.300  16.800  -8.350  1.00 20.00           C
+ATOM    395  C   ALA A  99      -4.519  16.800  -9.267  1.00 20.00           C
+ATOM    396  O   ALA A  99      -4.068  16.800 -10.412  1.00 20.00           O
+ATOM    397  N   ALA A 100      -5.435  16.800  -8.774  1.00 20.00           N
+ATOM    398  CA  ALA A 100      -6.600  16.800  -9.650  1.00 20.00           C
+ATOM    399  C   ALA A 100      -7.819  16.800  -8.733  1.00 20.00           C
+ATOM    400  O   ALA A 100      -7.368  16.800  -7.588  1.00 20.00           O
+ATOM    401  N   ALA A 101      -8.735  16.800  -9.226  1.00 20.00           N
+ATOM    402  CA  ALA A 101      -9.900  16.800  -8.350  1.00 20.00           C
+ATOM    403  C   ALA A 101     -11.119  16.800  -9.267  1.00 20.00           C
+ATOM    404  O   ALA A 101     -10.668  16.800 -10.412  1.00 20.00           O
+ATOM    405  N   ALA A 102     -12.035  16.800  -8.774  1.00 20.00           N
+ATOM    406  CA  ALA A 102     -13.200  16.800  -9.650  1.00 20.00           C
+ATOM    407  C   ALA A 102     -14.419  16.800  -8.733  1.00 20.00           C
+ATOM    408  O   ALA A 102     -13.968  16.800  -7.588  1.00 20.00           O
+ATOM    409  N   ALA A 103     -15.335  16.800  -9.226  1.00 20.00           N
+ATOM    410  CA  ALA A 103     -16.500  16.800  -8.350  1.00 20.00           C
+ATOM    411  C   ALA A 103     -17.719  16.800  -9.267  1.00 20.00           C
+ATOM    412  O   ALA A 103     -17.268  16.800 -10.412  1.00 20.00           O
+ATOM    413  N   ALA A 104     -18.443  16.800  -9.116  1.00 20.00           N
+ATOM    414  CA  ALA A 104     -19.800  16.800  -9.650  1.00 20.00           C
+ATOM    415  C   ALA A 104     -21.219  16.800 -10.209  1.00 20.00           C
+ATOM    416  O   ALA A 104     -21.219  16.800 -10.209  1.00 20.00           O
+ATOM    417  N   ALA B 105     -19.571  12.728   0.738  1.00 20.00           N
+ATOM    418  CA  ALA B 105     -19.000  11.700   1.600  1.00 20.00           C
+ATOM    419  C   ALA B 105     -18.403  10.625   2.502  1.00 20.00           C
+ATOM    420  O   ALA B 105     -18.403  10.625   2.502  1.00 20.00           O
+ATOM    421  N   ALA B 106     -17.954   9.885   2.799  1.00 20.00           N
+ATOM    422  CA  ALA B 106     -17.500   9.001   3.865  1.00 20.00           C
+ATOM    423  C   ALA B 106     -17.025   8.513   2.500  1.00 20.00           C
+ATOM    424  O   ALA B 106     -17.504   9.377   1.766  1.00 20.00           O
+ATOM    425  N   ALA B 107     -16.454   8.135   1.870  1.00 20.00           N
+ATOM    426  CA  ALA B 107     -16.000   7.239   0.813  1.00 20.00           C
+ATOM    427  C   ALA B 107     -15.525   8.667   0.570  1.00 20.00           C
+ATOM    428  O   ALA B 107     -16.004   9.240   1.548  1.00 20.00           O
+ATOM    429  N   ALA B 108     -14.954   9.354   0.308  1.00 20.00           N
+ATOM    430  CA  ALA B 108     -14.500  10.550  -0.392  1.00 20.00           C
+ATOM    431  C   ALA B 108     -14.025  10.542   1.057  1.00 20.00           C
+ATOM    432  O   ALA B 108     -14.504   9.479   1.452  1.00 20.00           O
+ATOM    433  N   ALA B 109     -13.454  10.681   1.779  1.00 20.00           N
+ATOM    434  CA  ALA B 109     -13.000  11.162   3.078  1.00 20.00           C
+ATOM    435  C   ALA B 109     -12.525   9.736   2.819  1.00 20.00           C
+ATOM    436  O   ALA B 109     -13.004   9.532   1.703  1.00 20.00           O
+ATOM    437  N   ALA B 110     -11.954   9.001   2.830  1.00 20.00           N
+ATOM    438  CA  ALA B 110     -11.500   7.638   3.078  1.00 20.00           C
+ATOM    439  C   ALA B 110     -11.025   8.142   1.720  1.00 20.00           C
+ATOM    440  O   ALA B 110     -11.504   9.276   1.712  1.00 20.00           O
+ATOM    441  N   ALA B 111     -10.454   8.258   0.994  1.00 20.00           N
+ATOM    442  CA  ALA B 111     -10.000   8.250  -0.392  1.00 20.00           C
+ATOM    443  C   ALA B 111      -9.525   9.501   0.340  1.00 20.00           C
+ATOM    444  O   ALA B 111     -10.004   9.311   1.458  1.00 20.00           O
+ATOM    445  N   ALA B 112      -8.954  10.196   0.581  1.00 20.00           N
+ATOM    446  CA  ALA B 112      -8.500  11.561   0.813  1.00 20.00           C
+ATOM    447  C   ALA B 112      -8.025  10.623   1.918  1.00 20.00           C
+ATOM    448  O   ALA B 112      -8.504   9.555   1.537  1.00 20.00           O
+ATOM    449  N   ALA B 113      -7.454  10.266   2.560  1.00 20.00           N
+ATOM    450  CA  ALA B 113      -7.000   9.799   3.865  1.00 20.00           C
+ATOM    451  C   ALA B 113      -6.525   8.874   2.750  1.00 20.00           C
+ATOM    452  O   ALA B 113      -7.004   9.435   1.764  1.00 20.00           O
+ATOM    453  N   ALA B 114      -5.954   8.304   2.286  1.00 20.00           N
+ATOM    454  CA  ALA B 114      -5.500   7.100   1.600  1.00 20.00           C
+ATOM    455  C   ALA B 114      -5.025   8.359   0.883  1.00 20.00           C
+ATOM    456  O   ALA B 114      -5.504   9.232   1.606  1.00 20.00           O
+ATOM    457  N   ALA B 115      -4.454   8.915   0.401  1.00 20.00           N
+ATOM    458  CA  ALA B 115      -4.000   9.799  -0.665  1.00 20.00           C
+ATOM    459  C   ALA B 115      -3.525  10.287   0.700  1.00 20.00           C
+ATOM    460  O   ALA B 115      -4.004   9.423   1.434  1.00 20.00           O
+ATOM    461  N   ALA B 116      -2.954  10.665   1.330  1.00 20.00           N
+ATOM    462  CA  ALA B 116      -2.500  11.561   2.387  1.00 20.00           C
+ATOM    463  C   ALA B 116      -2.025  10.133   2.630  1.00 20.00           C
+ATOM    464  O   ALA B 116      -2.504   9.560   1.652  1.00 20.00           O
+ATOM    465  N   ALA B 117      -1.454   9.446   2.892  1.00 20.00           N
+ATOM    466  CA  ALA B 117      -1.000   8.250   3.592  1.00 20.00           C
+ATOM    467  C   ALA B 117      -0.525   8.258   2.143  1.00 20.00           C
+ATOM    468  O   ALA B 117      -1.004   9.321   1.748  1.00 20.00           O
+ATOM    469  N   ALA B 118       0.046   8.119   1.421  1.00 20.00           N
+ATOM    470  CA  ALA B 118       0.500   7.638   0.122  1.00 20.00           C
+ATOM    471  C   ALA B 118       0.975   9.064   0.381  1.00 20.00           C
+ATOM    472  O   ALA B 118       0.496   9.268   1.497  1.00 20.00           O
+ATOM    473  N   ALA B 119       1.546   9.799   0.370  1.00 20.00           N
+ATOM    474  CA  ALA B 119       2.000  11.162   0.122  1.00 20.00           C
+ATOM    475  C   ALA B 119       2.475  10.658   1.480  1.00 20.00           C
+ATOM    476  O   ALA B 119       1.996   9.524   1.488  1.00 20.00           O
+ATOM    477  N   ALA B 120       3.046  10.542   2.206  1.00 20.00           N
+ATOM    478  CA  ALA B 120       3.500  10.550   3.592  1.00 20.00           C
+ATOM    479  C   ALA B 120       3.975   9.299   2.860  1.00 20.00           C
+ATOM    480  O   ALA B 120       3.496   9.489   1.742  1.00 20.00           O
+ATOM    481  N   ALA B 121       4.546   8.604   2.619  1.00 20.00           N
+ATOM    482  CA  ALA B 121       5.000   7.239   2.387  1.00 20.00           C
+ATOM    483  C   ALA B 121       5.475   8.177   1.282  1.00 20.00           C
+ATOM    484  O   ALA B 121       4.996   9.245   1.663  1.00 20.00           O
+ATOM    485  N   ALA B 122       6.046   8.534   0.640  1.00 20.00           N
+ATOM    486  CA  ALA B 122       6.500   9.001  -0.665  1.00 20.00           C
+ATOM    487  C   ALA B 122       6.975   9.926   0.450  1.00 20.00           C
+ATOM    488  O   ALA B 122       6.496   9.365   1.436  1.00 20.00           O
+ATOM    489  N   ALA B 123       7.546  10.496   0.914  1.00 20.00           N
+ATOM    490  CA  ALA B 123       8.000  11.700   1.600  1.00 20.00           C
+ATOM    491  C   ALA B 123       8.475  10.441   2.317  1.00 20.00           C
+ATOM    492  O   ALA B 123       7.996   9.568   1.594  1.00 20.00           O
+ATOM    493  N   ALA B 124       9.046   9.885   2.799  1.00 20.00           N
+ATOM    494  CA  ALA B 124       9.500   9.001   3.865  1.00 20.00           C
+ATOM    495  C   ALA B 124       9.975   8.513   2.500  1.00 20.00           C
+ATOM    496  O   ALA B 124       9.496   9.377   1.766  1.00 20.00           O
+ATOM    497  N   ALA B 125      10.546   8.135   1.870  1.00 20.00           N
+ATOM    498  CA  ALA B 125      11.000   7.239   0.813  1.00 20.00           C
+ATOM    499  C   ALA B 125      11.475   8.667   0.570  1.00 20.00           C
+ATOM    500  O   ALA B 125      10.996   9.240   1.548  1.00 20.00           O
+ATOM    501  N   ALA B 126      12.046   9.354   0.308  1.00 20.00           N
+ATOM    502  CA  ALA B 126      12.500  10.550  -0.392  1.00 20.00           C
+ATOM    503  C   ALA B 126      12.975  10.542   1.057  1.00 20.00           C
+ATOM    504  O   ALA B 126      12.496   9.479   1.452  1.00 20.00           O
+ATOM    505  N   ALA B 127      13.546  10.681   1.779  1.00 20.00           N
+ATOM    506  CA  ALA B 127      14.000  11.162   3.078  1.00 20.00           C
+ATOM    507  C   ALA B 127      14.475   9.736   2.819  1.00 20.00           C
+ATOM    508  O   ALA B 127      13.996   9.532   1.703  1.00 20.00           O
+ATOM    509  N   ALA B 128      15.046   9.001   2.830  1.00 20.00           N
+ATOM    510  CA  ALA B 128      15.500   7.638   3.078  1.00 20.00           C
+ATOM    511  C   ALA B 128      15.975   8.142   1.720  1.00 20.00           C
+ATOM    512  O   ALA B 128      15.496   9.276   1.712  1.00 20.00           O
+ATOM    513  N   ALA B 129      16.546   8.258   0.994  1.00 20.00           N
+ATOM    514  CA  ALA B 129      17.000   8.250  -0.392  1.00 20.00           C
+ATOM    515  C   ALA B 129      17.475   9.501   0.340  1.00 20.00           C
+ATOM    516  O   ALA B 129      16.996   9.311   1.458  1.00 20.00           O
+ATOM    517  N   ALA B 130      17.929  10.301   0.355  1.00 20.00           N
+ATOM    518  CA  ALA B 130      18.500  11.561   0.813  1.00 20.00           C
+ATOM    519  C   ALA B 130      19.097  12.880   1.293  1.00 20.00           C
+ATOM    520  O   ALA B 130      19.097  12.880   1.293  1.00 20.00           O
+ATOM    521  N   ALA B 131      19.571 -11.395   4.400  1.00 20.00           N
+ATOM    522  CA  ALA B 131      19.000 -11.162   3.078  1.00 20.00           C
+ATOM    523  C   ALA B 131      18.403 -10.918   1.697  1.00 20.00           C
+ATOM    524  O   ALA B 131      18.403 -10.918   1.697  1.00 20.00           O
+ATOM    525  N   ALA B 132      17.954 -10.542   0.994  1.00 20.00           N
+ATOM    526  CA  ALA B 132      17.500 -10.550  -0.392  1.00 20.00           C
+ATOM    527  C   ALA B 132      17.025  -9.299   0.340  1.00 20.00           C
+ATOM    528  O   ALA B 132      17.504  -9.489   1.458  1.00 20.00           O
+ATOM    529  N   ALA B 133      16.454  -8.604   0.581  1.00 20.00           N
+ATOM    530  CA  ALA B 133      16.000  -7.239   0.813  1.00 20.00           C
+ATOM    531  C   ALA B 133      15.525  -8.177   1.918  1.00 20.00           C
+ATOM    532  O   ALA B 133      16.004  -9.245   1.537  1.00 20.00           O
+ATOM    533  N   ALA B 134      14.954  -8.534   2.560  1.00 20.00           N
+ATOM    534  CA  ALA B 134      14.500  -9.001   3.865  1.00 20.00           C
+ATOM    535  C   ALA B 134      14.025  -9.926   2.750  1.00 20.00           C
+ATOM    536  O   ALA B 134      14.504  -9.365   1.764  1.00 20.00           O
+ATOM    537  N   ALA B 135      13.454 -10.496   2.286  1.00 20.00           N
+ATOM    538  CA  ALA B 135      13.000 -11.700   1.600  1.00 20.00           C
+ATOM    539  C   ALA B 135      12.525 -10.441   0.883  1.00 20.00           C
+ATOM    540  O   ALA B 135      13.004  -9.568   1.606  1.00 20.00           O
+ATOM    541  N   ALA B 136      11.954  -9.885   0.401  1.00 20.00           N
+ATOM    542  CA  ALA B 136      11.500  -9.001  -0.665  1.00 20.00           C
+ATOM    543  C   ALA B 136      11.025  -8.513   0.700  1.00 20.00           C
+ATOM    544  O   ALA B 136      11.504  -9.377   1.434  1.00 20.00           O
+ATOM    545  N   ALA B 137      10.454  -8.135   1.330  1.00 20.00           N
+ATOM    546  CA  ALA B 137      10.000  -7.239   2.387  1.00 20.00           C
+ATOM    547  C   ALA B 137       9.525  -8.667   2.630  1.00 20.00           C
+ATOM    548  O   ALA B 137      10.004  -9.240   1.652  1.00 20.00           O
+ATOM    549  N   ALA B 138       8.954  -9.354   2.892  1.00 20.00           N
+ATOM    550  CA  ALA B 138       8.500 -10.550   3.592  1.00 20.00           C
+ATOM    551  C   ALA B 138       8.025 -10.542   2.143  1.00 20.00           C
+ATOM    552  O   ALA B 138       8.504  -9.479   1.748  1.00 20.00           O
+ATOM    553  N   ALA B 139       7.454 -10.681   1.421  1.00 20.00           N
+ATOM    554  CA  ALA B 139       7.000 -11.162   0.122  1.00 20.00           C
+ATOM    555  C   ALA B 139       6.525  -9.736   0.381  1.00 20.00           C
+ATOM    556  O   ALA B 139       7.004  -9.532   1.497  1.00 20.00           O
+ATOM    557  N   ALA B 140       5.954  -9.001   0.370  1.00 20.00           N
+ATOM    558  CA  ALA B 140       5.500  -7.638   0.122  1.00 20.00           C
+ATOM    559  C   ALA B 140       5.025  -8.142   1.480  1.00 20.00           C
+ATOM    560  O   ALA B 140       5.504  -9.276   1.488  1.00 20.00           O
+ATOM    561  N   ALA B 141       4.454  -8.258   2.206  1.00 20.00           N
+ATOM    562  CA  ALA B 141       4.000  -8.250   3.592  1.00 20.00           C
+ATOM    563  C   ALA B 141       3.525  -9.501   2.860  1.00 20.00           C
+ATOM    564  O   ALA B 141       4.004  -9.311   1.742  1.00 20.00           O
+ATOM    565  N   ALA B 142       2.954 -10.196   2.619  1.00 20.00           N
+ATOM    566  CA  ALA B 142       2.500 -11.561   2.387  1.00 20.00           C
+ATOM    567  C   ALA B 142       2.025 -10.623   1.282  1.00 20.00           C
+ATOM    568  O   ALA B 142       2.504  -9.555   1.663  1.00 20.00           O
+ATOM    569  N   ALA B 143       1.454 -10.266   0.640  1.00 20.00           N
+ATOM    570  CA  ALA B 143       1.000  -9.799  -0.665  1.00 20.00           C
+ATOM    571  C   ALA B 143       0.525  -8.874   0.450  1.00 20.00           C
+ATOM    572  O   ALA B 143       1.004  -9.435   1.436  1.00 20.00           O
+ATOM    573  N   ALA B 144      -0.046  -8.304   0.914  1.00 20.00           N
+ATOM    574  CA  ALA B 144      -0.500  -7.100   1.600  1.00 20.00           C
+ATOM    575  C   ALA B 144      -0.975  -8.359   2.317  1.00 20.00           C
+ATOM    576  O   ALA B 144      -0.496  -9.232   1.594  1.00 20.00           O
+ATOM    577  N   ALA B 145      -1.546  -8.915   2.799  1.00 20.00           N
+ATOM    578  CA  ALA B 145      -2.000  -9.799   3.865  1.00 20.00           C
+ATOM    579  C   ALA B 145      -2.475 -10.287   2.500  1.00 20.00           C
+ATOM    580  O   ALA B 145      -1.996  -9.423   1.766  1.00 20.00           O
+ATOM    581  N   ALA B 146      -3.046 -10.665   1.870  1.00 20.00           N
+ATOM    582  CA  ALA B 146      -3.500 -11.561   0.813  1.00 20.00           C
+ATOM    583  C   ALA B 146      -3.975 -10.133   0.570  1.00 20.00           C
+ATOM    584  O   ALA B 146      -3.496  -9.560   1.548  1.00 20.00           O
+ATOM    585  N   ALA B 147      -4.546  -9.446   0.308  1.00 20.00           N
+ATOM    586  CA  ALA B 147      -5.000  -8.250  -0.392  1.00 20.00           C
+ATOM    587  C   ALA B 147      -5.475  -8.258   1.057  1.00 20.00           C
+ATOM    588  O   ALA B 147      -4.996  -9.321   1.452  1.00 20.00           O
+ATOM    589  N   ALA B 148      -6.046  -8.119   1.779  1.00 20.00           N
+ATOM    590  CA  ALA B 148      -6.500  -7.638   3.078  1.00 20.00           C
+ATOM    591  C   ALA B 148      -6.975  -9.064   2.819  1.00 20.00           C
+ATOM    592  O   ALA B 148      -6.496  -9.268   1.703  1.00 20.00           O
+ATOM    593  N   ALA B 149      -7.546  -9.799   2.830  1.00 20.00           N
+ATOM    594  CA  ALA B 149      -8.000 -11.162   3.078  1.00 20.00           C
+ATOM    595  C   ALA B 149      -8.475 -10.658   1.720  1.00 20.00           C
+ATOM    596  O   ALA B 149      -7.996  -9.524   1.712  1.00 20.00           O
+ATOM    597  N   ALA B 150      -9.046 -10.542   0.994  1.00 20.00           N
+ATOM    598  CA  ALA B 150      -9.500 -10.550  -0.392  1.00 20.00           C
+ATOM    599  C   ALA B 150      -9.975  -9.299   0.340  1.00 20.00           C
+ATOM    600  O   ALA B 150      -9.496  -9.489   1.458  1.00 20.00           O
+ATOM    601  N   ALA B 151     -10.546  -8.604   0.581  1.00 20.00           N
+ATOM    602  CA  ALA B 151     -11.000  -7.239   0.813  1.00 20.00           C
+ATOM    603  C   ALA B 151     -11.475  -8.177   1.918  1.00 20.00           C
+ATOM    604  O   ALA B 151     -10.996  -9.245   1.537  1.00 20.00           O
+ATOM    605  N   ALA B 152     -12.046  -8.534   2.560  1.00 20.00           N
+ATOM    606  CA  ALA B 152     -12.500  -9.001   3.865  1.00 20.00           C
+ATOM    607  C   ALA B 152     -12.975  -9.926   2.750  1.00 20.00           C
+ATOM    608  O   ALA B 152     -12.496  -9.365   1.764  1.00 20.00           O
+ATOM    609  N   ALA B 153     -13.546 -10.496   2.286  1.00 20.00           N
+ATOM    610  CA  ALA B 153     -14.000 -11.700   1.600  1.00 20.00           C
+ATOM    611  C   ALA B 153     -14.475 -10.441   0.883  1.00 20.00           C
+ATOM    612  O   ALA B 153     -13.996  -9.568   1.606  1.00 20.00           O
+ATOM    613  N   ALA B 154     -15.046  -9.885   0.401  1.00 20.00           N
+ATOM    614  CA  ALA B 154     -15.500  -9.001  -0.665  1.00 20.00           C
+ATOM    615  C   ALA B 154     -15.975  -8.513   0.700  1.00 20.00           C
+ATOM    616  O   ALA B 154     -15.496  -9.377   1.434  1.00 20.00           O
+ATOM    617  N   ALA B 155     -16.546  -8.135   1.330  1.00 20.00           N
+ATOM    618  CA  ALA B 155     -17.000  -7.239   2.387  1.00 20.00           C
+ATOM    619  C   ALA B 155     -17.475  -8.667   2.630  1.00 20.00           C
+ATOM    620  O   ALA B 155     -16.996  -9.240   1.652  1.00 20.00           O
+ATOM    621  N   ALA B 156     -18.204  -9.155   3.288  1.00 20.00           N
+ATOM    622  CA  ALA B 156     -18.500 -10.550   3.592  1.00 20.00           C
+ATOM    623  C   ALA B 156     -19.246 -11.757   4.152  1.00 20.00           C
+ATOM    624  O   ALA B 156     -20.235 -11.156   4.571  1.00 20.00           O
+ATOM    625  N   LEU P 157     -24.507  -0.382  -2.897  1.00 20.00           N
+ATOM    626  CA  LEU P 157     -23.100   0.000  -2.900  1.00 20.00           C
+ATOM    627  C   LEU P 157     -21.897   0.327  -2.022  1.00 20.00           C
+ATOM    628  O   LEU P 157     -22.292   0.228  -0.860  1.00 20.00           O
+ATOM    629  N   LYS P 158     -20.930   0.332  -2.428  1.00 20.00           N
+ATOM    630  CA  LYS P 158     -19.800   0.897  -1.700  1.00 20.00           C
+ATOM    631  C   LYS P 158     -18.642   0.254  -2.457  1.00 20.00           C
+ATOM    632  O   LYS P 158     -19.178  -0.437  -3.324  1.00 20.00           O
+ATOM    633  N   ALA P 159     -17.623   0.262  -2.070  1.00 20.00           N
+ATOM    634  CA  ALA P 159     -16.500  -0.156  -2.900  1.00 20.00           C
+ATOM    635  C   ALA P 159     -15.270  -0.361  -2.022  1.00 20.00           C
+ATOM    636  O   ALA P 159     -15.632  -0.102  -0.874  1.00 20.00           O
+ATOM    637  N   GLN P 160     -14.354  -0.369  -2.438  1.00 20.00           N
+ATOM    638  CA  GLN P 160     -13.200  -0.869  -1.700  1.00 20.00           C
+ATOM    639  C   GLN P 160     -12.063  -0.192  -2.458  1.00 20.00           C
+ATOM    640  O   GLN P 160     -12.618   0.463  -3.340  1.00 20.00           O
+ATOM    641  N   LEU P 161     -10.998  -0.199  -2.087  1.00 20.00           N
+ATOM    642  CA  LEU P 161      -9.900   0.308  -2.900  1.00 20.00           C
+ATOM    643  C   LEU P 161      -8.650   0.385  -2.030  1.00 20.00           C
+ATOM    644  O   LEU P 161      -8.993  -0.014  -0.917  1.00 20.00           O
+ATOM    645  N   GLY P 162      -7.776   0.395  -2.452  1.00 20.00           N
+ATOM    646  CA  GLY P 162      -6.600   0.816  -1.700  1.00 20.00           C
+ATOM    647  C   GLY P 162      -5.478   0.122  -2.465  1.00 20.00           C
+ATOM    648  O   GLY P 162      -6.042  -0.486  -3.375  1.00 20.00           O
+ATOM    649  N   PRO P 163      -4.379   0.127  -2.107  1.00 20.00           N
+ATOM    650  CA  PRO P 163      -3.300  -0.450  -2.900  1.00 20.00           C
+ATOM    651  C   PRO P 163      -2.038  -0.399  -2.046  1.00 20.00           C
+ATOM    652  O   PRO P 163      -2.380   0.116  -0.981  1.00 20.00           O
+ATOM    653  N   ASP P 164      -1.194  -0.409  -2.469  1.00 20.00           N
+ATOM    654  CA  ASP P 164       0.000  -0.737  -1.700  1.00 20.00           C
+ATOM    655  C   ASP P 164       1.114  -0.044  -2.478  1.00 20.00           C
+ATOM    656  O   ASP P 164       0.551   0.502  -3.427  1.00 20.00           O
+ATOM    657  N   GLU P 165       2.233  -0.048  -2.129  1.00 20.00           N
+ATOM    658  CA  GLU P 165       3.300   0.579  -2.900  1.00 20.00           C
+ATOM    659  C   GLU P 165       4.564   0.404  -2.065  1.00 20.00           C
+ATOM    660  O   GLU P 165       4.207  -0.200  -1.054  1.00 20.00           O
+ATOM    661  N   SER P 166       5.394   0.413  -2.489  1.00 20.00           N
+ATOM    662  CA  SER P 166       6.600   0.636  -1.700  1.00 20.00           C
+ATOM    663  C   SER P 166       7.713  -0.036  -2.496  1.00 20.00           C
+ATOM    664  O   SER P 166       7.163  -0.505  -3.492  1.00 20.00           O
+ATOM    665  N   LYS P 167       8.837  -0.034  -2.148  1.00 20.00           N
+ATOM    666  CA  LYS P 167       9.900  -0.689  -2.900  1.00 20.00           C
+ATOM    667  C   LYS P 167      11.156  -0.400  -2.085  1.00 20.00           C
+ATOM    668  O   LYS P 167      10.772   0.267  -1.125  1.00 20.00           O
+ATOM    669  N   GLN P 168      11.991  -0.408  -2.508  1.00 20.00           N
+ATOM    670  CA  GLN P 168      13.200  -0.516  -1.700  1.00 20.00           C
+ATOM    671  C   GLN P 168      14.321   0.116  -2.518  1.00 20.00           C
+ATOM    672  O   GLN P 168      13.794   0.488  -3.566  1.00 20.00           O
+ATOM    673  N   LYS P 169      15.432   0.114  -2.163  1.00 20.00           N
+ATOM    674  CA  LYS P 169      16.500   0.779  -2.900  1.00 20.00           C
+ATOM    675  C   LYS P 169      17.740   0.386  -2.105  1.00 20.00           C
+ATOM    676  O   LYS P 169      17.321  -0.319  -1.187  1.00 20.00           O
+ATOM    677  N   PHE P 170      18.598   0.392  -2.525  1.00 20.00           N
+ATOM    678  CA  PHE P 170      19.800   0.380  -1.700  1.00 20.00           C
+ATOM    679  C   PHE P 170      20.938  -0.189  -2.540  1.00 20.00           C
+ATOM    680  O   PHE P 170      20.443  -0.446  -3.638  1.00 20.00           O
+ATOM    681  N   VAL P 171      22.007  -0.487  -2.004  1.00 20.00           N
+ATOM    682  CA  VAL P 171      23.100  -0.846  -2.900  1.00 20.00           C
+ATOM    683  C   VAL P 171      24.512  -1.407  -3.028  1.00 20.00           C
+ATOM    684  O   VAL P 171      24.869  -1.585  -1.863  1.00 20.00           O
+TER
+END
+</script>
+<script>var POCKETS_BY_ALLELE = {"DPA1*01:03 / DPB1*02:01":{"beta":"DPB1*02:01","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPA1*01:03 / DPB1*03:01":{"beta":"DPB1*03:01","P1":"EA","P4":"QRAD","P6":"LY","P9":"YD"},"DPA1*01:03 / DPB1*04:01":{"beta":"DPB1*04:01","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPA1*01:03 / DPB1*04:02":{"beta":"DPB1*04:02","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPA1*02:01 / DPB1*01:01":{"beta":"DPB1*01:01","P1":"EA","P4":"QRAD","P6":"GY","P9":"YE"},"DPA1*02:01 / DPB1*05:01":{"beta":"DPB1*05:01","P1":"EA","P4":"QRAD","P6":"GY","P9":"FE"},"DPA1*02:02 / DPB1*05:01":{"beta":"DPB1*05:01","P1":"EA","P4":"QRAD","P6":"GY","P9":"FE"},"DPA1*03:01 / DPB1*04:02":{"beta":"DPB1*04:02","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPB1*01:01":{"beta":"DPB1*01:01","P1":"EA","P4":"QRAD","P6":"GY","P9":"YE"},"DPB1*02:01":{"beta":"DPB1*02:01","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPB1*03:01":{"beta":"DPB1*03:01","P1":"EA","P4":"QRAD","P6":"LY","P9":"YD"},"DPB1*04:01":{"beta":"DPB1*04:01","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPB1*04:02":{"beta":"DPB1*04:02","P1":"GP","P4":"QRAD","P6":"GY","P9":"FE"},"DPB1*05:01":{"beta":"DPB1*05:01","P1":"EA","P4":"QRAD","P6":"GY","P9":"FE"},"DPB1*09:01":{"beta":"DPB1*09:01","P1":"EA","P4":"QRAD","P6":"LY","P9":"HD"},"DPB1*11:01":{"beta":"DPB1*11:01","P1":"EA","P4":"QRAD","P6":"LY","P9":"YE"},"DPB1*14:01":{"beta":"DPB1*14:01","P1":"EA","P4":"QRAD","P6":"LY","P9":"HD"},"DPB1*20:01":{"beta":"DPB1*20:01","P1":"EA","P4":"QRAD","P6":"LY","P9":"YD"},"DQA1*01:01 / DQB1*05:01":{"beta":"DQB1*05:01","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQA1*01:02 / DQB1*05:01":{"beta":"DQB1*05:01","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQA1*01:02 / DQB1*05:02":{"beta":"DQB1*05:02","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQA1*01:02 / DQB1*06:02":{"beta":"DQB1*06:02","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*01:02 / DQB1*06:04":{"beta":"DQB1*06:04","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*01:03 / DQB1*06:01":{"beta":"DQB1*06:01","P1":"**","P4":"*ILT","P6":"*V","P9":"*G"},"DQA1*01:03 / DQB1*06:03":{"beta":"DQB1*06:03","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*01:04 / DQB1*05:03":{"beta":"DQB1*05:03","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQA1*02:01 / DQB1*02:01":{"beta":"DQB1*02:01","P1":"NY","P4":"QILK","P6":"VV","P9":"DG"},"DQA1*02:01 / DQB1*02:02":{"beta":"DQB1*02:02","P1":"NY","P4":"QILK","P6":"VV","P9":"DG"},"DQA1*02:01 / DQB1*03:01":{"beta":"DQB1*03:01","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*02:01 / DQB1*03:03":{"beta":"DQB1*03:03","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*02:01 / DQB1*04:02":{"beta":"DQB1*04:02","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQA1*03:01 / DQB1*02:01":{"beta":"DQB1*02:01","P1":"NY","P4":"QILK","P6":"VV","P9":"DG"},"DQA1*03:01 / DQB1*03:01":{"beta":"DQB1*03:01","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*03:01 / DQB1*03:02":{"beta":"DQB1*03:02","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*03:01 / DQB1*04:01":{"beta":"DQB1*04:01","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQA1*03:02 / DQB1*03:01":{"beta":"DQB1*03:01","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*03:02 / DQB1*04:01":{"beta":"DQB1*04:01","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQA1*03:03 / DQB1*04:02":{"beta":"DQB1*04:02","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQA1*04:01 / DQB1*04:02":{"beta":"DQB1*04:02","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQA1*05:01 / DQB1*02:01":{"beta":"DQB1*02:01","P1":"NY","P4":"QILK","P6":"VV","P9":"DG"},"DQA1*05:01 / DQB1*03:01":{"beta":"DQB1*03:01","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*05:01 / DQB1*03:02":{"beta":"DQB1*03:02","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*05:01 / DQB1*03:03":{"beta":"DQB1*03:03","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*05:01 / DQB1*04:02":{"beta":"DQB1*04:02","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQA1*05:05 / DQB1*03:01":{"beta":"DQB1*03:01","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQA1*06:01 / DQB1*04:02":{"beta":"DQB1*04:02","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQB1*02:01":{"beta":"DQB1*02:01","P1":"NY","P4":"QILK","P6":"VV","P9":"DG"},"DQB1*02:02":{"beta":"DQB1*02:02","P1":"NY","P4":"QILK","P6":"VV","P9":"DG"},"DQB1*03:01":{"beta":"DQB1*03:01","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQB1*03:02":{"beta":"DQB1*03:02","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQB1*03:19":{"beta":"DQB1*03:19","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DQB1*04:02":{"beta":"DQB1*04:02","P1":"NY","P4":"QILD","P6":"VV","P9":"DG"},"DQB1*05:01":{"beta":"DQB1*05:01","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQB1*05:02":{"beta":"DQB1*05:02","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQB1*05:03":{"beta":"DQB1*05:03","P1":"NY","P4":"QVLA","P6":"VV","P9":"DG"},"DQB1*06:02":{"beta":"DQB1*06:02","P1":"NY","P4":"QVLT","P6":"VV","P9":"DG"},"DRA*01:01 / DRB1*01:01":{"beta":"DRB1*01:01","P1":"VG","P4":"FQRA","P6":"LC","P9":"WD"},"DRA*01:01 / DRB1*03:01":{"beta":"DRB1*03:01","P1":"VV","P4":"SQKR","P6":"SY","P9":"ED"},"DRA*01:01 / DRB1*04:01":{"beta":"DRB1*04:01","P1":"VG","P4":"HQKA","P6":"VY","P9":"ED"},"DRA*01:01 / DRB1*04:04":{"beta":"DRB1*04:04","P1":"VV","P4":"HQRA","P6":"VY","P9":"ED"},"DRA*01:01 / DRB1*07:01":{"beta":"DRB1*07:01","P1":"VG","P4":"YDRQ","P6":"GL","P9":"WV"},"DRA*01:01 / DRB1*08:01":{"beta":"DRB1*08:01","P1":"VG","P4":"GDRL","P6":"SY","P9":"ES"},"DRA*01:01 / DRB1*09:01":{"beta":"DRB1*09:01","P1":"VG","P4":"FRRE","P6":"DG","P9":"KV"},"DRA*01:01 / DRB1*11:01":{"beta":"DRB1*11:01","P1":"VG","P4":"SDRA","P6":"SY","P9":"ED"},"DRA*01:01 / DRB1*13:01":{"beta":"DRB1*13:01","P1":"VV","P4":"SDEA","P6":"SY","P9":"ED"},"DRA*01:01 / DRB1*14:54":{"beta":"DRB1*14:54","P1":"VV","P4":"SRRE","P6":"SY","P9":"EA"},"DRA*01:01 / DRB1*15:01":{"beta":"DRB1*15:01","P1":"VV","P4":"RQAA","P6":"PY","P9":"WD"},"DRA*01:01 / DRB3*01:01":{"beta":"DRB3*01:01","P1":"--","P4":"S-KR","P6":"RY","P9":"EV"},"DRA*01:01 / DRB3*02:02":{"beta":"DRB3*02:02","P1":"--","P4":"S-KQ","P6":"RH","P9":"EV"},"DRA*01:01 / DRB3*03:01":{"beta":"DRB3*03:01","P1":"-V","P4":"S-KQ","P6":"RY","P9":"EV"},"DRA*01:01 / DRB4*01:03":{"beta":"DRB4*01:03","P1":"-V","P4":"CR-E","P6":"AY","P9":"E-"},"DRA*01:01 / DRB5*01:01":{"beta":"DRB5*01:01","P1":"--","P4":"YD--","P6":"DD","P9":"Q-"},"DRB1*01:01":{"beta":"DRB1*01:01","P1":"VG","P4":"FQRA","P6":"LC","P9":"WD"},"DRB1*01:02":{"beta":"DRB1*01:02","P1":"AV","P4":"FQRA","P6":"LC","P9":"WD"},"DRB1*01:03":{"beta":"DRB1*01:03","P1":"VG","P4":"FDEA","P6":"LC","P9":"WD"},"DRB1*03:01":{"beta":"DRB1*03:01","P1":"VV","P4":"SQKR","P6":"SY","P9":"ED"},"DRB1*03:02":{"beta":"DRB1*03:02","P1":"VG","P4":"SQKR","P6":"SY","P9":"ED"},"DRB1*03:03":{"beta":"DRB1*03:03","P1":"VV","P4":"SQKR","P6":"SY","P9":"ED"},"DRB1*03:05":{"beta":"DRB1*03:05","P1":"VG","P4":"SQKR","P6":"SY","P9":"ED"},"DRB1*04:01":{"beta":"DRB1*04:01","P1":"VG","P4":"HQKA","P6":"VY","P9":"ED"},"DRB1*04:02":{"beta":"DRB1*04:02","P1":"VV","P4":"HDEA","P6":"VY","P9":"ED"},"DRB1*04:03":{"beta":"DRB1*04:03","P1":"VV","P4":"HQRE","P6":"VY","P9":"ED"},"DRB1*04:04":{"beta":"DRB1*04:04","P1":"VV","P4":"HQRA","P6":"VY","P9":"ED"},"DRB1*04:05":{"beta":"DRB1*04:05","P1":"VG","P4":"HQRA","P6":"VY","P9":"ES"},"DRB1*04:06":{"beta":"DRB1*04:06","P1":"VV","P4":"HQRE","P6":"VY","P9":"ED"},"DRB1*04:07":{"beta":"DRB1*04:07","P1":"VG","P4":"HQRE","P6":"VY","P9":"ED"},"DRB1*04:11":{"beta":"DRB1*04:11","P1":"VV","P4":"HQRE","P6":"VY","P9":"ES"},"DRB1*07:01":{"beta":"DRB1*07:01","P1":"VG","P4":"YDRQ","P6":"GL","P9":"WV"},"DRB1*08:01":{"beta":"DRB1*08:01","P1":"VG","P4":"GDRL","P6":"SY","P9":"ES"},"DRB1*08:02":{"beta":"DRB1*08:02","P1":"VG","P4":"GDRL","P6":"SY","P9":"ED"},"DRB1*08:03":{"beta":"DRB1*08:03","P1":"VG","P4":"GDRL","P6":"SY","P9":"ES"},"DRB1*09:01":{"beta":"DRB1*09:01","P1":"VG","P4":"FRRE","P6":"DG","P9":"KV"},"DRB1*10:01":{"beta":"DRB1*10:01","P1":"VG","P4":"FRRA","P6":"VR","P9":"ED"},"DRB1*11:01":{"beta":"DRB1*11:01","P1":"VG","P4":"SDRA","P6":"SY","P9":"ED"},"DRB1*11:02":{"beta":"DRB1*11:02","P1":"VV","P4":"SDEA","P6":"SY","P9":"ED"},"DRB1*11:03":{"beta":"DRB1*11:03","P1":"VV","P4":"SDEA","P6":"SY","P9":"ED"},"DRB1*11:04":{"beta":"DRB1*11:04","P1":"VV","P4":"SDRA","P6":"SY","P9":"ED"},"DRB1*12:01":{"beta":"DRB1*12:01","P1":"AV","P4":"GDRA","P6":"SH","P9":"EV"},"DRB1*12:02":{"beta":"DRB1*12:02","P1":"AV","P4":"GDRA","P6":"SH","P9":"EV"},"DRB1*13:01":{"beta":"DRB1*13:01","P1":"VV","P4":"SDEA","P6":"SY","P9":"ED"},"DRB1*13:02":{"beta":"DRB1*13:02","P1":"VG","P4":"SDEA","P6":"SY","P9":"ED"},"DRB1*13:03":{"beta":"DRB1*13:03","P1":"VG","P4":"SDKA","P6":"SY","P9":"ES"},"DRB1*13:04":{"beta":"DRB1*13:04","P1":"VV","P4":"SDEA","P6":"SY","P9":"ES"},"DRB1*14:01":{"beta":"DRB1*14:01","P1":"VV","P4":"SRRE","P6":"SY","P9":"EA"},"DRB1*14:02":{"beta":"DRB1*14:02","P1":"VG","P4":"SQRA","P6":"SY","P9":"ED"},"DRB1*15:01":{"beta":"DRB1*15:01","P1":"VV","P4":"RQAA","P6":"PY","P9":"WD"},"DRB1*15:02":{"beta":"DRB1*15:02","P1":"VG","P4":"RQAA","P6":"PY","P9":"WD"},"DRB1*15:03":{"beta":"DRB1*15:03","P1":"VV","P4":"RQAA","P6":"PH","P9":"WD"},"DRB1*16:01":{"beta":"DRB1*16:01","P1":"VG","P4":"RDRA","P6":"PY","P9":"WD"},"DRB1*16:02":{"beta":"DRB1*16:02","P1":"VG","P4":"RDRA","P6":"PY","P9":"WD"},"DRB3*01:01":{"beta":"DRB3*01:01","P1":"--","P4":"S-KR","P6":"RY","P9":"EV"},"DRB3*02:02":{"beta":"DRB3*02:02","P1":"--","P4":"S-KQ","P6":"RH","P9":"EV"},"DRB3*03:01":{"beta":"DRB3*03:01","P1":"-V","P4":"S-KQ","P6":"RY","P9":"EV"},"DRB4*01:01":{"beta":"DRB4*01:01","P1":"-V","P4":"CR-E","P6":"AY","P9":"E-"},"DRB4*01:03":{"beta":"DRB4*01:03","P1":"-V","P4":"CR-E","P6":"AY","P9":"E-"},"DRB5*01:01":{"beta":"DRB5*01:01","P1":"--","P4":"YD--","P6":"DD","P9":"Q-"},"DRB5*01:02":{"beta":"DRB5*01:02","P1":"--","P4":"YD--","P6":"DG","P9":"Q-"}};
+var ALLELES = [{"f":"DP:0","label":"DPA1*01:03 / DPB1*02:01"},{"f":"DP:1","label":"DPA1*01:03 / DPB1*03:01"},{"f":"DP:2","label":"DPA1*01:03 / DPB1*04:01"},{"f":"DP:3","label":"DPA1*01:03 / DPB1*04:02"},{"f":"DP:4","label":"DPA1*02:01 / DPB1*01:01"},{"f":"DP:5","label":"DPA1*02:01 / DPB1*05:01"},{"f":"DP:6","label":"DPA1*02:02 / DPB1*05:01"},{"f":"DP:7","label":"DPA1*03:01 / DPB1*04:02"},{"f":"DP:8","label":"DPB1*01:01"},{"f":"DP:9","label":"DPB1*02:01"},{"f":"DP:10","label":"DPB1*03:01"},{"f":"DP:11","label":"DPB1*04:01"},{"f":"DP:12","label":"DPB1*04:02"},{"f":"DP:13","label":"DPB1*05:01"},{"f":"DP:14","label":"DPB1*09:01"},{"f":"DP:15","label":"DPB1*11:01"},{"f":"DP:16","label":"DPB1*14:01"},{"f":"DP:17","label":"DPB1*20:01"},{"f":"DQ:0","label":"DQA1*01:01 / DQB1*05:01"},{"f":"DQ:1","label":"DQA1*01:02 / DQB1*05:01"},{"f":"DQ:2","label":"DQA1*01:02 / DQB1*05:02"},{"f":"DQ:3","label":"DQA1*01:02 / DQB1*06:02"},{"f":"DQ:4","label":"DQA1*01:02 / DQB1*06:04"},{"f":"DQ:5","label":"DQA1*01:03 / DQB1*06:01"},{"f":"DQ:6","label":"DQA1*01:03 / DQB1*06:03"},{"f":"DQ:7","label":"DQA1*01:04 / DQB1*05:03"},{"f":"DQ:8","label":"DQA1*02:01 / DQB1*02:01"},{"f":"DQ:9","label":"DQA1*02:01 / DQB1*02:02"},{"f":"DQ:10","label":"DQA1*02:01 / DQB1*03:01"},{"f":"DQ:11","label":"DQA1*02:01 / DQB1*03:03"},{"f":"DQ:12","label":"DQA1*02:01 / DQB1*04:02"},{"f":"DQ:13","label":"DQA1*03:01 / DQB1*02:01"},{"f":"DQ:14","label":"DQA1*03:01 / DQB1*03:01"},{"f":"DQ:15","label":"DQA1*03:01 / DQB1*03:02"},{"f":"DQ:16","label":"DQA1*03:01 / DQB1*04:01"},{"f":"DQ:17","label":"DQA1*03:02 / DQB1*03:01"},{"f":"DQ:18","label":"DQA1*03:02 / DQB1*04:01"},{"f":"DQ:19","label":"DQA1*03:03 / DQB1*04:02"},{"f":"DQ:20","label":"DQA1*04:01 / DQB1*04:02"},{"f":"DQ:21","label":"DQA1*05:01 / DQB1*02:01"},{"f":"DQ:22","label":"DQA1*05:01 / DQB1*03:01"},{"f":"DQ:23","label":"DQA1*05:01 / DQB1*03:02"},{"f":"DQ:24","label":"DQA1*05:01 / DQB1*03:03"},{"f":"DQ:25","label":"DQA1*05:01 / DQB1*04:02"},{"f":"DQ:26","label":"DQA1*05:05 / DQB1*03:01"},{"f":"DQ:27","label":"DQA1*06:01 / DQB1*04:02"},{"f":"DQ:28","label":"DQB1*02:01"},{"f":"DQ:29","label":"DQB1*02:02"},{"f":"DQ:30","label":"DQB1*03:01"},{"f":"DQ:31","label":"DQB1*03:02"},{"f":"DQ:32","label":"DQB1*03:19"},{"f":"DQ:33","label":"DQB1*04:02"},{"f":"DQ:34","label":"DQB1*05:01"},{"f":"DQ:35","label":"DQB1*05:02"},{"f":"DQ:36","label":"DQB1*05:03"},{"f":"DQ:37","label":"DQB1*06:02"},{"f":"DRB1:0","label":"DRA*01:01 / DRB1*01:01"},{"f":"DRB1:1","label":"DRA*01:01 / DRB1*03:01"},{"f":"DRB1:2","label":"DRA*01:01 / DRB1*04:01"},{"f":"DRB1:3","label":"DRA*01:01 / DRB1*04:04"},{"f":"DRB1:4","label":"DRA*01:01 / DRB1*07:01"},{"f":"DRB1:5","label":"DRA*01:01 / DRB1*08:01"},{"f":"DRB1:6","label":"DRA*01:01 / DRB1*09:01"},{"f":"DRB1:7","label":"DRA*01:01 / DRB1*11:01"},{"f":"DRB1:8","label":"DRA*01:01 / DRB1*13:01"},{"f":"DRB1:9","label":"DRA*01:01 / DRB1*14:54"},{"f":"DRB1:10","label":"DRA*01:01 / DRB1*15:01"},{"f":"DRB1:11","label":"DRA*01:01 / DRB3*01:01"},{"f":"DRB1:12","label":"DRA*01:01 / DRB3*02:02"},{"f":"DRB1:13","label":"DRA*01:01 / DRB3*03:01"},{"f":"DRB1:14","label":"DRA*01:01 / DRB4*01:03"},{"f":"DRB1:15","label":"DRA*01:01 / DRB5*01:01"},{"f":"DRB1:16","label":"DRB1*01:01"},{"f":"DRB1:17","label":"DRB1*01:02"},{"f":"DRB1:18","label":"DRB1*01:03"},{"f":"DRB1:19","label":"DRB1*03:01"},{"f":"DRB1:20","label":"DRB1*03:02"},{"f":"DRB1:21","label":"DRB1*03:03"},{"f":"DRB1:22","label":"DRB1*03:05"},{"f":"DRB1:23","label":"DRB1*04:01"},{"f":"DRB1:24","label":"DRB1*04:02"},{"f":"DRB1:25","label":"DRB1*04:03"},{"f":"DRB1:26","label":"DRB1*04:04"},{"f":"DRB1:27","label":"DRB1*04:05"},{"f":"DRB1:28","label":"DRB1*04:06"},{"f":"DRB1:29","label":"DRB1*04:07"},{"f":"DRB1:30","label":"DRB1*04:11"},{"f":"DRB1:31","label":"DRB1*07:01"},{"f":"DRB1:32","label":"DRB1*08:01"},{"f":"DRB1:33","label":"DRB1*08:02"},{"f":"DRB1:34","label":"DRB1*08:03"},{"f":"DRB1:35","label":"DRB1*09:01"},{"f":"DRB1:36","label":"DRB1*10:01"},{"f":"DRB1:37","label":"DRB1*11:01"},{"f":"DRB1:38","label":"DRB1*11:02"},{"f":"DRB1:39","label":"DRB1*11:03"},{"f":"DRB1:40","label":"DRB1*11:04"},{"f":"DRB1:41","label":"DRB1*12:01"},{"f":"DRB1:42","label":"DRB1*12:02"},{"f":"DRB1:43","label":"DRB1*13:01"},{"f":"DRB1:44","label":"DRB1*13:02"},{"f":"DRB1:45","label":"DRB1*13:03"},{"f":"DRB1:46","label":"DRB1*13:04"},{"f":"DRB1:47","label":"DRB1*14:01"},{"f":"DRB1:48","label":"DRB1*14:02"},{"f":"DRB1:49","label":"DRB1*15:01"},{"f":"DRB1:50","label":"DRB1*15:02"},{"f":"DRB1:51","label":"DRB1*15:03"},{"f":"DRB1:52","label":"DRB1*16:01"},{"f":"DRB1:53","label":"DRB1*16:02"},{"f":"DRB345:0","label":"DRB3*01:01"},{"f":"DRB345:1","label":"DRB3*02:02"},{"f":"DRB345:2","label":"DRB3*03:01"},{"f":"DRB345:3","label":"DRB4*01:01"},{"f":"DRB345:4","label":"DRB4*01:03"},{"f":"DRB345:5","label":"DRB5*01:01"},{"f":"DRB345:6","label":"DRB5*01:02"}];</script>
+<script>
+(function(){
+'use strict';
+
+/* ================= reference data ================= */
+var JO1_PROTEIN =
+ 'MAERAALEELVKLQGERVRGLKQQKASAELIEEEVAKLLKLKAQLGPDESKQKFVLKTPK'+
+ 'GTRDYSPRQMAVREKVFDVIIRCFKRHGAEVIDTPVFELKETLMGKYGEDSKLIYDLKDQ'+
+ 'GGELLSLRYDLTVPFARYLAMNKLTNIKRYHIAKVYRRDNPAMTRGRYREFYQCDFDIAG'+
+ 'NFDPMIPDAECLKIMCEILSSLQIGDFLVKVNDRRILDGMFAICGVSDSKFRTICSSVDK'+
+ 'LDKVSWEEVKNEMVGEKGLAPEVADRIGDYVQQHGGVSLVEQLLQDPKLSQNKQALEGLG'+
+ 'DLKLLFEYLTLFGIDDKISFDLSLARGLDYYTGVIYEAVLLQTPAQAGEEPLGVGSVAAG'+
+ 'GRYDGLVGMFDPKGRKVPCVGLSIGVERIFSIVEQRLEALEEKIRTTETQVLVASAQKKL'+
+ 'LEERLKLVSELWDAGIKAELLYKKNPKLLNQLQYCEEAGIPLVAIIGEQELKDGVIKLRS'+
+ 'VTSREEVDVRREDLVEEIKRRTGQPLCIC';
+var JO1 = 'LKAQLGPDESKQKFV';
+// epitopes whose restricting HLA type is settled in the literature
+var CONTROLS = [
+  {n:'HA 306–318',  s:'PKYVKQNTLKLAT',   home:'DRB1*01:01'},
+  {n:'MBP 85–99',   s:'ENPVVHFFKNIVTPR', home:'DRB1*15:01'},
+  {n:'Jo-1 41–55',  s:JO1,                home:'DRB1*03:01'}
+];
+
+/* ================= the trained predictor ================= */
+var NUG = (function(){
+  var AA='ACDEFGHIKLMNPQRSTVWYX'.split(''), IDX={};
+  AA.forEach(function(a,i){ IDX[a]=i; });
+  var ENC={};
+  AA.forEach(function(a){
+    var v=new Float32Array(21); for(var i=0;i<21;i++) v[i]=0.005;
+    if(a!=='X') v[IDX[a]]=0.9; ENC[a]=v;
+  });
+  var SH=[['W',21*256],['U',64*256],['b',256],['W1',64*64],['b1',64],['W2',64],['b2',1]];
+  var cache={}, P=null, loadedKey=null;
+  function scoreWith(pep, key){
+    var keep=P; P=cache[key]||null; var r=P?score(pep):null; P=keep; return r;
+  }
+  function have(key){ return !!cache[key]; }
+
+  function parse(buf){
+    var f=new Float32Array(buf), o=0, out={};
+    SH.forEach(function(s){ out[s[0]]=f.subarray(o,o+s[1]); o+=s[1]; });
+    if(o!==f.length) throw new Error('weight size mismatch');
+    return out;
+  }
+  var CHUNK=139952, bundles={}, pending={};
+  function bundle(name){
+    if(bundles[name]) return Promise.resolve(bundles[name]);
+    if(pending[name]) return pending[name];
+    pending[name] = fetch('w/'+name+'.txt').then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.text();
+    }).then(function(t){ bundles[name]=t.trim(); delete pending[name]; return bundles[name]; });
+    return pending[name];
+  }
+  function load(key){
+    if(cache[key]) { P=cache[key]; loadedKey=key; return Promise.resolve(); }
+    var bits=key.split(':'), name=bits[0], idx=parseInt(bits[1],10);
+    return bundle(name).then(function(txt){
+      var raw=atob(txt.substr(idx*CHUNK, CHUNK));
+      var buf=new ArrayBuffer(raw.length), v=new Uint8Array(buf);
+      for(var i=0;i<raw.length;i++) v[i]=raw.charCodeAt(i);
+      cache[key]=parse(buf); P=cache[key]; loadedKey=key;
+    });
+  }
+  function hs(x){ x=0.2*x+0.5; return x<0?0:(x>1?1:x); }
+  function score(pep){
+    if(!P) return null;
+    pep=String(pep||'').toUpperCase().replace(/[^A-Z]/g,'').replace(/[JBUOZ]/g,'X');
+    if(!pep.length || pep.length>30) return null;
+    var n=64, h=new Float64Array(n), c=new Float64Array(n),
+        gi=new Float64Array(n), gf=new Float64Array(n), gc=new Float64Array(n), go=new Float64Array(n), t,j,k;
+    for(t=0;t<pep.length;t++){
+      var x=ENC[pep[t]]||ENC['X'];
+      for(j=0;j<n;j++){ gi[j]=P.b[j]; gf[j]=P.b[n+j]; gc[j]=P.b[2*n+j]; go[j]=P.b[3*n+j]; }
+      for(k=0;k<21;k++){
+        var xv=x[k]; if(xv===0) continue; var r=k*256;
+        for(j=0;j<n;j++){ gi[j]+=xv*P.W[r+j]; gf[j]+=xv*P.W[r+n+j]; gc[j]+=xv*P.W[r+2*n+j]; go[j]+=xv*P.W[r+3*n+j]; }
+      }
+      for(k=0;k<n;k++){
+        var hv=h[k]; if(hv===0) continue; var r2=k*256;
+        for(j=0;j<n;j++){ gi[j]+=hv*P.U[r2+j]; gf[j]+=hv*P.U[r2+n+j]; gc[j]+=hv*P.U[r2+2*n+j]; go[j]+=hv*P.U[r2+3*n+j]; }
+      }
+      for(j=0;j<n;j++){
+        var ii=hs(gi[j]), ff=hs(gf[j]), cc=Math.tanh(gc[j]), oo=hs(go[j]);
+        c[j]=ff*c[j]+ii*cc; h[j]=oo*Math.tanh(c[j]);
+      }
+    }
+    var d=new Float64Array(n), y=P.b2[0];
+    for(j=0;j<n;j++){ var acc=P.b1[j]; for(k=0;k<n;k++) acc+=h[k]*P.W1[k*64+j]; d[j]=Math.tanh(acc); }
+    for(j=0;j<n;j++) y+=d[j]*P.W2[j];
+    y=1/(1+Math.exp(-y));
+    return {y:y, ic50:Math.pow(50000,1-y)};
+  }
+  return {load:load, score:score, scoreWith:scoreWith, have:have, key:function(){ return loadedKey; }};
+})();
+
+function nm(v){
+  if(v==null) return '—';
+  if(v>=10000) return Math.round(v/1000)+'k';
+  if(v>=1000) return (Math.round(v/100)/10)+'k';
+  if(v>=100) return String(Math.round(v));
+  return String(Math.round(v*10)/10);
+}
+function strengthPct(v){
+  if(v==null) return 0;
+  var t=(4-Math.log10(Math.max(1,Math.min(50000,v))))/3.7*100;
+  return Math.max(2,Math.min(100,Math.round(t)));
+}
+function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+function clean(s){ return String(s||'').toUpperCase().replace(/[^A-Z]/g,''); }
+
+/* ================= DR3 motif cross-check ================= */
+var M1={L:3,I:3,V:3,M:3,F:2,Y:2,A:1,W:0.5,T:0.5,S:0.3,N:0,Q:0,C:0.5,H:0,G:-3,P:-3,D:-3,E:-3,K:-3,R:-3};
+var M4={D:4,E:3,N:1.5,Q:1.5,S:1.5,T:1.5,A:0,G:0,C:0,M:0,L:0,I:0,V:0,F:0,Y:0,W:0,P:-1,H:-2,K:-4,R:-4};
+var M6={K:3,R:3,H:2,S:1,T:1,A:1,G:1,N:1,Q:1,C:0.5,M:0,L:0,I:0,V:0,F:0,Y:0,W:0,P:-1,D:-3,E:-3};
+var M9={D:-2,E:-2,P:-1};
+var BASIC={K:1,R:1,H:1}, SA={L:1,I:1,V:1,M:1,F:1,Y:1}, SB={L:1,I:1,V:1,M:1,F:1,Y:1,A:1}, SB4={D:1,N:1,Q:1,E:1,S:1,T:1};
+var TCR_POS=[1,2,4,7];
+function coreScore(c){
+  var s=(M1[c[0]]||0)+(M4[c[3]]||0)+(M6[c[5]]||0)+(M9[c[8]]||0), sub='—';
+  if(BASIC[c[5]] && 'FWYKR'.indexOf(c[8])>=0) s-=1;
+  if(SA[c[0]] && c[3]==='D'){ s+=3; sub='A'; }
+  else if(SB[c[0]] && SB4[c[3]] && BASIC[c[5]]){ s+=2; sub='B'; }
+  return {raw:s, sub:sub, fit:Math.round(Math.max(0,Math.min(100,(s+13)/26*100)))};
+}
+function register(seq){
+  seq=clean(seq);
+  if(seq.length<9) return null;
+  var best=null;
+  for(var s=0;s+9<=seq.length;s++){
+    var c=seq.slice(s,s+9), r=coreScore(c);
+    if(!best||r.raw>best.raw){ best={raw:r.raw, sub:r.sub, fit:r.fit, start:s, core:c, seq:seq}; }
+  }
+  best.p1=best.core[0]; best.p4=best.core[3]; best.p6=best.core[5]; best.p9=best.core[8];
+  best.face=TCR_POS.map(function(i){return best.core[i];}).join('');
+  return best;
+}
+
+/* ================= allele picker ================= */
+var sel=document.getElementById('allele');
+ALLELES.forEach(function(a){
+  var o=document.createElement('option'); o.value=a.f; o.textContent=a.label;
+  if(a.label==='DRB1*03:01') o.selected=true;
+  sel.appendChild(o);
+});
+function alleleLabel(){ return sel.options[sel.selectedIndex].textContent; }
+
+function paintPockets(){
+  var host=document.getElementById('pocketlive'); if(!host) return;
+  var pk=POCKETS_BY_ALLELE[alleleLabel()];
+  if(!pk){ host.innerHTML='<p class="tiny" style="margin:0">No sequence on file for this type.</p>'; return; }
+  var cols={P1:'var(--p1)',P4:'var(--p4)',P6:'var(--p6)',P9:'var(--p9)'};
+  var pos={P1:'\u03b285, \u03b286',P4:'\u03b213, \u03b270, \u03b271, \u03b274',P6:'\u03b211, \u03b230',P9:'\u03b29, \u03b257'};
+  host.innerHTML = '<p class="tiny mono" style="margin:0 0 8px">'+esc(pk.beta)+'</p><div class="pocketbars">'
+    + ['P1','P4','P6','P9'].map(function(k){
+        return '<div class="pb"><div class="h" style="color:'+cols[k]+'">'+k+'</div>'
+             + '<div class="r">'+pk[k].split('').join(' ')+'</div>'
+             + '<div class="n">'+pos[k]+'</div></div>';
+      }).join('') + '</div>';
+}
+function runControls(){
+  var box=document.getElementById('valid');
+  var out=CONTROLS.map(function(c){
+    var q=NUG.score(c.s);
+    var hit=(c.home===alleleLabel());
+    return (hit?'▸ ':'')+c.n+' '+nm(q?q.ic50:null)+' nM';
+  }).join('   ·   ');
+  box.textContent=out;
+  paintPockets();
+  var homeHere=CONTROLS.filter(function(c){ return c.home===alleleLabel(); });
+  document.getElementById('validnote').textContent = homeHere.length
+    ? ('▸ marks the epitope whose published HLA type is the one selected. It should be the tightest of the three here.')
+    : ('None of the three belongs to this HLA type, so all three should look loose. Switch to DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.');
+}
+
+var loading=false;
+function setAllele(){
+  loading=true;
+  document.getElementById('statdot').className='dot';
+  setBusy(true);
+  return NUG.load(sel.value).then(function(){
+    loading=false; setBusy(false);
+    document.getElementById('statdot').className='dot on';
+    runControls();
+  }).catch(function(e){
+    loading=false; setBusy(false);
+    document.getElementById('statdot').className='dot';
+    document.getElementById('count').textContent='Could not load that network ('+e.message+').';
+  });
+}
+function setBusy(b){
+  ['runprot','rundec','loadjo1'].forEach(function(id){ document.getElementById(id).disabled=b; });
+}
+sel.addEventListener('change', function(){ setAllele().then(function(){
+  results=[]; drawRows();
+  if(isModel) restyle();
+  var cap=document.getElementById('molsrc');
+  if(cap && isModel && curReg) cap.textContent = curReg.seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms';
+  paintPockets();
+}); });
+
+/* ================= screens ================= */
+var results=[], selected=-1, mode='prot', REF=null;
+
+function setMode(m){
+  if(m===mode){                       // returning to the tab you were on keeps your results
+    document.getElementById('pane-prot').hidden = (m!=='prot');
+    document.getElementById('howto-prot').hidden = (m!=='prot');
+    document.getElementById('howto-dec').hidden = (m!=='dec');
+    document.getElementById('pane-dec').hidden = (m!=='dec');
+    return;
+  }
+  mode=m;
+  document.getElementById('pane-prot').hidden = (m!=='prot');
+  document.getElementById('howto-prot').hidden = (m!=='prot');
+  document.getElementById('howto-dec').hidden = (m!=='dec');
+  document.getElementById('pane-dec').hidden = (m!=='dec');
+  results=[]; selected=-1; drawRows();
+}
+var TABS=[['t-prot','view-work'],['t-dec','view-work'],['t-3d','view-3d'],['t-info','view-info']];
+function showTab(id){
+  TABS.forEach(function(t){ document.getElementById(t[0]).setAttribute('aria-pressed', t[0]===id?'true':'false'); });
+  var want=TABS.filter(function(t){ return t[0]===id; })[0][1];
+  ['view-work','view-3d','view-info'].forEach(function(v){ document.getElementById(v).hidden=(v!==want); });
+  if(want==='view-3d' && viewer) setTimeout(function(){ viewer.resize(); viewer.render(); }, 30);
+}
+document.getElementById('t-prot').addEventListener('click', function(){ showTab('t-prot'); setMode('prot'); });
+document.getElementById('t-dec').addEventListener('click', function(){ showTab('t-dec'); setMode('dec'); });
+document.getElementById('t-3d').addEventListener('click', function(){ showTab('t-3d'); });
+document.getElementById('t-info').addEventListener('click', function(){ showTab('t-info'); });
+document.getElementById('loadjo1').addEventListener('click', function(){
+  document.getElementById('protseq').value=JO1_PROTEIN;
+});
+document.getElementById('fastain').addEventListener('change', function(e){
+  var f=e.target.files&&e.target.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    var txt=String(rd.result).split(/\r?\n/).filter(function(l){ return l.trim() && l[0]!=='>'; }).join('');
+    document.getElementById('protseq').value=clean(txt);
+  };
+  rd.readAsText(f);
+});
+
+function chunked(items, step, done){
+  var i=0, bar=document.getElementById('progbar');
+  setBusy(true);
+  function tick(){
+    var end=Math.min(items.length, i+step);
+    for(; i<end; i++) items[i]();
+    bar.style.width=Math.round(i/items.length*100)+'%';
+    if(i<items.length) requestAnimationFrame(tick);
+    else { bar.style.width='0%'; setBusy(false); done(); }
+  }
+  requestAnimationFrame(tick);
+}
+
+function runProtein(){
+  var seq=clean(document.getElementById('protseq').value);
+  var w=parseInt(document.getElementById('win').value,10);
+  if(seq.length<w){ document.getElementById('count').textContent='Paste a protein at least '+w+' residues long.'; return; }
+  results=[]; selected=-1;
+  var jobs=[];
+  for(var s=0;s+w<=seq.length;s++){
+    (function(start){
+      jobs.push(function(){
+        var pep=seq.slice(start,start+w), q=NUG.score(pep);
+        results.push({name:(start+1)+'–'+(start+w), seq:pep, ic50:q?q.ic50:null, start:start});
+      });
+    })(s);
+  }
+  chunked(jobs, 40, function(){
+    results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
+    REF=null; drawRows();
+  });
+}
+
+function runDecoy(){
+  var pep=clean(document.getElementById('pepseq').value);
+  if(pep.length<9){ document.getElementById('count').textContent='A slice needs at least 9 residues.'; return; }
+  var q=NUG.score(pep), reg=register(pep);
+  REF={seq:pep, ic50:q?q.ic50:null, reg:reg, face:reg?reg.face:''};
+  results=[]; selected=-1;
+  var AAS='ACDEFGHIKLMNPQRSTVWY'.split(''), jobs=[];
+  for(var i=0;i<pep.length;i++) AAS.forEach(function(a){
+    if(a===pep[i]) return;
+    (function(pos,aa){
+      jobs.push(function(){
+        var s=pep.slice(0,pos)+aa+pep.slice(pos+1), r=register(s), qq=NUG.score(s);
+        results.push({name:pep[pos]+(pos+1)+aa, seq:s, ic50:qq?qq.ic50:null, reg:r,
+                      faceChanged: r && REF.reg ? r.face!==REF.reg.face : false});
+      });
+    })(i,a);
+  });
+  chunked(jobs, 30, function(){
+    var f=document.getElementById('filt').value;
+    if(f==='better') results=results.filter(function(r){ return r.ic50!=null && REF.ic50!=null && r.ic50<REF.ic50; });
+    if(f==='decoy')  results=results.filter(function(r){ return r.ic50!=null && REF.ic50!=null && r.ic50<=REF.ic50 && r.faceChanged; });
+    results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
+    drawRows();
+  });
+}
+document.getElementById('runprot').addEventListener('click', runProtein);
+document.getElementById('rundec').addEventListener('click', runDecoy);
+document.getElementById('pepseq').addEventListener('keydown', function(e){ if(e.key==='Enter') runDecoy(); });
+document.getElementById('filt').addEventListener('change', function(){ if(mode==='dec') runDecoy(); });
+
+/* ================= table ================= */
+function drawRows(){
+  var tb=document.getElementById('rows'), isDec=(mode==='dec');
+  var shown=results.slice(0,120), html='';
+  shown.forEach(function(r,i){
+    var v=verdict(r,isDec);
+    var side = isDec
+      ? '<span class="yn '+(r.faceChanged?'y':'n')+'">'+(r.faceChanged?'face changed':'same face')+'</span>'
+      : (r.reg?r.reg.core:(register(r.seq)||{core:'\u2014'}).core);
+    html += '<div class="card" data-i="'+i+'" role="button" tabindex="0" aria-selected="'+(i===selected?'true':'false')+'">'
+      + '<span class="pos">'+esc(r.name)+'</span>'
+      + '<span class="side">'+side+'</span>'
+      + '<span class="pep">'+esc(r.seq)+'</span>'
+      + '<span class="meter"><span class="trk"><span class="vl" style="width:'+strengthPct(r.ic50)+'%"></span></span>'
+      + '<span class="nmv">'+nm(r.ic50)+'</span></span>'
+      + '<span class="tagrow"><span class="vd '+v.k+'">'+v.t+'</span></span>'
+      + '</div>';
+  });
+  tb.innerHTML = html || '<div class="empty">Nothing to show yet. Press Scan.</div>';
+  var note='';
+  if(results.length){
+    note = results.length+' slice'+(results.length===1?'':'s')
+         + (results.length>shown.length ? ' \u00b7 top '+shown.length : '')
+         + ' \u00b7 ' + alleleLabel() + ' \u00b7 lower nM is tighter.';
+    if(isDec && REF) note += ' The slice itself: '+nm(REF.ic50)+' nM.';
+  }
+  document.getElementById('count').textContent=note;
+  if(shown.length) select(selected>=0&&selected<shown.length?selected:0);
+  else document.getElementById('detail').innerHTML='<p class="tiny" style="margin:0">Run a scan.</p>';
+}
+function verdict(r,isDec){
+  if(r.ic50==null) return {k:'weak',t:'no prediction'};
+  if(isDec && REF && REF.ic50!=null){
+    var ratio=REF.ic50/r.ic50;
+    if(ratio>=2) return {k:'better',t:Math.round(ratio)+'× tighter'};
+    if(ratio>=0.5) return {k:'same',t:'about the same'};
+    return {k:'weak',t:'looser'};
+  }
+  if(r.ic50<50) return {k:'better',t:'very tight'};
+  if(r.ic50<500) return {k:'better',t:'tight'};
+  if(r.ic50<5000) return {k:'same',t:'moderate'};
+  return {k:'weak',t:'loose'};
+}
+document.getElementById('rows').addEventListener('click', function(e){
+  var c=e.target.closest('.card'); if(c&&c.hasAttribute('data-i')) select(+c.getAttribute('data-i'));
+});
+document.getElementById('rows').addEventListener('keydown', function(e){
+  if(e.key!=='Enter'&&e.key!==' ') return;
+  var c=e.target.closest('.card'); if(c&&c.hasAttribute('data-i')){ select(+c.getAttribute('data-i')); e.preventDefault(); }
+});
+
+function select(i){
+  selected=i;
+  var r=results[i]; if(!r) return;
+  Array.prototype.forEach.call(document.querySelectorAll('#rows .card'), function(c){
+    c.setAttribute('aria-selected', c.getAttribute('data-i')===String(i)?'true':'false');
+  });
+  var reg=r.reg||register(r.seq);
+  var isDR3=(alleleLabel()==='DRB1*03:01');
+  var bars='';
+  if(reg){
+    var pk=[['P1',reg.p1,M1[reg.p1]||0,'Val85/Val86 pocket'],['P4',reg.p4,M4[reg.p4]||0,'Lys71 + Arg74, electropositive'],
+            ['P6',reg.p6,M6[reg.p6]||0,'electronegative'],['P9',reg.p9,M9[reg.p9]||0,'low weight, no published list']];
+    bars=pk.map(function(p){
+      return '<div class="pb"><div class="h">'+p[0]+'</div><div class="r">'+p[1]+'</div>'
+           + '<div class="n">'+(p[2]>0?'+':'')+p[2]+' · '+p[3]+'</div></div>';
+    }).join('');
+  }
+  var d='<p style="margin:0 0 6px"><b class="mono">'+esc(r.seq)+'</b> <span class="tiny">'+esc(r.name)+'</span></p>'
+      + '<p class="tiny" style="margin:0 0 4px">'+alleleLabel()+' · predicted '+nm(r.ic50)+' nM'
+      + (reg ? ' · core <span class="mono">'+reg.core+'</span> · T cell face <span class="mono">'+reg.face+'</span>' : '')
+      + (REF&&mode==='dec' ? ' · slice itself '+nm(REF.ic50)+' nM' : '')
+      + '</p>'
+      + (isDR3 && bars ? '<div class="pocketbars">'+bars+'</div>'
+                       : '<p class="tiny" style="margin:6px 0 0">Pocket breakdown is only meaningful for DRB1*03:01. For '+alleleLabel()+' the network score is the only reading here.</p>')
+      + '<p class="tiny" style="margin:10px 0 0">'+readOut(r)+'</p>';
+  document.getElementById('detail').innerHTML=d;
+  var sum=document.getElementById('sheetsum');
+  if(sum) sum.textContent = r.seq+'  \u00b7  '+nm(r.ic50)+' nM';
+  var cc=document.getElementById('ccout'); if(cc) cc.innerHTML='';
+  paintRegister(reg);
+  if(window.__showPeptide) window.__showPeptide(reg);
+}
+function readOut(r){
+  if(mode==='dec' && REF && REF.ic50!=null && r.ic50!=null){
+    if(r.ic50<=REF.ic50 && r.faceChanged)
+      return 'Holds the groove at least as well as the original while showing the T cell a different face. That is the shape a decoy needs. It still has to go through a validated predictor and then into cells.';
+    if(r.ic50<REF.ic50)
+      return 'Tighter than the original, but the T cell sees the same face — the pattern that caused flares in the trials below.';
+    if(r.ic50<=REF.ic50*2) return 'About as tight as the original. No advantage on its own.';
+    return 'Looser than the original, so it would lose the competition for the pocket.';
+  }
+  if(r.ic50==null) return 'No prediction for this one.';
+  if(r.ic50<50) return 'Predicted to bind this HLA type very tightly. In a real protein, a stretch like this is where a T-cell epitope is most likely to sit.';
+  if(r.ic50<500) return 'Predicted to bind tightly. Worth carrying into a validated predictor.';
+  if(r.ic50<5000) return 'Middling. Many real epitopes sit in this band, so do not rule it out on this number alone.';
+  return 'Predicted to bind loosely by this network.';
+}
+
+/* ================= register strip ================= */
+function paintRegister(reg){
+  var row=document.getElementById('regrow'), note=document.getElementById('regnote');
+  if(!reg){ row.innerHTML=''; note.textContent='Select a slice of 9 residues or more.'; return; }
+  var html='';
+  for(var i=0;i<reg.seq.length;i++){
+    var ci=i-reg.start, cls='res', ps='';
+    if(ci>=0&&ci<9){
+      ps='P'+(ci+1);
+      if(ci===0) cls+=' a1'; else if(ci===3) cls+=' a4';
+      else if(ci===5) cls+=' a6'; else if(ci===8) cls+=' a9';
+      else if(TCR_POS.indexOf(ci)>=0) cls+=' up';
+    } else { ps=String(i+1); }
+    html+='<div class="'+cls+'"><div class="aa">'+reg.seq[i]+'</div><div class="ps">'+ps+'</div></div>';
+  }
+  row.innerHTML=html;
+  note.innerHTML='Best of the '+(reg.seq.length-8)+' possible frames under the DR3 rule. Core <span class="mono">'+reg.core+'</span>, submotif '+reg.sub+'. For the Jo-1 slice this frame is the only one that satisfies the motif, and the paper that found the slice never published its register.';
+}
+
+/* ================= 3D ================= */
+var viewer=null, pdbText=document.getElementById('groovepdb').textContent, isModel=true, spinning=false;
+var PEP_FIRST=157, curReg=null;
+var AA_CLASS = {
+  L:'phobic',I:'phobic',V:'phobic',M:'phobic',F:'phobic',W:'phobic',Y:'phobic',A:'phobic',P:'phobic',G:'phobic',
+  D:'acid',E:'acid', K:'base',R:'base',H:'base',
+  S:'polar',T:'polar',N:'polar',Q:'polar',C:'polar'
+};
+var CLASS_COL = {phobic:'#c9ced6', acid:'#c0564a', base:'#2f5fa8', polar:'#49937f'};
+function styleModel(surface){
+  if(!viewer) return;
+  var pep = (curReg && curReg.seq) ? curReg.seq : 'LKAQLGPDESKQKFV';
+  var n = Math.min(15, pep.length);
+  viewer.setStyle({},{});
+  viewer.setStyle({chain:'A'},{cartoon:{color:'#aab7c7',thickness:0.55,arrows:true}});
+  viewer.setStyle({chain:'B'},{cartoon:{color:'#e4eaf1',thickness:0.85,style:'oval'}});
+  viewer.setStyle({chain:'P'},{});
+  viewer.removeAllLabels(); viewer.removeAllShapes();
+
+  var anchorsOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  var cols = {0:'#1f7a8c',3:'#b5791a',5:'#2f5fa8',8:'#6b4fbd'};
+  var m = viewer.getModel(0), prev = null;
+  for(var i=0;i<n;i++){
+    var ri = PEP_FIRST+i, aa = pep[i];
+    var off = curReg ? i-curReg.start : -99;
+    var isAnchor = (cols[off]!==undefined && off>=0 && off<9);
+    var isFace   = (TCR_POS.indexOf(off)>=0);
+    var col = CLASS_COL[AA_CLASS[aa]] || '#c9ced6';
+    var scale = 0.42;
+    if(anchorsOn && isAnchor){ col = cols[off]; scale = 0.64; }
+    else if(anchorsOn && isFace){ col = '#9a4f8f'; scale = 0.52; }
+    viewer.setStyle({chain:'P',resi:ri},{sphere:{scale:scale,color:col}});
+    var at = m.selectedAtoms({chain:'P',resi:ri,atom:'CA'});
+    if(at.length){
+      viewer.addLabel(aa, {position:{x:at[0].x, y:at[0].y, z:at[0].z+1.6},
+        fontSize:12, fontColor:'#1b2330', backgroundColor:'#ffffff', backgroundOpacity:0.78,
+        borderThickness:0, inFront:true, alignment:'center'});
+      if(prev) viewer.addCylinder({start:prev, end:{x:at[0].x,y:at[0].y,z:at[0].z},
+        radius:0.22, color:'#9aa4b2', fromCap:1, toCap:1});
+      prev = {x:at[0].x, y:at[0].y, z:at[0].z};
+    }
+  }
+  // the holder's own pocket-lining residues, read from IMGT/HLA for the selected type
+  var pk = POCKETS_BY_ALLELE[alleleLabel()];
+  if(pk && curReg){
+    var spec=[['P1',0,'#1f7a8c'],['P4',3,'#b5791a'],['P6',5,'#2f5fa8'],['P9',8,'#6b4fbd']];
+    spec.forEach(function(sp){
+      var idx = curReg.start + sp[1];
+      if(idx<0 || idx>=n) return;
+      var at = m.selectedAtoms({chain:'P',resi:PEP_FIRST+idx,atom:'CA'});
+      if(!at.length) return;
+      viewer.addLabel(sp[0]+'  '+pk[sp[0]].split('').join(' '), {
+        position:{x:at[0].x, y:at[0].y-6.2, z:at[0].z-1.0},
+        fontSize:11, fontColor:'#ffffff', backgroundColor:sp[2], backgroundOpacity:0.92,
+        borderThickness:0, inFront:true, alignment:'center'});
+    });
+  }
+  if(surface) viewer.addSurface($3Dmol.SurfaceType.VDW,{opacity:0.55,color:'#cfd8e3'},{chain:'B'});
+  else viewer.removeAllSurfaces();
+  viewer.render();
+}
+function styleReal(surface){
+  viewer.setStyle({},{cartoon:{colorscheme:'whiteCarbon',thickness:0.6}});
+  viewer.setStyle({chain:'C'},{stick:{radius:0.22,colorscheme:'yellowCarbon'},sphere:{scale:0.26}});
+  viewer.removeAllShapes();
+  if(surface) viewer.addSurface($3Dmol.SurfaceType.VDW,{opacity:0.5,color:'#cfd8e3'},{chain:['A','B']});
+  else viewer.removeAllSurfaces();
+  viewer.render();
+}
+function restyle(){
+  var s=document.getElementById('b-surf').getAttribute('aria-pressed')==='true';
+  if(isModel) styleModel(s); else styleReal(s);
+}
+window.__showPeptide=function(reg){
+  curReg=reg;
+  var cap=document.getElementById('molsrc');
+  if(cap && isModel) cap.textContent = reg ? (reg.seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms') : 'scaled geometric model';
+  if(isModel) restyle();
+};
+
+function boot3D(){
+  var host=document.getElementById('mol');
+  if(typeof $3Dmol==='undefined'){
+    host.innerHTML='<div style="padding:20px;font-size:13px;color:var(--mute)">The 3D viewer could not load. The screen above still works.</div>';
+    return;
+  }
+  viewer=$3Dmol.createViewer(host,{backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--sunk').trim()||'#f5f7f9'});
+  viewer.addModel(pdbText,'pdb');
+  styleModel(false);
+  viewer.zoomTo(); viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); viewer.render();
+}
+document.getElementById('b-surf').addEventListener('click', function(){
+  this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
+});
+document.getElementById('b-anch').addEventListener('click', function(){
+  this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
+});
+document.getElementById('b-spin').addEventListener('click', function(){
+  if(!viewer) return; spinning=!spinning; this.setAttribute('aria-pressed',spinning?'true':'false');
+  viewer.spin(spinning?'y':false);
+});
+document.getElementById('b-reset').addEventListener('click', function(){
+  if(!viewer) return; viewer.zoomTo();
+  if(isModel){ viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); }
+  viewer.render();
+});
+document.getElementById('pdbin').addEventListener('change', function(e){
+  var f=e.target.files&&e.target.files[0]; if(!f||!viewer) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var fmt=/\.(cif|mmcif)$/i.test(f.name)?'cif':'pdb';
+      viewer.removeAllModels(); viewer.removeAllShapes(); viewer.removeAllSurfaces();
+      viewer.addModel(String(rd.result),fmt);
+      isModel=false;
+      document.getElementById('molsrc').textContent=f.name+' · solved structure';
+      styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
+      viewer.zoomTo(); viewer.render();
+    }catch(err){ document.getElementById('molsrc').textContent='could not read that file'; }
+  };
+  rd.readAsText(f);
+});
+
+/* ================= selectivity across every holder ================= */
+/* A peptide that grips many HLA types would blunt normal defence against germs,
+   so tightness on the target is only half the question. */
+function crossCheck(){
+  var r = results[selected]; if(!r) return;
+  var btn=document.getElementById('crosscheck'), stat=document.getElementById('ccstat'),
+      bar=document.getElementById('ccbar'), out=document.getElementById('ccout');
+  btn.disabled=true; out.innerHTML=''; stat.textContent='loading networks\u2026';
+  var i=0, vals=[];
+  function step(){
+    if(i>=ALLELES.length){
+      bar.style.width='0%'; btn.disabled=false; stat.textContent='';
+      render(); return;
+    }
+    var a=ALLELES[i];
+    var after=function(){
+      var q=NUG.scoreWith(r.seq, a.f);
+      vals.push({label:a.label, ic50:q?q.ic50:null});
+      i++; bar.style.width=Math.round(i/ALLELES.length*100)+'%';
+      stat.textContent=i+' of '+ALLELES.length;
+      (i%6===0) ? requestAnimationFrame(step) : step();
+    };
+    if(NUG.have(a.f)) after();
+    else NUG.load(a.f).then(after).catch(function(){ i++; step(); });
+  }
+  function render(){
+    var target=alleleLabel();
+    var here=vals.filter(function(v){ return v.label===target; })[0];
+    var others=vals.filter(function(v){ return v.label!==target && v.ic50!=null; });
+    var tight=others.filter(function(v){ return v.ic50<500; }).sort(function(a,b){ return a.ic50-b.ic50; });
+    var med=others.map(function(v){ return v.ic50; }).sort(function(a,b){ return a-b; });
+    med = med.length ? med[Math.floor(med.length/2)] : null;
+    var verdictTxt, cls;
+    if(tight.length===0){ verdictTxt='Selective \u2014 it grips '+target+' and nothing else tightly.'; cls='better'; }
+    else if(tight.length<=2){ verdictTxt='Mostly selective \u2014 it also grips '+tight.length+' other type'+(tight.length===1?'':'s')+' tightly.'; cls='same'; }
+    else { verdictTxt='Not selective \u2014 it grips '+tight.length+' other types tightly, so it would blunt normal defence as well.'; cls='weak'; }
+    out.innerHTML =
+      '<div class="note" style="border-left-color:var(--'+(cls==='weak'?'warn':(cls==='better'?'ok':'p6'))+')">'
+      + '<h3 style="color:var(--'+(cls==='weak'?'warn':(cls==='better'?'ok':'p6'))+')">Across all 117 holders</h3>'
+      + '<p style="margin:0 0 6px"><span class="vd '+cls+'">'+verdictTxt+'</span></p>'
+      + '<p class="tiny" style="margin:0">On '+target+': <b>'+nm(here?here.ic50:null)+' nM</b>. '
+      + 'Middle of the other 116: '+nm(med)+' nM. '
+      + (tight.length ? 'Also tight on: <span class="mono">'+tight.slice(0,8).map(function(v){ return v.label+' ('+nm(v.ic50)+')'; }).join(', ')+(tight.length>8?', \u2026':'')+'</span>.' : '')
+      + '</p></div>';
+  }
+  step();
+}
+document.getElementById('crosscheck').addEventListener('click', crossCheck);
+
+var sheet=document.getElementById('sheetwrap'), grip=document.getElementById('sheetgrip');
+sheet.setAttribute('data-open','0');
+function toggleSheet(force){
+  var open = force!==undefined ? force : sheet.getAttribute('data-open')!=='1';
+  sheet.setAttribute('data-open', open?'1':'0');
+  grip.setAttribute('aria-expanded', open?'true':'false');
+  document.getElementById('sheetchev').textContent = open?'close':'open';
+}
+grip.addEventListener('click', function(){ toggleSheet(); });
+grip.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ toggleSheet(); e.preventDefault(); } });
+
+/* ================= start ================= */
+document.getElementById('protseq').value=JO1_PROTEIN;
+paintRegister(register(JO1));
+boot3D();
+showTab('t-prot');
+setAllele().then(function(){ setMode('prot'); runProtein(); });
+(function(){
+  var standalone = window.navigator.standalone === true ||
+                   (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+  var phone = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
+  var h = document.getElementById('installhint');
+  if(h && phone && !standalone) h.style.display='block';
+})();
+window.NUG=NUG;
+})();
+</script>
+
+</body>
+</html>
