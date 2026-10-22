@@ -1,4 +1,6 @@
-# JO1 V300
+# JO1
+
+Version **V400**.
 
 Screens peptides against 117 HLA class II types and ranks what sits in the groove.
 Everything runs in the browser. No server, no build step.
@@ -16,14 +18,15 @@ Everything runs in the browser. No server, no build step.
 
 ## Deploy
 
-Static site. Publish directory is the repository root.
+Static site. Publish directory is the repository root. Flat, seven files:
 
     index.html        the whole app
-    w/DRB1.txt        54 trained networks
-    w/DRB345.txt       7
-    w/DQ.txt          38
-    w/DP.txt          18
+    w-DRB1.txt        54 trained networks
+    w-DRB345.txt       7
+    w-DQ.txt          38
+    w-DP.txt          18
     netlify.toml      publish directory and cache headers
+    README.md
 
 Each bundle is base64 float32, 139,952 characters per network, sliced by index in the browser.
 Nothing to install or compile.

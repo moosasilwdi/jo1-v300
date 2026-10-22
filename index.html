@@ -1,17 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="JO1 V300 - screens peptides against 117 HLA class II types using neural networks trained on measured binding.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='78' font-size='78'>&#129516;</text></svg>">
-<style>:root{color-scheme:light}html,body{height:100%}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>JO1 V300</title>
+<title>JO-One</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="JO1 V300">
+<meta name="apple-mobile-web-app-title" content="JO-One">
 <meta name="theme-color" content="#eceff3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e131a" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -25,39 +18,99 @@
   --mono:'IBM Plex Mono','DejaVu Sans Mono',monospace;
   --sans:'IBM Plex Sans','DejaVu Sans',sans-serif;
   --barh:52px; --tabh:46px;
+  --backdrop:#20242b; --frame:#3a4049;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0e131a; --panel:#171e28; --sunk:#111823; --ink:#e7ecf3; --mute:#95a1b2; --line:#283241;
   --p1:#5fc0d0; --p4:#e8b14a; --p6:#78a8e8; --p9:#a98ced; --tcr:#dd8fcf;
-  --gold:#e8b14a; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
+  --gold:#e8b14a; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark; --backdrop:#05070a; --frame:#232b36;
 }}
 :root[data-theme="dark"]{
   --bg:#0e131a; --panel:#171e28; --sunk:#111823; --ink:#e7ecf3; --mute:#95a1b2; --line:#283241;
   --p1:#5fc0d0; --p4:#e8b14a; --p6:#78a8e8; --p9:#a98ced; --tcr:#dd8fcf;
-  --gold:#e8b14a; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
+  --gold:#e8b14a; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark; --backdrop:#05070a; --frame:#232b36;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.45;font-size:14px;
-  display:flex;flex-direction:column;overflow:hidden}
+body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans);line-height:1.45;font-size:14px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* On a big screen the app sits in a phone-shaped frame; on a phone it fills the screen. */
+.device{
+  width:min(430px,100%); height:min(920px,94vh);
+  display:flex; flex-direction:column; overflow:hidden;
+  background:var(--bg); border-radius:38px; border:1px solid var(--frame);
+  box-shadow:0 28px 70px rgba(0,0,0,.45), 0 2px 0 var(--frame) inset;
+}
+@media (max-width:520px){
+  body{display:block}
+  .device{width:100%;height:100%;border-radius:0;border:0;box-shadow:none}
+}
 
 /* top bar */
 .appbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;height:var(--barh);
   background:var(--panel);border-bottom:1px solid var(--line);
   padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+
+/* steps */
+.tabstrip button i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;
+  width:25px;height:25px;border-radius:50%;background:var(--sunk);color:var(--mute);
+  font-family:var(--mono);font-size:12px;font-weight:600;flex:0 0 auto;
+  border:1px solid var(--line);transition:background .14s,color .14s,border-color .14s}
+.tabstrip button[aria-pressed="true"] i{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+/* the protein map — the picture you touch */
+.mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:10px 10px 8px;margin:0 0 12px;overflow:hidden;
+  position:sticky;top:-14px;z-index:5;box-shadow:0 10px 16px -12px rgba(0,0,0,.45)}
+.mapwrap canvas{display:block;width:100%;cursor:crosshair;touch-action:pan-y}
+.maphead{display:flex;align-items:baseline;gap:8px;margin:0 0 7px}
+.maphead .big{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--ink);line-height:1}
+.maphead .lab{font-size:11px;color:var(--mute)}
+.mapfoot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
+  color:var(--mute);margin-top:5px}
+.steplede{font-size:13px;color:var(--mute);line-height:1.45;margin:0 0 12px}
+.steplede b{color:var(--ink)}
+.holderpill{font-family:var(--mono);font-size:11.5px;padding:5px 10px;border-radius:999px;
+  border:1px solid var(--line);background:var(--sunk);color:var(--ink);cursor:pointer;
+  margin-left:auto;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.holderpill:hover{border-color:var(--gold)}
+.nextbtn{width:100%;margin-top:4px}
+#runprot,#rundec{width:100%}
+/* landing */
+.home{display:flex;flex-direction:column;align-items:center;text-align:center;padding-block:10px 0}
+.hero{width:104px;height:104px;color:var(--ink);margin-bottom:10px}
+.hometitle{font-size:27px;font-weight:700;letter-spacing:-.02em;margin:0}
+.homelede{color:var(--mute);max-width:30ch;margin:7px 0 20px;font-size:14.5px;line-height:1.4}
+.steps{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:11px;width:100%;text-align:left}
+.steps li{display:flex;align-items:center;gap:13px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px}
+.steps svg{width:40px;height:40px;flex:0 0 40px;color:var(--ink)}
+.steps b{display:block;font-size:14px;font-weight:600}
+.steps span{display:block;font-size:12.5px;color:var(--mute);margin-top:1px;line-height:1.35}
+button.start{width:100%;max-width:300px;padding:13px 20px;font-size:15px;border-radius:11px}
+.homefoot{font-size:11.5px;color:var(--mute);max-width:34ch;margin:16px 0 0;line-height:1.45}
+.appbar .home-link{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+.appbar .home-link:hover .brand{color:var(--gold)}
+.appbar .logo{width:22px;height:22px;flex:0 0 auto;color:var(--ink)}
 .appbar .brand{font-weight:700;letter-spacing:-.01em;font-size:15px;white-space:nowrap}
+.appbar .ver{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--mute);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
 .appbar .dot{width:7px;height:7px;border-radius:50%;background:var(--mute);flex:0 0 auto}
 .appbar .dot.on{background:var(--ok)}
+.appbar .dot.bad{background:var(--warn)}
 .appbar select{flex:1 1 auto;min-width:0;max-width:300px;margin-left:auto}
 
 /* tabs */
-.tabstrip{flex:0 0 auto;display:flex;height:var(--tabh);background:var(--panel);
-  border-bottom:1px solid var(--line);
-  padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+/* bottom tab bar — the app's home row */
+.tabstrip{flex:0 0 auto;order:3;display:flex;background:var(--panel);
+  border-top:1px solid var(--line);height:var(--tabh);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  padding-left:max(4px,env(safe-area-inset-left,0px));padding-right:max(4px,env(safe-area-inset-right,0px))}
 .tabstrip button{flex:1;min-width:0;border:0;background:transparent;color:var(--mute);
-  font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;border-radius:0;
-  border-bottom:2px solid transparent;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tabstrip button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--gold);background:transparent}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-family:var(--sans);font-size:10px;font-weight:600;cursor:pointer;border-radius:0;
+  padding:0 2px;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.tabstrip button[aria-pressed="true"]{color:var(--gold)}
 .tabstrip button:hover{color:var(--ink)}
 .tabstrip button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 
@@ -191,28 +244,104 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+<div class="device">
 <div class="appbar">
-  <span class="dot" id="statdot"></span>
-  <span class="brand">JO1&nbsp;V300</span>
-  <select id="allele" aria-label="HLA type"></select>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="6.4" width="26" height="3.6" rx="1.8" fill="currentColor" opacity=".32"/><rect x="3" y="22" width="26" height="3.6" rx="1.8" fill="currentColor" opacity=".32"/><circle cx="6.6" cy="16" r="2.1" fill="currentColor" opacity=".45"/><circle cx="12.2" cy="16" r="2.6" fill="#1f7a8c"/><circle cx="17.6" cy="16" r="2.6" fill="#b5791a"/><circle cx="23" cy="16" r="2.6" fill="#2f5fa8"/><circle cx="28" cy="16" r="2.1" fill="currentColor" opacity=".45"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V400</span></button>
+  <span class="dot" id="statdot" title="network status"></span>
+  <button type="button" class="holderpill" id="holderpill" title="Change the holder">—</button>
 </div>
 
-<nav class="tabstrip">
-  <button type="button" id="t-prot" aria-pressed="true">Protein</button>
-  <button type="button" id="t-dec" aria-pressed="false">Decoy</button>
-  <button type="button" id="t-3d" aria-pressed="false">Groove</button>
-  <button type="button" id="t-info" aria-pressed="false">Notes</button>
+<nav class="tabstrip" id="tabstrip">
+  <button type="button" id="t-hla"><i>1</i>Holder</button>
+  <button type="button" id="t-prot"><i>2</i>Protein</button>
+  <button type="button" id="t-res"><i>3</i>Results</button>
+  <button type="button" id="t-3d"><i>4</i>Groove</button>
+  <button type="button" id="t-info"><i>i</i>Notes</button>
 </nav>
 
 <div class="views">
 
+
+  <div class="view" id="view-home">
+    <div class="inner home">
+      <svg class="hero" viewBox="0 0 120 120" aria-hidden="true">
+        <rect x="10" y="26" width="100" height="12" rx="6" fill="currentColor" opacity=".22"/>
+        <rect x="10" y="82" width="100" height="12" rx="6" fill="currentColor" opacity=".22"/>
+        <circle cx="22" cy="60" r="7" fill="currentColor" opacity=".32"/>
+        <circle cx="40" cy="60" r="9.5" fill="#1f7a8c"/>
+        <circle cx="60" cy="60" r="9.5" fill="#b5791a"/>
+        <circle cx="80" cy="60" r="9.5" fill="#2f5fa8"/>
+        <circle cx="98" cy="60" r="7" fill="currentColor" opacity=".32"/>
+      </svg>
+      <h1 class="hometitle">JO&#8209;One</h1>
+      <p class="homelede">Which piece of a protein does the immune system grip?</p>
+
+      <ol class="steps">
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="4" y="12" width="40" height="6" rx="3" fill="currentColor" opacity=".25"/>
+            <rect x="4" y="30" width="40" height="6" rx="3" fill="currentColor" opacity=".25"/>
+            <path d="M8 24h32" stroke="#b5791a" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 5"/>
+          </svg>
+          <div><b>Pick the holder</b><span>One of 117 HLA types, top right.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M6 24h36" stroke="currentColor" stroke-width="2" opacity=".3"/>
+            <circle cx="8" cy="24" r="3.4" fill="currentColor" opacity=".45"/>
+            <circle cx="17" cy="24" r="4.2" fill="#1f7a8c"/>
+            <circle cx="26" cy="24" r="4.2" fill="#b5791a"/>
+            <circle cx="35" cy="24" r="4.2" fill="#2f5fa8"/>
+            <circle cx="43" cy="24" r="3.4" fill="currentColor" opacity=".45"/>
+          </svg>
+          <div><b>Feed it a protein</b><span>Jo-1 is already loaded. Press Scan.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="6" y="13" width="36" height="5" rx="2.5" fill="currentColor" opacity=".18"/>
+            <rect x="6" y="13" width="31" height="5" rx="2.5" fill="#b5791a"/>
+            <rect x="6" y="22" width="36" height="5" rx="2.5" fill="currentColor" opacity=".18"/>
+            <rect x="6" y="22" width="20" height="5" rx="2.5" fill="#b5791a" opacity=".8"/>
+            <rect x="6" y="31" width="36" height="5" rx="2.5" fill="currentColor" opacity=".18"/>
+            <rect x="6" y="31" width="11" height="5" rx="2.5" fill="#b5791a" opacity=".55"/>
+          </svg>
+          <div><b>Read the ranking</b><span>Tightest grip at the top. Tap one to see it in 3D.</span></div>
+        </li>
+      </ol>
+
+      <button type="button" class="go start" id="startbtn">Start</button>
+      <p class="homefoot">A research filter, not a clinical tool. See <b>Notes</b> for the sources and the safety record.</p>
+    </div>
+  </div>
+  <div class="view" id="view-hla">
+    <div class="inner">
+      <p class="steplede"><b>Step 1 of 4</b> &middot; whose holder</p>
+      <div class="panel">
+        <h3>HLA type</h3>
+        <select id="allele" aria-label="HLA type" style="width:100%"></select>
+        <p class="tiny" style="margin:9px 0 0">117 types. If you don't know yours, leave <b>DRB1*03:01</b> — the one linked to anti-Jo-1.</p>
+      </div>
+      <div class="panel">
+        <h3>Checked live</h3>
+        <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
+        <p class="tiny" style="margin:0" id="validnote"></p>
+      </div>
+      <div class="panel">
+        <h3>Its pockets</h3>
+        <div id="pocketlive"></div>
+      </div>
+      <button type="button" class="go nextbtn" data-next="t-prot">Next &mdash; the protein</button>
+    </div>
+  </div>
+
   <div class="view" id="view-work">
     <div class="inner">
+      <p class="steplede"><b>Step 2 of 4</b> &middot; which protein</p>
       <p class="tiny" id="installhint" style="display:none;margin:0 0 10px">Keep it as an app: tap <b>Share</b>, then <b>Add to Home Screen</b>.</p>
 
-      <div class="note" id="howto-prot">
-        <h3>What to do here</h3>
-        <p style="margin:0">A protein is already loaded &mdash; Jo-1, all 509 letters. Press <b>Scan</b>. The app cuts it into every 15-letter slice and lists them, tightest grip first. Tap any slice, then open the <b>Groove</b> tab to see that slice sitting in the holder.</p>
+      <div class="segs">
+        <button type="button" id="t-seg-prot" aria-pressed="true">A whole protein</button>
+        <button type="button" id="t-seg-dec" aria-pressed="false">One slice, varied</button>
       </div>
 
       <div class="panel" id="pane-prot">
@@ -225,31 +354,38 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <label class="fld"><span>Window</span>
             <select id="win"><option>15</option><option>14</option><option>16</option><option>18</option><option>20</option></select>
           </label>
-          <button type="button" class="go" id="runprot">Scan</button>
         </div>
         <div class="prog"><i id="progbar"></i></div>
       </div>
 
-      <div class="note" id="howto-dec" hidden>
-        <h3>What to do here</h3>
-        <p style="margin:0">The Jo-1 slice is in the box. Press <b>Scan variants</b>. The app swaps every letter for all 19 others and keeps the ones that still grip the holder but show the T cell a different face. Tap one, then press <b>Check across all 117 types</b> to see whether it grips other people's holders too.</p>
-      </div>
-
       <div class="panel" id="pane-dec" hidden>
         <h3>One slice</h3>
-        <input type="text" id="pepseq" value="LKAQLGPDESKQKFV" spellcheck="false" aria-label="Peptide">
-        <div class="ctrls" style="margin-top:9px">
-          <label class="fld"><span>Keep</span>
-            <select id="filt">
-              <option value="decoy">Same grip, new face</option>
-              <option value="better">Tighter grip</option>
-              <option value="all">Everything</option>
-            </select>
-          </label>
-          <button type="button" class="go" id="rundec">Scan variants</button>
-        </div>
+        <input type="text" id="pepseq" value="LKAQLGPDESKQKFV" spellcheck="false" aria-label="Peptide" style="width:100%">
+        <p class="tiny" style="margin:8px 0 0">Every letter is swapped for all 19 others. The app keeps the ones that still grip the holder but show the T cell a different face.</p>
+        <label class="fld" style="margin-top:9px"><span>Keep</span>
+          <select id="filt" style="width:100%">
+            <option value="decoy">Same grip, new face</option>
+            <option value="better">Tighter grip</option>
+            <option value="all">Everything</option>
+          </select>
+        </label>
       </div>
 
+      <button type="button" class="go" id="runprot">Scan the protein</button>
+      <button type="button" class="go" id="rundec" hidden>Scan every variant</button>
+    </div>
+  </div>
+
+  <div class="view" id="view-res">
+    <div class="inner">
+      <div class="mapwrap">
+        <div class="maphead">
+          <span class="big" id="mapnm">—</span>
+          <span class="lab" id="maplab">tap the map</span>
+        </div>
+        <canvas id="map" role="img" aria-label="Grip strength along the protein"></canvas>
+        <div class="mapfoot"><span id="mapl">1</span><span id="mapr"></span></div>
+      </div>
       <p class="tiny" id="count" style="margin:0 0 10px"></p>
       <div class="rowlist" id="rows"></div>
 
@@ -269,6 +405,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <div id="ccout"></div>
         </div>
       </div>
+
+      <button type="button" class="go nextbtn" data-next="t-3d" style="margin-top:12px">Next &mdash; see it in the groove</button>
     </div>
   </div>
 
@@ -354,12 +492,13 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 V300 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V400 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
     </div>
   </div>
 
+</div>
 </div>
 
 <script id="groovepdb" type="text/plain">HEADER    MHC CLASS II GROOVE (SCALED MODEL)
@@ -1113,10 +1252,21 @@ var NUG = (function(){
   function bundle(name){
     if(bundles[name]) return Promise.resolve(bundles[name]);
     if(pending[name]) return pending[name];
-    pending[name] = fetch('w/'+name+'.txt').then(function(r){
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return r.text();
-    }).then(function(t){ bundles[name]=t.trim(); delete pending[name]; return bundles[name]; });
+    var tries = ['w-'+name+'.txt', 'w/'+name+'.txt'];
+    function attempt(i){
+      return fetch(tries[i]).then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status+' for '+tries[i]);
+        return r.text();
+      }).catch(function(e){
+        if(i+1 < tries.length) return attempt(i+1);
+        throw e;
+      });
+    }
+    pending[name] = attempt(0).then(function(t){
+      t = t.replace(/\s+/g,'');                       // any stray whitespace would break atob
+      if(t.length % CHUNK !== 0) throw new Error('bundle '+name+' is '+t.length+' chars, not a multiple of '+CHUNK);
+      bundles[name]=t; delete pending[name]; return bundles[name];
+    }).catch(function(e){ delete pending[name]; throw e; });
     return pending[name];
   }
   function load(key){
@@ -1240,7 +1390,17 @@ function runControls(){
     : ('None of the three belongs to this HLA type, so all three should look loose. Switch to DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.');
 }
 
-var loading=false;
+var loading=false, loadError=null;
+function showError(){
+  var host=document.getElementById('rows');
+  if(!host) return;
+  host.innerHTML = '<div class="empty" style="border-color:var(--warn);color:var(--warn)">'
+    + '<b>The prediction networks did not load.</b><br>' + esc(loadError||'')
+    + '<br><br><button type="button" id="retry">Try again</button></div>';
+  document.getElementById('count').textContent='';
+  var r=document.getElementById('retry');
+  if(r) r.addEventListener('click', function(){ loadError=null; setAllele().then(function(){ runProtein(); }); });
+}
 function setAllele(){
   loading=true;
   document.getElementById('statdot').className='dot';
@@ -1248,11 +1408,14 @@ function setAllele(){
   return NUG.load(sel.value).then(function(){
     loading=false; setBusy(false);
     document.getElementById('statdot').className='dot on';
+    document.getElementById('holderpill').textContent=alleleLabel();
+    loadError=null;
     runControls();
   }).catch(function(e){
     loading=false; setBusy(false);
-    document.getElementById('statdot').className='dot';
-    document.getElementById('count').textContent='Could not load that network ('+e.message+').';
+    document.getElementById('statdot').className='dot bad';
+    loadError = e.message;
+    showError();
   });
 }
 function setBusy(b){
@@ -1272,29 +1435,51 @@ var results=[], selected=-1, mode='prot', REF=null;
 function setMode(m){
   if(m===mode){                       // returning to the tab you were on keeps your results
     document.getElementById('pane-prot').hidden = (m!=='prot');
-    document.getElementById('howto-prot').hidden = (m!=='prot');
-    document.getElementById('howto-dec').hidden = (m!=='dec');
     document.getElementById('pane-dec').hidden = (m!=='dec');
     return;
   }
   mode=m;
   document.getElementById('pane-prot').hidden = (m!=='prot');
-  document.getElementById('howto-prot').hidden = (m!=='prot');
-  document.getElementById('howto-dec').hidden = (m!=='dec');
   document.getElementById('pane-dec').hidden = (m!=='dec');
   results=[]; selected=-1; drawRows();
 }
-var TABS=[['t-prot','view-work'],['t-dec','view-work'],['t-3d','view-3d'],['t-info','view-info']];
+var TABS=[['t-hla','view-hla'],['t-prot','view-work'],['t-res','view-res'],['t-3d','view-3d'],['t-info','view-info']];
+var VIEWS=['view-home','view-hla','view-work','view-res','view-3d','view-info'];
+function showView(v){
+  VIEWS.forEach(function(x){ document.getElementById(x).hidden=(x!==v); });
+  document.getElementById('tabstrip').hidden = (v==='view-home');
+  if(v==='view-res') setTimeout(drawMap,30);
+  if(v==='view-3d' && viewer) setTimeout(function(){ viewer.resize(); viewer.render(); }, 30);
+}
 function showTab(id){
   TABS.forEach(function(t){ document.getElementById(t[0]).setAttribute('aria-pressed', t[0]===id?'true':'false'); });
-  var want=TABS.filter(function(t){ return t[0]===id; })[0][1];
-  ['view-work','view-3d','view-info'].forEach(function(v){ document.getElementById(v).hidden=(v!==want); });
-  if(want==='view-3d' && viewer) setTimeout(function(){ viewer.resize(); viewer.render(); }, 30);
+  var row=TABS.filter(function(t){ return t[0]===id; })[0];
+  if(row) showView(row[1]);
 }
-document.getElementById('t-prot').addEventListener('click', function(){ showTab('t-prot'); setMode('prot'); });
-document.getElementById('t-dec').addEventListener('click', function(){ showTab('t-dec'); setMode('dec'); });
-document.getElementById('t-3d').addEventListener('click', function(){ showTab('t-3d'); });
-document.getElementById('t-info').addEventListener('click', function(){ showTab('t-info'); });
+function showHome(){
+  TABS.forEach(function(t){ document.getElementById(t[0]).setAttribute('aria-pressed','false'); });
+  showView('view-home');
+}
+document.getElementById('startbtn').addEventListener('click', function(){ showTab('t-hla'); });
+document.getElementById('homelink').addEventListener('click', showHome);
+document.getElementById('holderpill').addEventListener('click', function(){ showTab('t-hla'); });
+TABS.forEach(function(t){
+  document.getElementById(t[0]).addEventListener('click', function(){ showTab(t[0]); });
+});
+Array.prototype.forEach.call(document.querySelectorAll('.nextbtn'), function(btn){
+  btn.addEventListener('click', function(){ showTab(btn.getAttribute('data-next')); });
+});
+
+/* the two kinds of scan */
+function setSeg(which){
+  setMode(which);
+  document.getElementById('t-seg-prot').setAttribute('aria-pressed', which==='prot'?'true':'false');
+  document.getElementById('t-seg-dec').setAttribute('aria-pressed', which==='dec'?'true':'false');
+  document.getElementById('runprot').hidden = (which!=='prot');
+  document.getElementById('rundec').hidden  = (which!=='dec');
+}
+document.getElementById('t-seg-prot').addEventListener('click', function(){ setSeg('prot'); });
+document.getElementById('t-seg-dec').addEventListener('click', function(){ setSeg('dec'); });
 document.getElementById('loadjo1').addEventListener('click', function(){
   document.getElementById('protseq').value=JO1_PROTEIN;
 });
@@ -1322,6 +1507,7 @@ function chunked(items, step, done){
 }
 
 function runProtein(){
+  if(loadError){ showError(); return; }
   var seq=clean(document.getElementById('protseq').value);
   var w=parseInt(document.getElementById('win').value,10);
   if(seq.length<w){ document.getElementById('count').textContent='Paste a protein at least '+w+' residues long.'; return; }
@@ -1337,7 +1523,7 @@ function runProtein(){
   }
   chunked(jobs, 40, function(){
     results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
-    REF=null; drawRows();
+    REF=null; drawRows(); showTab('t-res');
   });
 }
 
@@ -1363,7 +1549,7 @@ function runDecoy(){
     if(f==='better') results=results.filter(function(r){ return r.ic50!=null && REF.ic50!=null && r.ic50<REF.ic50; });
     if(f==='decoy')  results=results.filter(function(r){ return r.ic50!=null && REF.ic50!=null && r.ic50<=REF.ic50 && r.faceChanged; });
     results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
-    drawRows();
+    drawRows(); showTab('t-res');
   });
 }
 document.getElementById('runprot').addEventListener('click', runProtein);
@@ -1398,9 +1584,105 @@ function drawRows(){
     if(isDec && REF) note += ' The slice itself: '+nm(REF.ic50)+' nM.';
   }
   document.getElementById('count').textContent=note;
+  buildMap();
   if(shown.length) select(selected>=0&&selected<shown.length?selected:0);
-  else document.getElementById('detail').innerHTML='<p class="tiny" style="margin:0">Run a scan.</p>';
+  else { document.getElementById('detail').innerHTML='<p class="tiny" style="margin:0">Run a scan.</p>';
+         document.getElementById('mapnm').textContent='\u2014';
+         document.getElementById('maplab').textContent='tap the map';
+         drawMap(); }
 }
+/* ===== the protein map: grip strength along the whole protein ===== */
+var MAP=[];
+function buildMap(){
+  MAP = results.map(function(r,i){ return {i:i, x:(r.start==null?i:r.start), pct:strengthPct(r.ic50), r:r}; })
+               .filter(function(d){ return d.r.ic50!=null; })
+               .sort(function(a,b){ return a.x-b.x; });
+}
+function cssv(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function drawMap(){
+  var c=document.getElementById('map'); if(!c) return;
+  var W=c.parentNode.clientWidth-20; if(W<60) return;
+  var H=150, dpr=window.devicePixelRatio||1;
+  c.width=Math.round(W*dpr); c.height=Math.round(H*dpr);
+  c.style.width=W+'px'; c.style.height=H+'px';
+  var g=c.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+  var gold=cssv('--gold')||'#b5791a', line=cssv('--line')||'#d2d8e0',
+      mute=cssv('--mute')||'#5a6472', panel=cssv('--panel')||'#fff';
+  var pad=2, top=10, base=H-18, span=base-top;
+  if(!MAP.length){
+    g.fillStyle=mute; g.font='12px '+(cssv('--sans')||'sans-serif');
+    g.fillText('Run a scan in step 2.',pad,base/2); return;
+  }
+  var xs=MAP[0].x, xe=MAP[MAP.length-1].x, rng=Math.max(1,xe-xs);
+  function px(x){ return pad + (x-xs)/rng*(W-pad*2); }
+  function py(p){ return base - p/100*span; }
+
+  // the "tight" reference line at 500 nM
+  var ref=py(strengthPct(500));
+  g.strokeStyle=line; g.lineWidth=1; g.setLineDash([3,4]);
+  g.beginPath(); g.moveTo(pad,ref); g.lineTo(W-pad,ref); g.stroke(); g.setLineDash([]);
+  g.fillStyle=mute; g.font='9px '+(cssv('--mono')||'monospace');
+  g.fillText('tight',pad+1,ref-4);
+
+  // the skyline
+  g.beginPath(); g.moveTo(px(MAP[0].x),base);
+  MAP.forEach(function(d){ g.lineTo(px(d.x),py(d.pct)); });
+  g.lineTo(px(MAP[MAP.length-1].x),base); g.closePath();
+  var grd=g.createLinearGradient(0,top,0,base);
+  grd.addColorStop(0,gold+'66'); grd.addColorStop(1,gold+'10');
+  g.fillStyle=grd; g.fill();
+  g.beginPath();
+  MAP.forEach(function(d,k){ var X=px(d.x), Y=py(d.pct); if(k)g.lineTo(X,Y); else g.moveTo(X,Y); });
+  g.strokeStyle=gold; g.lineWidth=2; g.lineJoin='round'; g.stroke();
+
+  // the peak, labelled
+  var pk=MAP.reduce(function(a,b){ return b.pct>a.pct?b:a; },MAP[0]);
+  g.beginPath(); g.arc(px(pk.x),py(pk.pct),4,0,6.2832);
+  g.fillStyle=gold; g.fill(); g.strokeStyle=panel; g.lineWidth=2; g.stroke();
+  g.fillStyle=mute; g.font='10px '+(cssv('--mono')||'monospace');
+  var lt=pk.r.name, lw=g.measureText(lt).width,
+      lx=Math.min(Math.max(px(pk.x)-lw/2,pad),W-pad-lw);
+  g.fillText(lt,lx,Math.max(9,py(pk.pct)-9));
+
+  // where you are
+  var sel=MAP.filter(function(d){ return d.i===selected; })[0];
+  if(sel){
+    var X=px(sel.x);
+    g.strokeStyle=cssv('--ink')||'#141922'; g.lineWidth=1.5;
+    g.beginPath(); g.moveTo(X,top-6); g.lineTo(X,base); g.stroke();
+    g.beginPath(); g.arc(X,py(sel.pct),5,0,6.2832);
+    g.fillStyle=cssv('--ink')||'#141922'; g.fill();
+    g.strokeStyle=panel; g.lineWidth=2; g.stroke();
+  }
+  // baseline
+  g.strokeStyle=line; g.lineWidth=1;
+  g.beginPath(); g.moveTo(pad,base+.5); g.lineTo(W-pad,base+.5); g.stroke();
+
+  document.getElementById('mapl').textContent=(xs+1);
+  document.getElementById('mapr').textContent=(xe+1);
+  c._px={xs:xs,rng:rng,pad:pad,W:W};
+}
+function mapPick(ev){
+  var c=document.getElementById('map'), m=c._px; if(!m||!MAP.length) return;
+  var rect=c.getBoundingClientRect();
+  var cx=(ev.touches?ev.touches[0].clientX:ev.clientX)-rect.left;
+  var want=m.xs + (cx-m.pad)/Math.max(1,m.W-m.pad*2)*m.rng;
+  var best=MAP[0];
+  MAP.forEach(function(d){ if(Math.abs(d.x-want)<Math.abs(best.x-want)) best=d; });
+  select(best.i);
+  var card=document.querySelector('#rows .card[data-i="'+best.i+'"]');
+  if(card) card.scrollIntoView({block:'nearest'});
+}
+(function(){
+  var c=document.getElementById('map'); if(!c) return;
+  var down=false;
+  c.addEventListener('pointerdown',function(e){ down=true; c.setPointerCapture&&c.setPointerCapture(e.pointerId); mapPick(e); });
+  c.addEventListener('pointermove',function(e){ if(down) mapPick(e); });
+  c.addEventListener('pointerup',function(){ down=false; });
+  c.addEventListener('pointercancel',function(){ down=false; });
+  window.addEventListener('resize',function(){ drawMap(); });
+})();
+
 function verdict(r,isDec){
   if(r.ic50==null) return {k:'weak',t:'no prediction'};
   if(isDec && REF && REF.ic50!=null){
@@ -1425,6 +1707,9 @@ document.getElementById('rows').addEventListener('keydown', function(e){
 function select(i){
   selected=i;
   var r=results[i]; if(!r) return;
+  document.getElementById('mapnm').textContent=nm(r.ic50)+' nM';
+  document.getElementById('maplab').textContent=r.name+' \u00b7 '+verdict(r,mode==='dec').t;
+  drawMap();
   Array.prototype.forEach.call(document.querySelectorAll('#rows .card'), function(c){
     c.setAttribute('aria-selected', c.getAttribute('data-i')===String(i)?'true':'false');
   });
@@ -1676,8 +1961,9 @@ grip.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ 
 document.getElementById('protseq').value=JO1_PROTEIN;
 paintRegister(register(JO1));
 boot3D();
-showTab('t-prot');
-setAllele().then(function(){ setMode('prot'); runProtein(); });
+showHome();
+setSeg('prot');
+setAllele();
 (function(){
   var standalone = window.navigator.standalone === true ||
                    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
@@ -1688,6 +1974,3 @@ setAllele().then(function(){ setMode('prot'); runProtein(); });
 window.NUG=NUG;
 })();
 </script>
-
-</body>
-</html>
