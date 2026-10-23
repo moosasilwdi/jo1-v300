@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>JO-One</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,7 +68,7 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   background:var(--bg); border-radius:38px; border:1px solid var(--frame);
   box-shadow:0 28px 70px rgba(0,0,0,.45), 0 2px 0 var(--frame) inset;
 }
-@media (max-width:520px){
+@media (max-width:520px), (pointer:coarse) and (max-width:1000px){
   body{display:block}
   .device{width:100%;height:100%;border-radius:0;border:0;box-shadow:none}
 }
@@ -388,7 +389,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
 <div class="device">
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V900</span></button>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V1000</span></button>
   <span class="dot" id="statdot" title="network status"></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder">—</button>
   <button type="button" class="modebtn" id="modebtn" title="Plain words or the numbers"
@@ -709,7 +710,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V900 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V1000 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
     </div>
@@ -2141,9 +2142,8 @@ function styleReal(surface){
   viewer.setStyle({},{cartoon:{color:cssv('--ink'),opacity:0.42,thickness:0.5}});
   viewer.removeAllShapes(); viewer.removeAllLabels();
 
-  // the peptide lying in the measured groove
-  viewer.setStyle({chain:'C'},{stick:{radius:0.26,color:cssv('--mute')},
-                               sphere:{scale:0.30,color:cssv('--mute')}});
+  // the peptide lying in the measured groove - solid, so the teeth read as shapes
+  viewer.setStyle({chain:'C'},{sphere:{scale:0.95,color:cssv('--ink')}});
 
   if(anchorsOn){
     REAL_POCKETS.forEach(function(pk){
@@ -2193,8 +2193,9 @@ function useReal(text, fromCache){
     viewer.addModel(text,'pdb');
     isModel=false;
     document.getElementById('molsrc').textContent =
-      RCSB_ID+' \u00b7 HLA-DR3 measured by X-ray, 1995 \u00b7 real atoms'
-      + (fromCache ? ' \u00b7 from this device' : '');
+      RCSB_ID+' \u00b7 measured atoms \u00b7 '
+      + 'dark = the piece \u00b7 coloured = the four holes that hold it'
+      + (fromCache ? '' : '');
     styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
     viewer.rotate(-18,'x'); viewer.render();
