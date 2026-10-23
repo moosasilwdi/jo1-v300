@@ -55,6 +55,8 @@
   --backdrop:#04060a; --frame:#1d2530;
 }
 *{box-sizing:border-box}
+/* anything hidden stays hidden, even where a rule sets display */
+[hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans);line-height:1.45;font-size:14px;
   display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -88,19 +90,62 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;
   padding:10px 10px 8px;margin:0 0 12px;overflow:hidden;
   position:sticky;top:-14px;z-index:5;box-shadow:var(--raise)}
+#view-res.unpin .mapwrap{position:static}
 .mapwrap canvas{display:block;width:100%;cursor:crosshair;touch-action:pan-y}
 .maphead{display:flex;align-items:baseline;gap:8px;margin:0 0 7px}
 .maphead .big{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--ink);line-height:1;
   letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .maphead .lab{font-size:11px;color:var(--mute)}
-.mapfoot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
-  color:var(--mute);margin-top:5px;font-variant-numeric:tabular-nums}
+.mapfoot{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);
+  font-size:10px;color:var(--mute);margin-top:5px;font-variant-numeric:tabular-nums}
+.maptools{display:flex;justify-content:space-between;gap:10px;margin-top:9px}
+.maptools .pair{display:flex;gap:6px}
+.maptools button{flex:1;min-width:52px;padding:9px 0;font-family:var(--sans);font-size:15px;
+  line-height:1;color:var(--ink)}
+.maptools button:disabled{opacity:.35}
+.ccmain{width:100%;margin-top:10px;font-size:13.5px;padding:12px 10px}
+#cc2,#rankbtn{position:relative}
+#cc2[data-busy] span,#rankbtn[data-done] span{visibility:hidden}
+#cc2[data-busy]::after,#rankbtn[data-done]::after{
+  position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+  text-align:center;padding:0 10px}
+#cc2[data-busy]::after{content:"Checking all 117\2026"}
+#rankbtn[data-done]::after{content:"Narrow again"}
+#cc2prog{margin-top:8px}
+.selband{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+  margin:-2px 0 10px;padding:9px 11px;border-radius:10px;
+  border:1px solid var(--line);border-left:3px solid var(--line);background:var(--sunk)}
+.selband b{font-family:var(--sans);font-size:13px;font-weight:600}
+.selband span{font-family:var(--mono);font-size:10.5px;color:var(--mute)}
+.selband.good{border-color:color-mix(in srgb,var(--ok) 40%,var(--line));border-left-color:var(--ok)}
+.selband.good b{color:var(--ok)}
+.selband.mid{border-color:color-mix(in srgb,var(--p6) 40%,var(--line));border-left-color:var(--p6)}
+.selband.mid b{color:var(--p6)}
+.selband.bad{border-color:color-mix(in srgb,var(--warn) 45%,var(--line));border-left-color:var(--warn);
+  background:var(--warnbg)}
+.selband.bad b{color:var(--warn)}
 .steplede{font-size:13px;color:var(--mute);line-height:1.45;margin:0 0 12px}
 .steplede b{color:var(--ink)}
 .holderpill{font-family:var(--mono);font-size:11.5px;padding:6px 11px;border-radius:999px;box-shadow:var(--lift);
   border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;
   margin-left:auto;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .holderpill:hover{border-color:var(--gold)}
+.modebtn{flex:0 0 auto;padding:6px 11px;border-radius:999px;font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  background:var(--panel);border:1px solid var(--line);color:var(--mute);
+  cursor:pointer;box-shadow:var(--lift);white-space:nowrap}
+.modebtn:hover{border-color:var(--gold);color:var(--gold)}
+:root[data-mode="abstract"] .modebtn{color:var(--gold);border-color:var(--gold);
+  background:color-mix(in srgb,var(--gold) 10%,var(--panel))}
+
+/* Abstract hides the laboratory wording and shows the plain one */
+.abs-only{display:none}
+:root[data-mode="abstract"] .abs-only{display:revert}
+:root[data-mode="abstract"] .sci-only{display:none!important}
+:root[data-mode="abstract"] .card .nmv{display:none}
+:root[data-mode="abstract"] .card .meter .trk{height:9px;border-radius:5px}
+:root[data-mode="abstract"] .maphead .big{font-size:17px;font-family:var(--sans);
+  font-weight:700;letter-spacing:0}
 .themebtn{flex:0 0 auto;width:32px;height:32px;padding:0;display:inline-flex;align-items:center;
   justify-content:center;border-radius:50%;
   background:color-mix(in srgb,var(--mauve) 12%,var(--panel));
@@ -119,7 +164,15 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .home{display:flex;flex-direction:column;align-items:center;text-align:center;padding-block:10px 0}
 .hero{width:92px;height:92px;margin-bottom:16px;border-radius:21px;box-shadow:0 14px 30px -14px rgba(0,0,0,.6)}
 .hometitle{font-size:30px;font-weight:700;letter-spacing:-.025em;margin:0;text-wrap:balance}
-.homelede{color:var(--mute);max-width:28ch;margin:9px 0 26px;font-size:14.5px;line-height:1.45;text-wrap:balance}
+.homelede{color:var(--mute);max-width:28ch;margin:9px 0 12px;font-size:14.5px;line-height:1.45;text-wrap:balance}
+.homeclaim{max-width:34ch;margin:0 0 24px;font-size:12.5px;line-height:1.5;color:var(--mute);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
+.howto{margin:0}
+.howto dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--gold);margin-top:11px}
+.howto dt:first-child{margin-top:0}
+.howto dd{margin:3px 0 0;font-size:12.5px;line-height:1.5;color:var(--mute)}
+.howto dd b{color:var(--ink)}
 .steps{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:11px;width:100%;text-align:left}
 .steps li{display:flex;align-items:center;gap:13px;background:var(--panel);border:1px solid var(--line);
   border-radius:13px;padding:13px 14px;box-shadow:var(--raise)}
@@ -231,6 +284,16 @@ input[type=file]{display:none}
   color:var(--mute);margin:0 0 10px;align-items:center}
 .anchkey span{display:inline-flex;align-items:center;gap:4px}
 .anchkey b{display:inline-block;width:9px;height:9px;border-radius:3px}
+.anchkey i{font-style:normal}
+.narrow{margin:0 0 12px}
+.narrow .go{width:100%;font-size:13.5px;padding:12px 10px}
+.sortrow{display:flex;gap:7px;margin-top:10px}
+.sortrow button{flex:1;font-size:12.5px;padding:8px 6px}
+.selchip{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;white-space:nowrap;
+  padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.selchip.s0{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.selchip.s1{color:var(--p6);border-color:color-mix(in srgb,var(--p6) 45%,var(--line))}
+.selchip.s2{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 50%,var(--line))}
 .card .pep{grid-column:1/-1;font-family:var(--mono);font-size:14px;letter-spacing:.07em;color:var(--ink);
   overflow-x:auto;white-space:nowrap;padding-bottom:1px}
 .card .meter{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:3px}
@@ -239,10 +302,12 @@ input[type=file]{display:none}
 .card .vl{display:block;height:100%;background:var(--gold)}
 .card .nmv{font-family:var(--mono);font-size:14px;font-weight:600;min-width:50px;text-align:right;
   font-variant-numeric:tabular-nums}
-.card .tagrow{grid-column:1/-1;margin-top:5px}
-.vd{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;white-space:nowrap;
-  display:inline-flex;align-items:center;gap:5px;color:var(--mute)}
-.vd::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 6px}
+.card .tagrow{grid-column:1/-1;margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vd{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--mute);
+  display:inline;overflow-wrap:anywhere}
+.vd::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:currentColor;margin-right:5px}
+.card .vd{white-space:nowrap}
 .vd.better{color:var(--ok)}
 .vd.same{color:var(--p6)}
 .vd.weak{color:var(--mute)}
@@ -256,6 +321,7 @@ input[type=file]{display:none}
 .sheet{position:sticky;bottom:0;margin-top:12px;background:var(--panel);
   border:1px solid var(--line);border-radius:12px;padding:11px 13px;
   box-shadow:0 -8px 22px color-mix(in srgb,var(--ink) 14%,transparent)}
+.sheet[data-open="1"]{position:static;box-shadow:var(--raise)}
 .sheet .grip{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
 .sheet .grip h3{margin:0;flex:0 0 auto}
 .sheet .grip .sum{flex:1;min-width:0;font-family:var(--mono);font-size:12px;color:var(--ink);
@@ -322,9 +388,11 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
 <div class="device">
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V500</span></button>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V900</span></button>
   <span class="dot" id="statdot" title="network status"></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder">—</button>
+  <button type="button" class="modebtn" id="modebtn" title="Plain words or the numbers"
+          aria-label="Switch between Abstract and Science">Abstract</button>
   <button type="button" class="themebtn" id="themebtn" title="Light or dark" aria-label="Switch between light and dark">
     <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg>
     <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z"/></svg>
@@ -347,6 +415,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       <svg class="hero" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg>
       <h1 class="hometitle">JO&#8209;One</h1>
       <p class="homelede">Which piece of a protein does the immune system grip?</p>
+      <p class="homeclaim">A selectivity filter. It scores every slice of a protein against
+      117 HLA class II types and flags the ones that grip too many.</p>
 
       <ol class="steps">
         <li>
@@ -387,7 +457,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
   </div>
   <div class="view" id="view-hla">
     <div class="inner">
-      <p class="steplede"><b>Step 1 of 4</b> &middot; whose holder</p>
+      <p class="steplede sci-only"><b>Step 1 of 4</b> &middot; whose holder</p>
+      <p class="steplede abs-only"><b>Step 1 of 4</b> &middot; whose body are we testing</p>
       <div class="panel">
         <h3>HLA type</h3>
         <select id="allele" aria-label="HLA type" style="width:100%"></select>
@@ -408,7 +479,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-work">
     <div class="inner">
-      <p class="steplede"><b>Step 2 of 4</b> &middot; which protein</p>
+      <p class="steplede sci-only"><b>Step 2 of 4</b> &middot; which protein</p>
+      <p class="steplede abs-only"><b>Step 2 of 4</b> &middot; which protein to cut up</p>
       <p class="tiny" id="installhint" style="display:none;margin:0 0 10px">Keep it as an app: tap <b>Share</b>, then <b>Add to Home Screen</b>.</p>
 
       <div class="segs">
@@ -451,20 +523,43 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
   <div class="view" id="view-res">
     <div class="inner">
       <div class="mapwrap">
+        <div class="selband" id="selband" hidden></div>
         <div class="maphead">
           <span class="big" id="mapnm">—</span>
           <span class="lab" id="maplab">tap the map</span>
         </div>
         <canvas id="map" role="img" aria-label="Grip strength along the protein"></canvas>
-        <div class="mapfoot"><span id="mapl">1</span><span id="mapr"></span></div>
+        <div class="mapfoot"><span id="mapl">1</span><span id="mapzoom">whole protein</span><span id="mapr"></span></div>
+        <div class="maptools">
+          <div class="pair">
+            <button type="button" id="m-prev" aria-label="Previous slice" title="One slice back">&#9664;</button>
+            <button type="button" id="m-next" aria-label="Next slice" title="One slice forward">&#9654;</button>
+          </div>
+          <div class="pair">
+            <button type="button" id="m-out" aria-label="Zoom out" title="Zoom out">&minus;</button>
+            <button type="button" id="m-in" aria-label="Zoom in" title="Zoom in">+</button>
+          </div>
+        </div>
+        <button type="button" class="go ccmain" id="cc2"><span class="sci-only">Check this slice against all 117 types</span><span class="abs-only">Does this piece grip other people too?</span></button>
+        <div class="prog" id="cc2prog" hidden><i id="cc2bar"></i></div>
       </div>
       <p class="anchkey" id="anchkey" hidden>
-        <span><b style="background:var(--p1)"></b>P1</span>
-        <span><b style="background:var(--p4)"></b>P4</span>
-        <span><b style="background:var(--p6)"></b>P6</span>
-        <span><b style="background:var(--p9)"></b>P9</span>
-        <span style="color:var(--mute)">the four pockets that hold the slice</span>
+        <span><b style="background:var(--p1)"></b><i class="sci-only">P1</i></span>
+        <span><b style="background:var(--p4)"></b><i class="sci-only">P4</i></span>
+        <span><b style="background:var(--p6)"></b><i class="sci-only">P6</i></span>
+        <span><b style="background:var(--p9)"></b><i class="sci-only">P9</i></span>
+        <span class="sci-only" style="color:var(--mute)">the four pockets that hold the slice</span>
+        <span class="abs-only" style="color:var(--mute)">the four spots that do the holding</span>
       </p>
+      <div class="narrow">
+        <button type="button" class="go" id="rankbtn"><span class="sci-only">Narrow: rank the top 20 by selectivity</span><span class="abs-only">Narrow it down &mdash; find the fussiest pieces</span></button>
+        <div class="prog" id="rkprog" hidden><i id="rkbar"></i></div>
+        <p class="tiny" id="rknote" style="margin:8px 0 0" hidden></p>
+        <div class="sortrow" id="sortrow" hidden>
+          <button type="button" id="sort-sel" aria-pressed="true"><span class="sci-only">By selectivity</span><span class="abs-only">Fussiest first</span></button>
+          <button type="button" id="sort-str" aria-pressed="false"><span class="sci-only">By strength</span><span class="abs-only">Strongest first</span></button>
+        </div>
+      </div>
       <p class="tiny" id="count" style="margin:0 0 10px"></p>
       <div class="rowlist" id="rows"></div>
 
@@ -497,6 +592,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       <button type="button" id="b-surf" aria-pressed="false">Surface</button>
       <button type="button" id="b-spin" aria-pressed="false">Spin</button>
       <button type="button" id="b-reset">Reset</button>
+      <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
       <label class="drop" for="pdbin">Load .pdb</label>
       <input type="file" id="pdbin" accept=".pdb,.ent,.cif,.mmcif">
       <span class="key" style="margin:0 0 0 auto">
@@ -511,6 +607,48 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-info" hidden>
     <div class="inner">
+      <div class="panel">
+        <h3>What this is for</h3>
+        <p style="margin:0 0 8px"><b>A browser tool that screens peptide candidates against 117 HLA
+        class II types and flags the ones that bind too many &mdash; a selectivity filter, built on
+        published predictors.</b></p>
+        <p style="margin:0 0 8px">Scoring one HLA type at a time is what the established tools do, and
+        they do it well. The question this app adds is the next one: <b>does the same peptide also grip
+        everybody else's holder?</b> A peptide that grips many types would blunt normal defence against
+        germs, so a tight score on its own is not good news.</p>
+        <p class="tiny" style="margin:0">Every number here is a prediction, not a measurement &mdash; a
+        shortlist for the bench, never a result.</p>
+      </div>
+
+      <div class="panel">
+        <h3>How to use it</h3>
+        <dl class="howto">
+          <dt>1 &middot; Holder</dt>
+          <dd>Pick whose HLA type you are testing. Every number in the app depends on this one choice.
+          If you do not know yours, leave DRB1*03:01 &mdash; the type linked to anti-Jo-1.</dd>
+          <dt>2 &middot; Protein</dt>
+          <dd>Paste a protein, drop a FASTA file, or press <b>Load Jo-1</b>. Press <b>Scan</b> and every
+          window along it is scored.</dd>
+          <dt>3 &middot; Results</dt>
+          <dd>The map draws grip strength along the whole protein; peaks are the slices that grip.
+          Drag across it, or use <b>&#9664; &#9654;</b> to step one slice at a time and
+          <b>+ &minus;</b> to zoom in. Then press <b>Check this slice against all 117 types</b> &mdash;
+          that is the answer worth having.</dd>
+          <dt>4 &middot; Groove</dt>
+          <dd>The selected slice drawn in the holder's groove, with the four pockets marked.</dd>
+        </dl>
+      </div>
+
+      <div class="panel">
+        <h3>Reading the numbers</h3>
+        <p class="tiny" style="margin:0 0 6px">Strength is in nanomolar (nM). <b>Lower is tighter.</b>
+        Under 50 is very tight, under 500 tight, under 5 000 moderate, above that loose.</p>
+        <p class="tiny" style="margin:0">The 117-type check returns one of three verdicts.
+        <b>Selective</b> &mdash; it grips your holder and nothing else tightly.
+        <b>Mostly selective</b> &mdash; one or two others.
+        <b>Not selective</b> &mdash; three or more, which is the result that should stop you.</p>
+      </div>
+
       <div class="panel">
         <h3>Known pairs, checked live</h3>
         <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
@@ -571,7 +709,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V500 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V900 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
     </div>
@@ -1520,7 +1658,10 @@ function setMode(m){
   mode=m;
   document.getElementById('pane-prot').hidden = (m!=='prot');
   document.getElementById('pane-dec').hidden = (m!=='dec');
-  results=[]; selected=-1; drawRows();
+  results=[]; selected=-1; RANKED=false; SORTBY='str';
+  var sr=document.getElementById('sortrow'); if(sr) sr.hidden=true;
+  var rn=document.getElementById('rknote'); if(rn) rn.hidden=true;
+  drawRows();
 }
 var TABS=[['t-hla','view-hla'],['t-prot','view-work'],['t-res','view-res'],['t-3d','view-3d'],['t-info','view-info']];
 var VIEWS=['view-home','view-hla','view-work','view-res','view-3d','view-info'];
@@ -1528,7 +1669,10 @@ function showView(v){
   VIEWS.forEach(function(x){ document.getElementById(x).hidden=(x!==v); });
   document.getElementById('tabstrip').hidden = (v==='view-home');
   if(v==='view-res') setTimeout(drawMap,30);
-  if(v==='view-3d' && viewer) setTimeout(function(){ viewer.resize(); viewer.render(); }, 30);
+  if(v==='view-3d' && viewer) setTimeout(function(){
+    viewer.resize(); viewer.render();
+    if(typeof loadReal==='function') loadReal();   // try for the measured atoms
+  }, 30);
 }
 function showTab(id){
   TABS.forEach(function(t){ document.getElementById(t[0]).setAttribute('aria-pressed', t[0]===id?'true':'false'); });
@@ -1590,7 +1734,7 @@ function runProtein(){
   var seq=clean(document.getElementById('protseq').value);
   var w=parseInt(document.getElementById('win').value,10);
   if(seq.length<w){ document.getElementById('count').textContent='Paste a protein at least '+w+' residues long.'; return; }
-  results=[]; selected=-1;
+  results=[]; selected=-1; RANKED=false; SORTBY='str'; resetRank();
   var jobs=[];
   for(var s=0;s+w<=seq.length;s++){
     (function(start){
@@ -1611,7 +1755,7 @@ function runDecoy(){
   if(pep.length<9){ document.getElementById('count').textContent='A slice needs at least 9 residues.'; return; }
   var q=NUG.score(pep), reg=register(pep);
   REF={seq:pep, ic50:q?q.ic50:null, reg:reg, face:reg?reg.face:''};
-  results=[]; selected=-1;
+  results=[]; selected=-1; RANKED=false; SORTBY='str'; resetRank();
   var AAS='ACDEFGHIKLMNPQRSTVWY'.split(''), jobs=[];
   for(var i=0;i<pep.length;i++) AAS.forEach(function(a){
     if(a===pep[i]) return;
@@ -1655,16 +1799,24 @@ function drawRows(){
       + '<span class="pep">'+esc(r.seq)+'</span>'
       + '<span class="meter"><span class="trk"><span class="vl" style="width:'+strengthPct(r.ic50)+'%"></span></span>'
       + '<span class="nmv">'+nm(r.ic50)+'</span></span>'
-      + '<span class="tagrow"><span class="vd '+v.k+'">'+v.t+'</span></span>'
+      + '<span class="tagrow"><span class="vd '+v.k+'">'+v.t+'</span>'
+      + (r.sel==null ? '' : '<span class="selchip s'+(r.sel===0?0:(r.sel<=2?1:2))+'">'
+          + (r.sel===0 ? 'yours alone' : 'grips '+r.sel+' other'+(r.sel===1?'':'s'))+'</span>')
+      + '</span>'
       + '</div>';
   });
   tb.innerHTML = html || '<div class="empty">Nothing to show yet. Press Scan.</div>';
   var note='';
   if(results.length){
-    note = results.length+' slice'+(results.length===1?'':'s')
-         + (results.length>shown.length ? ' \u00b7 top '+shown.length : '')
-         + ' \u00b7 ' + alleleLabel() + ' \u00b7 lower nM is tighter.';
-    if(isDec && REF) note += ' The slice itself: '+nm(REF.ic50)+' nM.';
+    if(ABS){
+      note = results.length+' pieces checked \u00b7 the strongest grip is at the top \u00b7 '
+           + 'a longer bar means a tighter grip.';
+    } else {
+      note = results.length+' slice'+(results.length===1?'':'s')
+           + (results.length>shown.length ? ' \u00b7 top '+shown.length : '')
+           + ' \u00b7 ' + alleleLabel() + ' \u00b7 lower nM is tighter.';
+      if(isDec && REF) note += ' The slice itself: '+nm(REF.ic50)+' nM.';
+    }
   }
   document.getElementById('count').textContent=note;
   document.getElementById('anchkey').hidden = (isDec || !shown.length);
@@ -1676,7 +1828,20 @@ function drawRows(){
          drawMap(); }
 }
 /* ===== the protein map: grip strength along the whole protein ===== */
-var MAP=[];
+var MAP=[], ZOOM=1, ZMAX=16, bandFor=null;
+var ABS=false;   // Abstract: plain words instead of the laboratory numbers
+// the stretch of the protein the map is showing, centred on where you stand
+function mapWindow(){
+  if(!MAP.length) return null;
+  var xs=MAP[0].x, xe=MAP[MAP.length-1].x, full=Math.max(1,xe-xs);
+  var span=Math.max(8, Math.round(full/ZOOM));
+  var sel=MAP.filter(function(d){ return d.i===selected; })[0];
+  var c=sel ? sel.x : xs+full/2;
+  var a=Math.round(c-span/2), b=a+span;
+  if(a<xs){ a=xs; b=Math.min(xe,a+span); }
+  if(b>xe){ b=xe; a=Math.max(xs,b-span); }
+  return {a:a, b:b, pts:MAP.filter(function(d){ return d.x>=a && d.x<=b; })};
+}
 function buildMap(){
   MAP = results.map(function(r,i){ return {i:i, x:(r.start==null?i:r.start), pct:strengthPct(r.ic50), r:r}; })
                .filter(function(d){ return d.r.ic50!=null; })
@@ -1697,7 +1862,8 @@ function drawMap(){
     g.fillStyle=mute; g.font='12px '+(cssv('--sans')||'sans-serif');
     g.fillText('Run a scan in step 2.',pad,base/2); return;
   }
-  var xs=MAP[0].x, xe=MAP[MAP.length-1].x, rng=Math.max(1,xe-xs);
+  var win=mapWindow(), PTS=win.pts.length?win.pts:MAP;
+  var xs=win.a, xe=win.b, rng=Math.max(1,xe-xs);
   function px(x){ return pad + (x-xs)/rng*(W-pad*2); }
   function py(p){ return base - p/100*span; }
 
@@ -1709,19 +1875,19 @@ function drawMap(){
   g.fillText('tight',pad+1,ref-4);
 
   // the skyline
-  g.beginPath(); g.moveTo(px(MAP[0].x),base);
-  MAP.forEach(function(d){ g.lineTo(px(d.x),py(d.pct)); });
-  g.lineTo(px(MAP[MAP.length-1].x),base); g.closePath();
+  g.beginPath(); g.moveTo(px(PTS[0].x),base);
+  PTS.forEach(function(d){ g.lineTo(px(d.x),py(d.pct)); });
+  g.lineTo(px(PTS[PTS.length-1].x),base); g.closePath();
   var grd=g.createLinearGradient(0,top,0,base);
   grd.addColorStop(0,gold+'66'); grd.addColorStop(1,gold+'10');
   g.fillStyle=grd; g.fill();
   g.beginPath();
-  MAP.forEach(function(d,k){ var X=px(d.x), Y=py(d.pct); if(k)g.lineTo(X,Y); else g.moveTo(X,Y); });
+  PTS.forEach(function(d,k){ var X=px(d.x), Y=py(d.pct); if(k)g.lineTo(X,Y); else g.moveTo(X,Y); });
   g.strokeStyle=gold; g.lineWidth=2; g.lineJoin='round'; g.stroke();
 
   // where you are — drawn under the peak label so the label stays readable
-  var pk=MAP.reduce(function(a,b){ return b.pct>a.pct?b:a; },MAP[0]);
-  var sel=MAP.filter(function(d){ return d.i===selected; })[0];
+  var pk=PTS.reduce(function(a,b){ return b.pct>a.pct?b:a; },PTS[0]);
+  var sel=PTS.filter(function(d){ return d.i===selected; })[0];
   if(sel){
     var X=px(sel.x);
     g.strokeStyle=cssv('--ink')||'#141922'; g.lineWidth=1.5;
@@ -1742,9 +1908,15 @@ function drawMap(){
   // baseline
   g.strokeStyle=line; g.lineWidth=1;
   g.beginPath(); g.moveTo(pad,base+.5); g.lineTo(W-pad,base+.5); g.stroke();
+  if(PTS.length<=90){
+    PTS.forEach(function(d){ var X=px(d.x);
+      g.beginPath(); g.moveTo(X,base+1); g.lineTo(X,base+4); g.stroke(); });
+  }
 
   document.getElementById('mapl').textContent=(xs+1);
   document.getElementById('mapr').textContent=(xe+1);
+  var zl=document.getElementById('mapzoom');
+  if(zl) zl.textContent = (ZOOM>1 ? (xe-xs+1)+' of '+(MAP[MAP.length-1].x-MAP[0].x+1) : 'whole protein');
   c._px={xs:xs,rng:rng,pad:pad,W:W};
 }
 function mapPick(ev){
@@ -1758,6 +1930,24 @@ function mapPick(ev){
   var card=document.querySelector('#rows .card[data-i="'+best.i+'"]');
   if(card) card.scrollIntoView({block:'nearest'});
 }
+function mapStep(dir){
+  if(!MAP.length) return;
+  var k=-1;
+  for(var j=0;j<MAP.length;j++){ if(MAP[j].i===selected){ k=j; break; } }
+  if(k<0) k = (dir>0 ? -1 : MAP.length);
+  var n=k+dir;
+  if(n<0 || n>=MAP.length) return;
+  select(MAP[n].i);
+  var card=document.querySelector('#rows .card[data-i="'+MAP[n].i+'"]');
+  if(card) card.scrollIntoView({block:'nearest'});
+}
+function mapZoom(mult){
+  var z=ZOOM*mult;
+  ZOOM = Math.max(1, Math.min(ZMAX, z));
+  document.getElementById('m-in').disabled  = (ZOOM>=ZMAX);
+  document.getElementById('m-out').disabled = (ZOOM<=1);
+  drawMap();
+}
 (function(){
   var c=document.getElementById('map'); if(!c) return;
   var down=false;
@@ -1766,6 +1956,16 @@ function mapPick(ev){
   c.addEventListener('pointerup',function(){ down=false; });
   c.addEventListener('pointercancel',function(){ down=false; });
   window.addEventListener('resize',function(){ drawMap(); });
+  document.getElementById('m-prev').addEventListener('click',function(){ mapStep(-1); });
+  document.getElementById('m-next').addEventListener('click',function(){ mapStep(1); });
+  document.getElementById('m-out').addEventListener('click',function(){ mapZoom(0.5); });
+  document.getElementById('m-in').addEventListener('click',function(){ mapZoom(2); });
+  document.getElementById('m-out').disabled = true;
+  // the arrow keys walk the map too
+  document.getElementById('view-res').addEventListener('keydown', function(e){
+    if(e.key==='ArrowLeft'){ mapStep(-1); e.preventDefault(); }
+    else if(e.key==='ArrowRight'){ mapStep(1); e.preventDefault(); }
+  });
 })();
 
 function verdict(r,isDec){
@@ -1792,8 +1992,14 @@ document.getElementById('rows').addEventListener('keydown', function(e){
 function select(i){
   selected=i;
   var r=results[i]; if(!r) return;
-  document.getElementById('mapnm').textContent=nm(r.ic50)+' nM';
-  document.getElementById('maplab').textContent=r.name+' \u00b7 '+verdict(r,mode==='dec').t;
+  var vv=verdict(r,mode==='dec');
+  if(ABS){
+    document.getElementById('mapnm').textContent=vv.t.toUpperCase();
+    document.getElementById('maplab').textContent='piece '+r.name+' of the protein';
+  } else {
+    document.getElementById('mapnm').textContent=nm(r.ic50)+' nM';
+    document.getElementById('maplab').textContent=r.name+' \u00b7 '+vv.t;
+  }
   drawMap();
   Array.prototype.forEach.call(document.querySelectorAll('#rows .card'), function(c){
     c.setAttribute('aria-selected', c.getAttribute('data-i')===String(i)?'true':'false');
@@ -1811,7 +2017,7 @@ function select(i){
   }
   var d='<p style="margin:0 0 6px"><b class="mono">'+esc(r.seq)+'</b> <span class="tiny">'+esc(r.name)+'</span></p>'
       + '<p class="tiny" style="margin:0 0 4px">'+alleleLabel()+' · predicted '+nm(r.ic50)+' nM'
-      + (reg ? ' · core <span class="mono">'+reg.core+'</span> · T cell face <span class="mono">'+reg.face+'</span>' : '')
+      + (reg ? '<span class="sci-only"> · core <span class="mono">'+reg.core+'</span> · T cell face <span class="mono">'+reg.face+'</span></span>' : '')
       + (REF&&mode==='dec' ? ' · slice itself '+nm(REF.ic50)+' nM' : '')
       + '</p>'
       + (isDR3 && bars ? '<div class="pocketbars">'+bars+'</div>'
@@ -1819,8 +2025,10 @@ function select(i){
       + '<p class="tiny" style="margin:10px 0 0">'+readOut(r)+'</p>';
   document.getElementById('detail').innerHTML=d;
   var sum=document.getElementById('sheetsum');
-  if(sum) sum.textContent = r.seq+'  \u00b7  '+nm(r.ic50)+' nM';
+  if(sum) sum.textContent = ABS ? r.seq : (r.seq+'  \u00b7  '+nm(r.ic50)+' nM');
   var cc=document.getElementById('ccout'); if(cc) cc.innerHTML='';
+  var bd=document.getElementById('selband');
+  if(bd && bandFor !== r.seq) bd.hidden=true;
   paintRegister(reg);
   if(window.__showPeptide) window.__showPeptide(reg);
 }
@@ -1920,18 +2128,86 @@ function styleModel(surface){
   else viewer.removeAllSurfaces();
   viewer.render();
 }
+/* The residues that really line each pocket of a DR groove, by their own numbers
+   on the beta chain. These are measured positions, not a layout of mine. */
+var REAL_POCKETS=[
+  ['P1','--p1',[85,86]],
+  ['P4','--p4',[13,70,71,74]],
+  ['P6','--p6',[11,30]],
+  ['P9','--p9',[9,57]]
+];
 function styleReal(surface){
-  viewer.setStyle({},{cartoon:{colorscheme:'whiteCarbon',thickness:0.6}});
-  viewer.setStyle({chain:'C'},{stick:{radius:0.22,colorscheme:'yellowCarbon'},sphere:{scale:0.26}});
-  viewer.removeAllShapes();
-  if(surface) viewer.addSurface($3Dmol.SurfaceType.VDW,{opacity:0.5,color:'#cfd8e3'},{chain:['A','B']});
+  var anchorsOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  viewer.setStyle({},{cartoon:{color:cssv('--ink'),opacity:0.42,thickness:0.5}});
+  viewer.removeAllShapes(); viewer.removeAllLabels();
+
+  // the peptide lying in the measured groove
+  viewer.setStyle({chain:'C'},{stick:{radius:0.26,color:cssv('--mute')},
+                               sphere:{scale:0.30,color:cssv('--mute')}});
+
+  if(anchorsOn){
+    REAL_POCKETS.forEach(function(pk){
+      var col=cssv(pk[1]);
+      viewer.setStyle({chain:'B',resi:pk[2]},{sphere:{scale:0.95,color:col}});
+      var m=viewer.getModel(0);
+      var at=m.selectedAtoms({chain:'B',resi:pk[2][0],atom:'CA'});
+      if(at.length) viewer.addLabel(pk[0],{position:{x:at[0].x,y:at[0].y,z:at[0].z},
+        fontSize:11,fontColor:'#ffffff',backgroundColor:col,backgroundOpacity:0.95,
+        borderThickness:0,inFront:true});
+    });
+  }
+  if(surface) viewer.addSurface($3Dmol.SurfaceType.VDW,
+      {opacity:0.55,color:cssv('--sunk')},{chain:['A','B']});
   else viewer.removeAllSurfaces();
   viewer.render();
+}
+
+/* ---- the measured structure, fetched by the browser from the protein databank ---- */
+var RCSB_ID='1A6A', realTried=false;
+function loadReal(){
+  if(realTried || !viewer) return; realTried=true;
+  var cap=document.getElementById('molsrc');
+  var cached=null; try{ cached=localStorage.getItem('jo1-pdb-'+RCSB_ID); }catch(e){}
+  if(cached){ useReal(cached,true); return; }
+  cap.textContent='fetching the measured structure '+RCSB_ID+'\u2026';
+  var urls=['https://files.rcsb.org/download/'+RCSB_ID+'.pdb',
+            'https://files.rcsb.org/view/'+RCSB_ID+'.pdb'];
+  function attempt(i){
+    if(i>=urls.length){ realTried=false;
+      cap.textContent='could not reach the protein databank \u00b7 showing the scaled model';
+      return; }
+    fetch(urls[i]).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
+      .then(function(t){
+        if(t.indexOf('ATOM')<0) throw new Error('not a structure');
+        try{ localStorage.setItem('jo1-pdb-'+RCSB_ID,t); }catch(e){}
+        useReal(t,false);
+      })
+      .catch(function(){ attempt(i+1); });
+  }
+  attempt(0);
+}
+function useReal(text, fromCache){
+  try{
+    viewer.removeAllModels(); viewer.removeAllShapes(); viewer.removeAllSurfaces();
+    viewer.removeAllLabels();
+    viewer.addModel(text,'pdb');
+    isModel=false;
+    document.getElementById('molsrc').textContent =
+      RCSB_ID+' \u00b7 HLA-DR3 measured by X-ray, 1995 \u00b7 real atoms'
+      + (fromCache ? ' \u00b7 from this device' : '');
+    styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
+    viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
+    viewer.rotate(-18,'x'); viewer.render();
+    var tb=document.getElementById('b-real'); if(tb) tb.hidden=true;
+  }catch(e){
+    realTried=false;
+    document.getElementById('molsrc').textContent='could not read the structure \u00b7 showing the scaled model';
+  }
 }
 function reskin3d(){
   if(!viewer) return;
   viewer.setBackgroundColor(cssv('--sunk')||'#f3f6fa');
-  styleModel(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
+  restyle();
   viewer.render();
 }
 function restyle(){
@@ -1971,6 +2247,9 @@ document.getElementById('b-reset').addEventListener('click', function(){
   if(isModel){ viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); }
   viewer.render();
 });
+document.getElementById('b-real').addEventListener('click', function(){
+  realTried=false; loadReal();
+});
 document.getElementById('pdbin').addEventListener('change', function(e){
   var f=e.target.files&&e.target.files[0]; if(!f||!viewer) return;
   var rd=new FileReader();
@@ -1994,20 +2273,30 @@ document.getElementById('pdbin').addEventListener('change', function(e){
 function crossCheck(){
   var r = results[selected]; if(!r) return;
   var btn=document.getElementById('crosscheck'), stat=document.getElementById('ccstat'),
-      bar=document.getElementById('ccbar'), out=document.getElementById('ccout');
-  btn.disabled=true; out.innerHTML=''; stat.textContent='loading networks\u2026';
+      bar=document.getElementById('ccbar'), out=document.getElementById('ccout'),
+      btn2=document.getElementById('cc2'), bar2=document.getElementById('cc2bar'),
+      prog2=document.getElementById('cc2prog'), band=document.getElementById('selband');
+  btn.disabled=true; btn2.disabled=true; out.innerHTML='';
+  stat.textContent='loading networks\u2026';
+  prog2.hidden=false; band.hidden=true;
+  btn2.dataset.busy='1';
   var i=0, vals=[];
   function step(){
     if(i>=ALLELES.length){
-      bar.style.width='0%'; btn.disabled=false; stat.textContent='';
+      bar.style.width='0%'; bar2.style.width='0%'; prog2.hidden=true;
+      btn.disabled=false; btn2.disabled=false; stat.textContent='';
+      delete btn2.dataset.busy; btn2.removeAttribute('aria-label');
       render(); return;
     }
     var a=ALLELES[i];
     var after=function(){
       var q=NUG.scoreWith(r.seq, a.f);
       vals.push({label:a.label, ic50:q?q.ic50:null});
-      i++; bar.style.width=Math.round(i/ALLELES.length*100)+'%';
+      i++;
+      var pc=Math.round(i/ALLELES.length*100)+'%';
+      bar.style.width=pc; bar2.style.width=pc;
       stat.textContent=i+' of '+ALLELES.length;
+      btn2.setAttribute('aria-label','Checking '+i+' of '+ALLELES.length);
       (i%6===0) ? requestAnimationFrame(step) : step();
     };
     if(NUG.have(a.f)) after();
@@ -2032,10 +2321,119 @@ function crossCheck(){
       + 'Middle of the other 116: '+nm(med)+' nM. '
       + (tight.length ? 'Also tight on: <span class="mono">'+tight.slice(0,8).map(function(v){ return v.label+' ('+nm(v.ic50)+')'; }).join(', ')+(tight.length>8?', \u2026':'')+'</span>.' : '')
       + '</p></div>';
+
+    var head = tight.length===0 ? 'Selective'
+             : (tight.length<=2 ? 'Mostly selective' : 'Not selective');
+    var sub  = tight.length===0 ? 'grips this holder alone'
+             : 'also grips '+tight.length+' of the other 116';
+    band.className = 'selband ' + (tight.length===0?'good':(tight.length<=2?'mid':'bad'));
+    band.innerHTML = '<b>'+head+'</b><span>'+sub+'</span>';
+    band.hidden=false;
+    bandFor = r.seq;
   }
   step();
 }
 document.getElementById('crosscheck').addEventListener('click', crossCheck);
+document.getElementById('cc2').addEventListener('click', crossCheck);
+
+// ===== narrowing: run all 117 holders on the top slices, then rank by selectivity =====
+var RANKED=false, SORTBY='sel', RANKN=20;
+function resetRank(){
+  var sr=document.getElementById('sortrow'), rn=document.getElementById('rknote'),
+      bt=document.getElementById('rankbtn');
+  if(sr) sr.hidden=true;
+  if(rn){ rn.hidden=true; rn.textContent=''; }
+  if(bt) delete bt.dataset.done;
+}
+function rankSelectivity(){
+  if(!results.length) return;
+  var btn=document.getElementById('rankbtn'), bar=document.getElementById('rkbar'),
+      prog=document.getElementById('rkprog'), note=document.getElementById('rknote'),
+      srow=document.getElementById('sortrow');
+  var strength = results.slice().sort(function(a,b){
+    return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
+  var batch = strength.slice(0, Math.min(RANKN, strength.length))
+                      .filter(function(r){ return r.ic50!=null; });
+  if(!batch.length) return;
+  btn.disabled=true; prog.hidden=false; note.hidden=false;
+  var target=alleleLabel(), si=0, ai=0, done=0, total=batch.length*ALLELES.length;
+
+  function tick(){
+    if(si>=batch.length){ finish(); return; }
+    var r=batch[si];
+    if(!r._other) r._other={tight:0, worst:null, n:0};
+    if(ai>=ALLELES.length){ si++; ai=0; return tick(); }
+    var a=ALLELES[ai];
+    var score=function(){
+      var q=NUG.scoreWith(r.seq, a.f);
+      if(q && q.ic50!=null && a.label!==target){
+        r._other.n++;
+        if(q.ic50<500) r._other.tight++;
+        if(r._other.worst==null || q.ic50<r._other.worst) r._other.worst=q.ic50;
+      }
+      ai++; done++;
+      if(done%40===0){
+        bar.style.width=Math.round(done/total*100)+'%';
+        note.textContent='Checking slice '+(si+1)+' of '+batch.length+
+                         ' \u2014 '+done+' of '+total+' scores';
+        requestAnimationFrame(tick);
+      } else tick();
+    };
+    if(NUG.have(a.f)) score();
+    else NUG.load(a.f).then(score).catch(function(){ ai++; done++; tick(); });
+  }
+  function finish(){
+    batch.forEach(function(r){ r.sel = r._other ? r._other.tight : null; delete r._other; });
+    bar.style.width='0%'; prog.hidden=true; btn.disabled=false;
+    btn.dataset.done='1';
+    RANKED=true; SORTBY='sel'; srow.hidden=false;
+    setSort('sel');
+    var clean=batch.filter(function(r){ return r.sel===0; }).length;
+    var mild =batch.filter(function(r){ return r.sel===1||r.sel===2; }).length;
+    note.textContent = ABS
+      ? ('Checked '+batch.length+' pieces against all 117 people. '
+         + clean+' grip only this body. '+mild+' also grip one or two others. '
+         + (batch.length-clean-mild)+' grip three or more \u2014 those are the ones to drop.')
+      : (batch.length+' slices checked against all 117 holders \u00b7 '
+         + clean+' grip '+target+' alone \u00b7 '+mild+' grip one or two others \u00b7 '
+         + (batch.length-clean-mild)+' grip three or more.');
+  }
+  tick();
+}
+function sortResults(){
+  results.sort(function(a,b){
+    if(SORTBY==='sel'){
+      var as=(a.sel==null?999:a.sel), bs=(b.sel==null?999:b.sel);
+      if(as!==bs) return as-bs;
+    }
+    return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50;
+  });
+}
+function setSort(k){
+  SORTBY=k;
+  document.getElementById('sort-sel').setAttribute('aria-pressed', k==='sel'?'true':'false');
+  document.getElementById('sort-str').setAttribute('aria-pressed', k==='str'?'true':'false');
+  sortResults(); selected=-1; drawRows();
+}
+document.getElementById('rankbtn').addEventListener('click', rankSelectivity);
+document.getElementById('sort-sel').addEventListener('click', function(){ setSort('sel'); });
+document.getElementById('sort-str').addEventListener('click', function(){ setSort('str'); });
+
+// the map holds the top while the list is beside it, then lets go
+(function(){
+  var vr=document.getElementById('view-res'), rows=document.getElementById('rows');
+  if(!vr||!rows) return;
+  var pending=false;
+  vr.addEventListener('scroll', function(){
+    if(pending) return; pending=true;
+    requestAnimationFrame(function(){
+      pending=false;
+      var mw=vr.querySelector('.mapwrap'); if(!mw) return;
+      var listEnd = rows.offsetTop + rows.offsetHeight - vr.scrollTop;
+      vr.classList.toggle('unpin', listEnd < mw.offsetHeight + 24);
+    });
+  }, {passive:true});
+})();
 
 var sheet=document.getElementById('sheetwrap'), grip=document.getElementById('sheetgrip');
 sheet.setAttribute('data-open','0');
@@ -2063,6 +2461,24 @@ setAllele();
   var saved=null; try{ saved=localStorage.getItem(KEY); }catch(e){}
   // pin the attribute to whatever is showing, so the sun/moon icon is never ambiguous
   R.setAttribute('data-theme', (saved==='light'||saved==='dark') ? saved : (sysDark()?'dark':'light'));
+  var MKEY='jo1-mode', mb=document.getElementById('modebtn');
+  function applyMode(m){
+    ABS = (m==='abstract');
+    R.setAttribute('data-mode', m);
+    mb.textContent = ABS ? 'Abstract' : 'Science';
+    mb.title = ABS ? 'Showing plain words \u2014 tap for the numbers'
+                   : 'Showing the numbers \u2014 tap for plain words';
+    if(typeof results!=='undefined' && results.length) drawRows();
+    else if(typeof drawMap==='function') drawMap();
+  }
+  var m0='science'; try{ var sm=localStorage.getItem(MKEY); if(sm==='abstract'||sm==='science') m0=sm; }catch(e){}
+  applyMode(m0);
+  mb.addEventListener('click', function(){
+    var next = ABS ? 'science' : 'abstract';
+    try{ localStorage.setItem(MKEY,next); }catch(e){}
+    applyMode(next);
+  });
+
   var tb=document.getElementById('themebtn');
   if(tb) tb.addEventListener('click', function(){
     var now=R.getAttribute('data-theme') || (sysDark()?'dark':'light');
