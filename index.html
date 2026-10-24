@@ -389,7 +389,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
 <div class="device">
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V1000</span></button>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V1100</span></button>
   <span class="dot" id="statdot" title="network status"></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder">—</button>
   <button type="button" class="modebtn" id="modebtn" title="Plain words or the numbers"
@@ -589,9 +589,9 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
     <div id="mol"></div>
     <div class="caption" id="molsrc">scaled geometric model</div>
     <div class="vtools">
-      <button type="button" id="b-anch" aria-pressed="true">Anchors</button>
+      <button type="button" id="b-anch" aria-pressed="true">Holes</button>
+      <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
       <button type="button" id="b-surf" aria-pressed="false">Surface</button>
-      <button type="button" id="b-spin" aria-pressed="false">Spin</button>
       <button type="button" id="b-reset">Reset</button>
       <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
       <label class="drop" for="pdbin">Load .pdb</label>
@@ -710,7 +710,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V1000 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V1100 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
     </div>
@@ -2137,19 +2137,31 @@ var REAL_POCKETS=[
   ['P6','--p6',[11,30]],
   ['P9','--p9',[9,57]]
 ];
+/* The peptide measured in 1A6A is CLIP, residues 87-101, fifteen long - the same
+   length as a window here. Its P1 sits at Met91. So a slice of yours can be laid on
+   that measured path, letter for letter, P1 over P1. The path is measured; only the
+   side branches of your own letters are modelled, and the caption says so. */
+var CLIP_FIRST=87, CLIP_P1=91;
+var SIDE_VOL={G:0,A:27,S:29,C:44,D:40,P:41,N:44,T:51,E:62,V:54,Q:64,H:79,
+              M:94,I:93,L:93,K:100,R:148,F:115,Y:117,W:163};
+function sideRadius(aa){
+  var v=SIDE_VOL[aa]; if(!v) return 0;
+  return Math.cbrt(3*v/(4*Math.PI));
+}
 function styleReal(surface){
-  var anchorsOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
-  viewer.setStyle({},{cartoon:{color:cssv('--ink'),opacity:0.42,thickness:0.5}});
+  var holesOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  var teethOn = document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
+  viewer.setStyle({},{cartoon:{color:cssv('--ink'),opacity:0.40,thickness:0.5}});
+  viewer.setStyle({chain:'C'},{});
   viewer.removeAllShapes(); viewer.removeAllLabels();
+  var m=viewer.getModel(0);
 
-  // the peptide lying in the measured groove - solid, so the teeth read as shapes
-  viewer.setStyle({chain:'C'},{sphere:{scale:0.95,color:cssv('--ink')}});
+  if(teethOn) threadSlice(m);
 
-  if(anchorsOn){
+  if(holesOn){
     REAL_POCKETS.forEach(function(pk){
       var col=cssv(pk[1]);
       viewer.setStyle({chain:'B',resi:pk[2]},{sphere:{scale:0.95,color:col}});
-      var m=viewer.getModel(0);
       var at=m.selectedAtoms({chain:'B',resi:pk[2][0],atom:'CA'});
       if(at.length) viewer.addLabel(pk[0],{position:{x:at[0].x,y:at[0].y,z:at[0].z},
         fontSize:11,fontColor:'#ffffff',backgroundColor:col,backgroundOpacity:0.95,
@@ -2160,6 +2172,45 @@ function styleReal(surface){
       {opacity:0.55,color:cssv('--sunk')},{chain:['A','B']});
   else viewer.removeAllSurfaces();
   viewer.render();
+}
+
+/* lay the chosen slice on the measured path */
+function threadSlice(m){
+  var pep = (curReg && curReg.seq) ? curReg.seq : null;
+  var start = (curReg && curReg.start!=null) ? curReg.start : null;
+  var ink=cssv('--ink'), mute=cssv('--mute');
+  var anchorAt = {};
+  if(pep && start!=null){
+    anchorAt[start]='--p1'; anchorAt[start+3]='--p4';
+    anchorAt[start+5]='--p6'; anchorAt[start+8]='--p9';
+  }
+  var prev=null;
+  var n = pep ? Math.min(pep.length,15) : 15;
+  for(var i=0;i<n;i++){
+    // your letter i goes on the CLIP residue that holds the same position
+    var resi = pep ? (CLIP_P1 + (i-start)) : (CLIP_FIRST+i);
+    var ca=m.selectedAtoms({chain:'C',resi:resi,atom:'CA'});
+    if(!ca.length) continue;
+    var c={x:ca[0].x,y:ca[0].y,z:ca[0].z};
+    viewer.addSphere({center:c,radius:0.95,color:mute});
+    if(prev) viewer.addCylinder({start:prev,end:c,radius:0.30,color:mute,fromCap:1,toCap:1});
+    prev=c;
+    if(!pep) continue;
+    var aa=pep[i], R=sideRadius(aa);
+    if(R<=0) continue;
+    var cb=m.selectedAtoms({chain:'C',resi:resi,atom:'CB'});
+    var d;
+    if(cb.length) d={x:cb[0].x-c.x,y:cb[0].y-c.y,z:cb[0].z-c.z};
+    else d={x:0,y:0,z:1};
+    var L=Math.sqrt(d.x*d.x+d.y*d.y+d.z*d.z)||1;
+    var reach=1.5+R*0.55;
+    var pos={x:c.x+d.x/L*reach, y:c.y+d.y/L*reach, z:c.z+d.z/L*reach};
+    var tok=anchorAt[i];
+    viewer.addSphere({center:pos,radius:R,color: tok?cssv(tok):ink,
+                      opacity: tok?1.0:0.80});
+    if(tok) viewer.addLabel(aa,{position:pos,fontSize:11,fontColor:'#ffffff',
+      backgroundColor:cssv(tok),backgroundOpacity:0.95,borderThickness:0,inFront:true});
+  }
 }
 
 /* ---- the measured structure, fetched by the browser from the protein databank ---- */
@@ -2193,9 +2244,8 @@ function useReal(text, fromCache){
     viewer.addModel(text,'pdb');
     isModel=false;
     document.getElementById('molsrc').textContent =
-      RCSB_ID+' \u00b7 measured atoms \u00b7 '
-      + 'dark = the piece \u00b7 coloured = the four holes that hold it'
-      + (fromCache ? '' : '');
+      RCSB_ID+' \u00b7 groove and path measured \u00b7 your letters laid on that path '
+      + '\u00b7 their side branches are modelled';
     styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
     viewer.rotate(-18,'x'); viewer.render();
@@ -2219,7 +2269,7 @@ window.__showPeptide=function(reg){
   curReg=reg;
   var cap=document.getElementById('molsrc');
   if(cap && isModel) cap.textContent = reg ? (reg.seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms') : 'scaled geometric model';
-  if(isModel) restyle();
+  restyle();                      // the measured view re-threads with the new slice
 };
 
 function boot3D(){
@@ -2239,9 +2289,8 @@ document.getElementById('b-surf').addEventListener('click', function(){
 document.getElementById('b-anch').addEventListener('click', function(){
   this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
 });
-document.getElementById('b-spin').addEventListener('click', function(){
-  if(!viewer) return; spinning=!spinning; this.setAttribute('aria-pressed',spinning?'true':'false');
-  viewer.spin(spinning?'y':false);
+document.getElementById('b-teeth').addEventListener('click', function(){
+  this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
 });
 document.getElementById('b-reset').addEventListener('click', function(){
   if(!viewer) return; viewer.zoomTo();
