@@ -286,6 +286,11 @@ input[type=file]{display:none}
 .anchkey span{display:inline-flex;align-items:center;gap:4px}
 .anchkey b{display:inline-block;width:9px;height:9px;border-radius:3px}
 .anchkey i{font-style:normal}
+.noscan{background:var(--panel);border:1px solid var(--line);border-radius:13px;
+  padding:16px;margin:0 0 14px;box-shadow:var(--raise)}
+.noscan p{font-size:13px;color:var(--mute);margin:0 0 12px;line-height:1.5}
+.noscan .go{width:100%}
+:root[data-mode="abstract"] .noscan p::after{content:""}
 .narrow{margin:0 0 12px}
 .narrow .go{width:100%;font-size:13.5px;padding:12px 10px}
 .sortrow{display:flex;gap:7px;margin-top:10px}
@@ -360,6 +365,12 @@ input[type=file]{display:none}
 
 /* 3D fills its view */
 #mol{position:absolute;inset:0;width:100%;height:100%;background:var(--sunk);overflow:hidden}
+#molpan{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent}
+#molpan:active{cursor:grabbing}
+.molwhat{flex:1 1 100%;margin:0 0 2px;font-size:12px;line-height:1.5;color:var(--mute)}
+.molwhat:empty{display:none}
+.molwhat b{color:var(--ink)}
+.molwhat .pickbtn{display:inline-block;margin-top:7px}
 .vtools{position:absolute;left:0;right:0;bottom:0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;
   padding:10px max(12px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));
   background:linear-gradient(to top, var(--panel) 62%, transparent);
@@ -389,7 +400,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
 <div class="device">
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V1200</span></button>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V1300</span></button>
   <span class="dot" id="statdot" title="network status"></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder">—</button>
   <button type="button" class="modebtn" id="modebtn" title="Plain words or the numbers"
@@ -523,6 +534,12 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-res">
     <div class="inner">
+      <div class="noscan" id="noscan" hidden>
+        <h3>Nothing scanned yet</h3>
+        <p>Go to step 2, press <b>Scan</b>, and the whole protein is cut into pieces
+           and scored. The results land here.</p>
+        <button type="button" class="go" id="toscan">Take me to step 2</button>
+      </div>
       <div class="mapwrap">
         <div class="selband" id="selband" hidden></div>
         <div class="maphead">
@@ -587,11 +604,14 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-3d" hidden>
     <div id="mol"></div>
+    <div id="molpan" hidden></div>
     <div class="caption" id="molsrc">scaled geometric model</div>
     <div class="vtools">
+      <p class="molwhat" id="molwhat"></p>
       <button type="button" id="b-anch" aria-pressed="true">Holes</button>
       <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
       <button type="button" id="b-surf" aria-pressed="false">Surface</button>
+      <button type="button" id="b-move" aria-pressed="false" title="Drag to slide the model">Move</button>
       <button type="button" id="b-reset">Reset</button>
       <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
       <label class="drop" for="pdbin">Load .pdb</label>
@@ -710,7 +730,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V1200 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V1300 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
     </div>
@@ -1669,11 +1689,21 @@ var VIEWS=['view-home','view-hla','view-work','view-res','view-3d','view-info'];
 function showView(v){
   VIEWS.forEach(function(x){ document.getElementById(x).hidden=(x!==v); });
   document.getElementById('tabstrip').hidden = (v==='view-home');
-  if(v==='view-res') setTimeout(drawMap,30);
-  if(v==='view-3d' && viewer) setTimeout(function(){
-    viewer.resize(); viewer.render();
-    if(typeof loadReal==='function') loadReal();   // try for the measured atoms
-  }, 30);
+  if(v==='view-res'){
+    var has = (typeof results!=='undefined' && results.length>0);
+    document.getElementById('noscan').hidden = has;
+    ['.mapwrap','.narrow','#count','#rows','#sheetwrap'].forEach(function(sel){
+      var el=document.querySelector(sel); if(el) el.hidden = !has;
+    });
+    if(has) setTimeout(drawMap,30);
+  }
+  if(v==='view-3d'){
+    if(typeof sayWhat==='function') sayWhat();
+    if(viewer) setTimeout(function(){
+      viewer.resize(); viewer.render();
+      if(typeof loadReal==='function') loadReal();   // try for the measured atoms
+    }, 30);
+  }
 }
 function showTab(id){
   TABS.forEach(function(t){ document.getElementById(t[0]).setAttribute('aria-pressed', t[0]===id?'true':'false'); });
@@ -2247,6 +2277,7 @@ function useReal(text, fromCache){
       RCSB_ID+' \u00b7 groove and path measured \u00b7 your letters laid on that path '
       + '\u00b7 their side branches are modelled';
     styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
+    sayWhat();
     viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
     viewer.rotate(-18,'x'); viewer.render();
     var tb=document.getElementById('b-real'); if(tb) tb.hidden=true;
@@ -2264,6 +2295,35 @@ function reskin3d(){
 function restyle(){
   var s=document.getElementById('b-surf').getAttribute('aria-pressed')==='true';
   if(isModel) styleModel(s); else styleReal(s);
+  sayWhat();
+}
+/* one line under the picture naming exactly what is on screen */
+function sayWhat(){
+  var el=document.getElementById('molwhat'); if(!el) return;
+  var holes=document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  var teeth=document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
+  if(!curReg){
+    el.innerHTML = (typeof results!=='undefined' && results.length)
+      ? '<b>No piece chosen.</b> The pale ribbon is the holder. '
+        + 'Pick one in step 3, or take the tightest one now.'
+        + '<br><button type="button" class="pickbtn" id="pickbest">Use the tightest piece</button>'
+      : '<b>Nothing scanned yet.</b> The pale ribbon is the holder. '
+        + 'Scan a protein in step 2, then choose a piece in step 3.';
+    var pb=document.getElementById('pickbest');
+    if(pb) pb.addEventListener('click', function(){
+      var best=null;
+      for(var i=0;i<results.length;i++)
+        if(results[i].ic50!=null && (!best || results[i].ic50<best.ic50)) best=results[i];
+      if(!best) return;
+      for(var j=0;j<results.length;j++) if(results[j]===best){ select(j); break; }
+    });
+    return;
+  }
+  var bits=[];
+  if(teeth) bits.push('<b>dark chain</b> = your piece, '+curReg.seq);
+  if(holes) bits.push('<b>coloured clumps</b> = the four holes that hold it');
+  bits.push('<b>pale ribbon</b> = the rest of the holder');
+  el.innerHTML = bits.join(' &middot; ');
 }
 window.__showPeptide=function(reg){
   curReg=reg;
@@ -2282,6 +2342,7 @@ function boot3D(){
   viewer.addModel(pdbText,'pdb');
   styleModel(false);
   viewer.zoomTo(); viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); viewer.render();
+  sayWhat();
 }
 document.getElementById('b-surf').addEventListener('click', function(){
   this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
@@ -2292,8 +2353,33 @@ document.getElementById('b-anch').addEventListener('click', function(){
 document.getElementById('b-teeth').addEventListener('click', function(){
   this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
 });
+(function(){
+  var btn=document.getElementById('b-move'), pad=document.getElementById('molpan');
+  if(!btn||!pad) return;
+  btn.addEventListener('click', function(){
+    var on = this.getAttribute('aria-pressed')!=='true';
+    this.setAttribute('aria-pressed', on?'true':'false');
+    pad.hidden = !on;
+  });
+  var dragging=false, lx=0, ly=0;
+  pad.addEventListener('pointerdown', function(e){
+    dragging=true; lx=e.clientX; ly=e.clientY;
+    pad.setPointerCapture && pad.setPointerCapture(e.pointerId);
+  });
+  pad.addEventListener('pointermove', function(e){
+    if(!dragging||!viewer) return;
+    var dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
+    try{ viewer.translate(dx,dy,0,true); }catch(err){}
+  });
+  function stop(){ dragging=false; }
+  pad.addEventListener('pointerup', stop);
+  pad.addEventListener('pointercancel', stop);
+})();
 document.getElementById('b-reset').addEventListener('click', function(){
-  if(!viewer) return; viewer.zoomTo();
+  if(!viewer) return;
+  document.getElementById('b-move').setAttribute('aria-pressed','false');
+  document.getElementById('molpan').hidden=true;
+  viewer.zoomTo();
   if(isModel){ viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); }
   viewer.render();
 });
@@ -2466,6 +2552,9 @@ function setSort(k){
   sortResults(); selected=-1; drawRows();
 }
 document.getElementById('rankbtn').addEventListener('click', rankSelectivity);
+document.getElementById('toscan').addEventListener('click', function(){
+  setMode('prot'); showTab('t-prot');
+});
 document.getElementById('sort-sel').addEventListener('click', function(){ setSort('sel'); });
 document.getElementById('sort-str').addEventListener('click', function(){ setSort('str'); });
 
