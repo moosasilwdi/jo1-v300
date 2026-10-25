@@ -16,45 +16,86 @@
   /* A lab instrument: deep ink-blue neutrals, one gold accent, data set in mono. */
   --bg:#eef0f5; --panel:#fff; --sunk:#f3f6fa; --ink:#111720; --mute:#59636f; --line:#d6dbe4;
   --p1:#0d8ea1; --p4:#a86f12; --p6:#3b5bbf; --p9:#2f7d32; --tcr:#5a6472;
-  --gold:#8a4fa8; --ok:#1a6b4a; --warn:#b3261e; --warnbg:#fdeceb;
-  --mauve:#8a4fa8; --onmauve:#fff; --tile:#1b1326;
+  --gold:#1565d8; --ok:#1a6b4a; --warn:#b3261e; --warnbg:#fdeceb;
+  --mauve:#1565d8; --btn:#1565d8; --onmauve:#fff; --onbtn:#fff; --btnsh:0 1px 2px rgba(0,0,0,.38); --accink:#1565d8; --tile:#1b1326;
   --raise:0 1px 1px rgba(17,23,32,.05), 0 10px 20px -14px rgba(17,23,32,.4);
   --glint:rgba(255,255,255,0);
   --sink:inset 0 2px 3px rgba(17,23,32,.10), inset 0 0 0 1px rgba(17,23,32,.03);
   --lift:0 1px 0 rgba(17,23,32,.14), 0 3px 6px -3px rgba(17,23,32,.22);
   --press:inset 0 2px 4px rgba(17,23,32,.18);
   --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%2359636f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --chevm:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%231565d8' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --mauvedeep:#1565d8;
+  --wm1:#1565d8; --wm2:#cf2c20; --wm3:#f5b700; --wm4:#1ea84c;
   --mono:'IBM Plex Mono','DejaVu Sans Mono',monospace;
   --sans:'IBM Plex Sans','DejaVu Sans',sans-serif;
   --barh:54px; --tabh:58px;
   --backdrop:#1b1f26; --frame:#39404a;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --mauve:#c795da; --onmauve:#1d1226; --tile:#1b1326;
+  --mauve:#6aa9ff; --btn:#6aa9ff; --onmauve:#fff; --onbtn:#fff; --btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45); --accink:#6aa9ff; --tile:#101a24;
   --bg:#0b1016; --panel:#141c26; --sunk:#0d141d; --ink:#e8edf4; --mute:#8c98a8; --line:#212b38;
   --p1:#27a0b6; --p4:#c08629; --p6:#6380da; --p9:#4ba557; --tcr:#8c98a8;
-  --gold:#c795da; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
+  --gold:#6aa9ff; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
   --raise:0 1px 0 rgba(255,255,255,.05) inset, 0 12px 24px -16px rgba(0,0,0,.9);
   --glint:rgba(255,255,255,.05);
   --sink:inset 0 2px 4px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.25);
   --lift:0 1px 0 rgba(0,0,0,.55), 0 3px 7px -3px rgba(0,0,0,.75), 0 1px 0 rgba(255,255,255,.06) inset;
   --press:inset 0 2px 5px rgba(0,0,0,.6);
   --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238c98a8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --chevm:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%236aa9ff' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --mauvedeep:#6aa9ff;
+  --wm1:#6aa9ff; --wm2:#ff6f68; --wm3:#ffc233; --wm4:#45c46a;
   --backdrop:#04060a; --frame:#1d2530;
 }}
 :root[data-theme="dark"]{
-  --mauve:#c795da; --onmauve:#1d1226; --tile:#1b1326;
+  --mauve:#6aa9ff; --btn:#6aa9ff; --onmauve:#fff; --onbtn:#fff; --btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45); --accink:#6aa9ff; --tile:#101a24;
   --bg:#0b1016; --panel:#141c26; --sunk:#0d141d; --ink:#e8edf4; --mute:#8c98a8; --line:#212b38;
   --p1:#27a0b6; --p4:#c08629; --p6:#6380da; --p9:#4ba557; --tcr:#8c98a8;
-  --gold:#c795da; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
+  --gold:#6aa9ff; --ok:#5ec48f; --warn:#ff9b90; --warnbg:#3a1d1b; color-scheme:dark;
   --raise:0 1px 0 rgba(255,255,255,.05) inset, 0 12px 24px -16px rgba(0,0,0,.9);
   --glint:rgba(255,255,255,.05);
   --sink:inset 0 2px 4px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.25);
   --lift:0 1px 0 rgba(0,0,0,.55), 0 3px 7px -3px rgba(0,0,0,.75), 0 1px 0 rgba(255,255,255,.06) inset;
   --press:inset 0 2px 5px rgba(0,0,0,.6);
   --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238c98a8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --chevm:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%236aa9ff' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --mauvedeep:#6aa9ff;
+  --wm1:#6aa9ff; --wm2:#ff6f68; --wm3:#ffc233; --wm4:#45c46a;
   --backdrop:#04060a; --frame:#1d2530;
 }
+
+/* Each step wears its own colour, vivid. Button text is white everywhere and
+   carries a dark outline, which is what makes it readable on the light fills. */
+:root[data-page="home"]{--gold:#1ea84c;--mauve:#1ea84c;--btn:#1ea84c;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#0f7a36;--accink:#0f7a36}
+:root[data-page="hla"]{--gold:#1565d8;--mauve:#1565d8;--btn:#1565d8;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 2px rgba(0,0,0,.38);--mauvedeep:#1565d8;--accink:#1565d8}
+:root[data-page="work"]{--gold:#cf2c20;--mauve:#cf2c20;--btn:#cf2c20;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 2px rgba(0,0,0,.38);--mauvedeep:#cf2c20;--accink:#cf2c20}
+:root[data-page="res"]{--gold:#f5b700;--mauve:#f5b700;--btn:#f5b700;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#8a6104;--accink:#8a6104}
+:root[data-page="list"]{--gold:#f5b700;--mauve:#f5b700;--btn:#f5b700;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#8a6104;--accink:#8a6104}
+:root[data-page="3d"]{--gold:#1ea84c;--mauve:#1ea84c;--btn:#1ea84c;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#0f7a36;--accink:#0f7a36}
+:root[data-page="info"]{--gold:#1565d8;--mauve:#1565d8;--btn:#1565d8;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 2px rgba(0,0,0,.38);--mauvedeep:#1565d8;--accink:#1565d8}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"])[data-page="home"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
+:root:not([data-theme="light"])[data-page="hla"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
+:root:not([data-theme="light"])[data-page="work"]{--gold:#ff6f68;--mauve:#ff6f68;--btn:#ff6f68;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#ff6f68;--accink:#ff6f68}
+:root:not([data-theme="light"])[data-page="res"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
+:root:not([data-theme="light"])[data-page="list"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
+:root:not([data-theme="light"])[data-page="3d"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
+:root:not([data-theme="light"])[data-page="info"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
+}
+:root[data-theme="dark"][data-page="home"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
+:root[data-theme="dark"][data-page="hla"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
+:root[data-theme="dark"][data-page="work"]{--gold:#ff6f68;--mauve:#ff6f68;--btn:#ff6f68;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#ff6f68;--accink:#ff6f68}
+:root[data-theme="dark"][data-page="res"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
+:root[data-theme="dark"][data-page="list"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
+:root[data-theme="dark"][data-page="3d"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
+:root[data-theme="dark"][data-page="info"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li:nth-child(1){--stc:#6aa9ff;--sti:#6aa9ff;--stn:#ff6f68}
+:root:not([data-theme="light"]) .steps li:nth-child(2){--stc:#ff6f68;--sti:#ff6f68;--stn:#ffc233}
+:root:not([data-theme="light"]) .steps li:nth-child(3){--stc:#ffc233;--sti:#ffc233;--stn:#45c46a}}
+:root[data-theme="dark"] .steps li:nth-child(1){--stc:#6aa9ff;--sti:#6aa9ff;--stn:#ff6f68}
+:root[data-theme="dark"] .steps li:nth-child(2){--stc:#ff6f68;--sti:#ff6f68;--stn:#ffc233}
+:root[data-theme="dark"] .steps li:nth-child(3){--stc:#ffc233;--sti:#ffc233;--stn:#45c46a}
 *{box-sizing:border-box}
 /* anything hidden stays hidden, even where a rule sets display */
 [hidden]{display:none!important}
@@ -83,16 +124,17 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   width:25px;height:25px;border-radius:50%;background:var(--sunk);color:var(--mute);
   font-family:var(--mono);font-size:12px;font-weight:600;flex:0 0 auto;
   border:1px solid var(--line);transition:background .14s,color .14s,border-color .14s}
-.tabstrip button[aria-pressed="true"] i{background:var(--gold);color:var(--onmauve);border-color:var(--gold);
-  box-shadow:0 2px 6px -1px color-mix(in srgb,var(--gold) 55%,transparent)}
+.tabstrip button[aria-pressed="true"] i{background:var(--btn);color:#fff;text-shadow:var(--btnsh);border-color:var(--btn);
+  box-shadow:0 2px 6px -1px color-mix(in srgb,var(--btn) 55%,transparent)}
 .tabstrip button i{box-shadow:var(--sink)}
 
 /* the protein map — the picture you touch */
 .mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;
   padding:10px 10px 8px;margin:0 0 12px;overflow:hidden;
-  position:sticky;top:-14px;z-index:5;box-shadow:var(--raise)}
+  position:static;box-shadow:var(--raise)}
 #view-res.unpin .mapwrap{position:static}
-.mapwrap canvas{display:block;width:100%;cursor:crosshair;touch-action:pan-y}
+/* the gesture belongs to the graph - the page must not slide underneath it */
+.mapwrap canvas{display:block;width:100%;cursor:crosshair;touch-action:none}
 .maphead{display:flex;align-items:baseline;gap:8px;margin:0 0 7px}
 .maphead .big{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--ink);line-height:1;
   letter-spacing:-.01em;font-variant-numeric:tabular-nums}
@@ -104,14 +146,17 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .maptools button{flex:1;min-width:52px;padding:9px 0;font-family:var(--sans);font-size:15px;
   line-height:1;color:var(--ink)}
 .maptools button:disabled{opacity:.35}
-.ccmain{width:100%;margin-top:10px;font-size:13.5px;padding:12px 10px}
+.ccmain{width:100%;margin-top:0;font-size:15px;padding:13px 10px}
+/* the sentence lives outside the button; the button keeps one word */
+.btncap{font-size:12.5px;line-height:1.45;color:var(--mute);margin:12px 0 7px;text-align:center}
+.narrow .btncap{margin-top:0}
 #cc2,#rankbtn{position:relative}
 #cc2[data-busy] span,#rankbtn[data-done] span{visibility:hidden}
 #cc2[data-busy]::after,#rankbtn[data-done]::after{
   position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
   text-align:center;padding:0 10px}
-#cc2[data-busy]::after{content:"Checking all 117\2026"}
-#rankbtn[data-done]::after{content:"Narrow again"}
+#cc2[data-busy]::after{content:"Checking\2026"}
+#rankbtn[data-done]::after{content:"Again"}
 #cc2prog{margin-top:8px}
 .selband{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
   margin:-2px 0 10px;padding:9px 11px;border-radius:10px;
@@ -131,12 +176,13 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;
   margin-left:auto;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .holderpill:hover{border-color:var(--gold)}
+.appbar .modebtn{margin-left:auto}
 .modebtn{flex:0 0 auto;padding:6px 11px;border-radius:999px;font-family:var(--mono);
   font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
   background:var(--panel);border:1px solid var(--line);color:var(--mute);
   cursor:pointer;box-shadow:var(--lift);white-space:nowrap}
-.modebtn:hover{border-color:var(--gold);color:var(--gold)}
-:root[data-mode="abstract"] .modebtn{color:var(--gold);border-color:var(--gold);
+.modebtn:hover{border-color:var(--gold);color:var(--accink)}
+:root[data-mode="abstract"] .modebtn{color:var(--accink);border-color:var(--gold);
   background:color-mix(in srgb,var(--gold) 10%,var(--panel))}
 
 /* Abstract hides the laboratory wording and shows the plain one */
@@ -151,7 +197,7 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   justify-content:center;border-radius:50%;
   background:color-mix(in srgb,var(--mauve) 12%,var(--panel));
   border:1px solid color-mix(in srgb,var(--mauve) 45%,var(--line));
-  color:var(--mauve);cursor:pointer;box-shadow:var(--lift)}
+  color:var(--accink);cursor:pointer;box-shadow:var(--lift)}
 .themebtn:hover{border-color:var(--mauve);background:color-mix(in srgb,var(--mauve) 20%,var(--panel))}
 .themebtn:focus-visible{outline:2px solid var(--mauve);outline-offset:2px}
 .themebtn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;
@@ -170,24 +216,53 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
 .howto{margin:0}
 .howto dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--gold);margin-top:11px}
+  text-transform:uppercase;color:var(--accink);margin-top:11px}
 .howto dt:first-child{margin-top:0}
 .howto dd{margin:3px 0 0;font-size:12.5px;line-height:1.5;color:var(--mute)}
 .howto dd b{color:var(--ink)}
-.steps{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:11px;width:100%;text-align:left}
-.steps li{display:flex;align-items:center;gap:13px;background:var(--panel);border:1px solid var(--line);
-  border-radius:13px;padding:13px 14px;box-shadow:var(--raise)}
-.steps svg{width:38px;height:38px;flex:0 0 38px;color:var(--ink);background:var(--sunk);
-  border-radius:10px;padding:5px;box-shadow:inset 0 0 0 1px var(--line)}
-.steps b{display:block;font-size:14.5px;font-weight:600;letter-spacing:-.005em}
-.steps span{display:block;font-size:12.5px;color:var(--mute);margin-top:1px;line-height:1.35}
+/* The three steps are a path. Each number wears the colour of the screen it opens,
+   so the landing teaches the colour code before you have pressed anything. */
+.steps{list-style:none;margin:2px 0 26px;padding:0;width:100%;text-align:left;counter-reset:st}
+.steps li{position:relative;display:flex;align-items:flex-start;gap:15px;
+  padding:0 0 20px 0;background:none;border:0;border-radius:0;box-shadow:none}
+.steps li:last-child{padding-bottom:0}
+.steps li:nth-child(1){--stc:#1565d8;--sti:#1565d8;--stn:#cf2c20}
+.steps li:nth-child(2){--stc:#cf2c20;--sti:#cf2c20;--stn:#f5b700}
+.steps li:nth-child(3){--stc:#f5b700;--sti:#8a6104;--stn:#1ea84c}
+/* the rail running from one step to the next */
+.steps li::after{content:"";position:absolute;left:17px;top:38px;bottom:0;width:2px;border-radius:2px;
+  background:linear-gradient(to bottom,var(--stc),var(--stn))}
+.steps li:last-child::after{display:none}
+.steps li::before{counter-increment:st;content:counter(st);
+  flex:0 0 36px;width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:15px;font-weight:600;line-height:1;
+  color:var(--sti);background:color-mix(in srgb,var(--stc) 11%,var(--panel));
+  box-shadow:inset 0 0 0 2px var(--stc);position:relative;z-index:1}
+.steps svg{display:none}
+.steps li>div{padding-top:7px}
+.steps b{display:block;font-size:15px;font-weight:600;letter-spacing:-.008em}
+.steps span{display:block;font-size:12.5px;color:var(--mute);margin-top:2px;line-height:1.4}
 button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;border-radius:13px;
-  letter-spacing:.01em;box-shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 26px -12px var(--gold)}
+  letter-spacing:.01em;box-shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 26px -12px var(--btn)}
 .homefoot{font-size:11.5px;color:var(--mute);max-width:34ch;margin:16px 0 0;line-height:1.45}
 .appbar .home-link{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;cursor:pointer;color:inherit}
-.appbar .home-link:hover .brand{color:var(--gold)}
+.appbar .home-link:hover .brand{color:var(--accink)}
 .appbar .logo{width:25px;height:25px;flex:0 0 auto;border-radius:6px}
 .appbar .brand{font-weight:700;letter-spacing:-.01em;font-size:15px;white-space:nowrap}
+/* the wordmark: JO, the four pockets, ONE */
+.wm{font-weight:700;letter-spacing:-.022em;line-height:1;white-space:nowrap;color:var(--ink);
+  font-size:16px;display:inline-flex;align-items:center}
+.wm .dots{display:inline-flex;gap:.11em;margin:0 .17em}
+.wm .dots i{width:.2em;height:.2em;border-radius:50%}
+.wm .dots i:nth-child(1){background:var(--wm1)}
+.wm .dots i:nth-child(2){background:var(--wm2)}
+.wm .dots i:nth-child(3){background:var(--wm3)}
+.wm .dots i:nth-child(4){background:var(--wm4)}
+.wmbig{font-size:40px;letter-spacing:-.028em}
+.appbar .beta{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;
+  color:#fff;background:var(--btn);text-shadow:var(--btnsh);border-radius:4px;padding:2px 6px;
+  white-space:nowrap;flex:0 0 auto}
 .appbar .ver{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--mute);
   border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
 .appbar .dot{width:7px;height:7px;border-radius:50%;background:var(--mute);flex:0 0 auto}
@@ -202,10 +277,11 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
   padding-bottom:env(safe-area-inset-bottom,0px);
   padding-left:max(4px,env(safe-area-inset-left,0px));padding-right:max(4px,env(safe-area-inset-right,0px))}
 .tabstrip button{flex:1;min-width:0;border:0;background:transparent;color:var(--mute);
+  font-size:9.5px;letter-spacing:-.01em;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
   font-family:var(--sans);font-size:10px;font-weight:600;cursor:pointer;border-radius:0;
   padding:0 2px;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.tabstrip button[aria-pressed="true"]{color:var(--gold)}
+.tabstrip button[aria-pressed="true"]{color:var(--accink)}
 .tabstrip button:hover{color:var(--ink)}
 .tabstrip button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 
@@ -252,9 +328,10 @@ button:active{box-shadow:var(--press);transform:translateY(1px)}
 .tabstrip button:active,.appbar .home-link:active{box-shadow:none;transform:none}
 button[aria-pressed="true"]{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);font-weight:600}
 button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-button.go{background:var(--gold);color:var(--onmauve);border-color:var(--gold);font-weight:600;padding:11px 18px;
-  box-shadow:0 1px 0 rgba(0,0,0,.25), 0 6px 14px -8px color-mix(in srgb,var(--gold) 70%,transparent)}
-button.go:hover{filter:brightness(1.08);border-color:var(--gold)}
+button.go{background:var(--btn);color:#fff;text-shadow:var(--btnsh);
+  border-color:var(--btn);font-weight:600;padding:11px 18px;
+  box-shadow:0 1px 0 rgba(0,0,0,.25), 0 6px 14px -8px color-mix(in srgb,var(--btn) 70%,transparent)}
+button.go:hover{filter:brightness(1.08);border-color:var(--btn)}
 button.go:active{filter:brightness(.96)}
 button:disabled{opacity:.5;cursor:default}
 label.drop{font-size:12px;color:var(--mute);border:1px dashed var(--line);border-radius:9px;padding:9px 13px;
@@ -324,10 +401,9 @@ input[type=file]{display:none}
   border:1px dashed var(--line);border-radius:10px}
 
 /* detail sheet */
-.sheet{position:sticky;bottom:0;margin-top:12px;background:var(--panel);
+.sheet{position:static;margin-top:12px;background:var(--panel);
   border:1px solid var(--line);border-radius:12px;padding:11px 13px;
-  box-shadow:0 -8px 22px color-mix(in srgb,var(--ink) 14%,transparent)}
-.sheet[data-open="1"]{position:static;box-shadow:var(--raise)}
+  box-shadow:var(--raise)}
 .sheet .grip{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
 .sheet .grip h3{margin:0;flex:0 0 auto}
 .sheet .grip .sum{flex:1;min-width:0;font-family:var(--mono);font-size:12px;color:var(--ink);
@@ -336,6 +412,27 @@ input[type=file]{display:none}
 .sheet .body{margin-top:10px}
 .sheet[data-open="0"] .body{display:none}
 .rowlist{padding-bottom:4px}
+.hlacard{border-color:color-mix(in srgb,var(--gold) 38%,var(--line));
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--gold) 7%,var(--panel)),var(--panel) 62%)}
+.hlacard>h3{color:var(--accink)}
+.story{border-color:color-mix(in srgb,var(--gold) 30%,var(--line));
+  border-left:3px solid var(--gold)}
+.story>h3{color:var(--accink)}
+.qa dt{font-family:var(--sans);font-size:13.5px;font-weight:600;letter-spacing:0;
+  text-transform:none;color:var(--ink);margin-top:14px}
+.qa dt:first-child{margin-top:0}
+.qa dd{font-size:12.5px;margin-top:3px}
+.hlafield{position:relative}
+.hlafield select{width:100%;font-size:17px;font-weight:600;letter-spacing:.02em;
+  padding:15px 38px 15px 15px;border-radius:12px;
+  color:var(--mauvedeep);
+  border-color:color-mix(in srgb,var(--gold) 52%,var(--line));
+  background-color:color-mix(in srgb,var(--gold) 11%,var(--sunk));
+  background-image:var(--chevm);
+  background-position:right 14px center;background-size:13px 8px;
+  box-shadow:var(--sink), 0 0 0 3px color-mix(in srgb,var(--gold) 13%,transparent)}
+.hlafield select:hover{border-color:var(--gold)}
+.hlafield select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .pocketbars{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-top:9px}
 .pb{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 11px;
   box-shadow:var(--raise);border-top:3px solid var(--line)}
@@ -364,19 +461,46 @@ input[type=file]{display:none}
 .pk .y{color:var(--ink)}
 
 /* 3D fills its view */
+#view-3d{display:flex;flex-direction:column}
+.molstage{position:relative;flex:1 1 auto;min-height:0;background:var(--sunk)}
 #mol{position:absolute;inset:0;width:100%;height:100%;background:var(--sunk);overflow:hidden}
+/* the slide pad covers the picture only, never the controls */
 #molpan{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent}
 #molpan:active{cursor:grabbing}
-.molwhat{flex:1 1 100%;margin:0 0 2px;font-size:12px;line-height:1.5;color:var(--mute)}
+.molwhat{margin:0 0 7px;font-size:12px;line-height:1.5;color:var(--mute)}
 .molwhat:empty{display:none}
 .molwhat b{color:var(--ink)}
 .molwhat .pickbtn{display:inline-block;margin-top:7px}
-.vtools{position:absolute;left:0;right:0;bottom:0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;
-  padding:10px max(12px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));
-  background:linear-gradient(to top, var(--panel) 62%, transparent);
-  border-top:1px solid var(--line)}
-#view-3d .caption{position:absolute;top:10px;left:12px;right:12px;font-size:11px;color:var(--mute);
-  font-family:var(--mono);pointer-events:none}
+.vtools{flex:0 0 auto;display:block;
+  padding:9px max(12px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));
+  background:var(--panel);border-top:1px solid var(--line)}
+/* one strip of controls that slides sideways, so it never eats the picture */
+.vrow{display:flex;gap:7px;flex-wrap:nowrap;align-items:center;overflow-x:auto;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.vrow::-webkit-scrollbar{display:none}
+.vrow>*{flex:0 0 auto}
+.vtools .key{margin-top:8px}
+/* step through the shortlist without leaving the picture */
+.stepstrip{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:8px max(12px,env(safe-area-inset-left,0px));
+  background:var(--panel);border-top:1px solid var(--line)}
+.stepstrip button{padding:8px 18px;font-size:15px;line-height:1}
+.stepstrip button:disabled{opacity:.3}
+.stepstrip #s-pos{font-family:var(--mono);font-size:12.5px;color:var(--ink);
+  min-width:86px;text-align:center;font-variant-numeric:tabular-nums}
+#view-3d.full .stepstrip{display:none}
+.vrow .drop{padding:8px 13px;align-self:stretch;display:flex;align-items:center}
+.vrow #pdbin{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+/* Full view: the picture takes the whole screen */
+#view-3d.full .vtools{display:none}
+.bigout{position:absolute;right:10px;bottom:10px;z-index:3;display:none;
+  font-size:12px;padding:9px 13px;border-radius:999px;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink);box-shadow:var(--raise)}
+#view-3d.full .bigout{display:block}
+#view-3d .caption{position:absolute;top:0;left:0;right:0;z-index:2;
+  font-size:10.5px;line-height:1.4;color:var(--mute);font-family:var(--mono);
+  pointer-events:none;padding:7px max(12px,env(safe-area-inset-left,0px));
+  background:linear-gradient(to bottom, var(--sunk) 72%, transparent)}
 
 .note{background:var(--sunk);border:1px solid var(--line);border-left:3px solid var(--p6);border-radius:9px;padding:11px 13px;margin-bottom:12px}
 .note h3{color:var(--p6)}
@@ -400,9 +524,9 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
 <div class="device">
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg><span class="brand">JO&#8209;One</span><span class="ver">V1300</span></button>
-  <span class="dot" id="statdot" title="network status"></span>
-  <button type="button" class="holderpill" id="holderpill" title="Change the holder">—</button>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><span class="wm"><span>JO</span><span class="dots"><i></i><i></i><i></i><i></i></span><span>ONE</span></span></button><span class="beta">BETA</span>
+  <span class="dot" id="statdot" title="network status" hidden></span>
+  <button type="button" class="holderpill" id="holderpill" title="Change the holder" hidden>—</button>
   <button type="button" class="modebtn" id="modebtn" title="Plain words or the numbers"
           aria-label="Switch between Abstract and Science">Abstract</button>
   <button type="button" class="themebtn" id="themebtn" title="Light or dark" aria-label="Switch between light and dark">
@@ -414,8 +538,9 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 <nav class="tabstrip" id="tabstrip">
   <button type="button" id="t-hla"><i>1</i>Holder</button>
   <button type="button" id="t-prot"><i>2</i>Protein</button>
-  <button type="button" id="t-res"><i>3</i>Results</button>
-  <button type="button" id="t-3d"><i>4</i>Groove</button>
+  <button type="button" id="t-res"><i>3</i>Graph</button>
+  <button type="button" id="t-list"><i>4</i>List</button>
+  <button type="button" id="t-3d"><i>5</i>Groove</button>
   <button type="button" id="t-info"><i>i</i>Notes</button>
 </nav>
 
@@ -424,8 +549,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-home">
     <div class="inner home">
-      <svg class="hero" viewBox="0 0 120 120" aria-hidden="true"><rect x="0" y="0" width="120" height="120" rx="27" fill="var(--tile)"/><rect x="23" y="37" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><rect x="23" y="74" width="74" height="9" rx="4.5" fill="var(--gold)" opacity=".42"/><circle cx="32" cy="60" r="5" fill="var(--gold)" opacity=".5"/><circle cx="48" cy="60" r="8.4" fill="var(--p1)"/><circle cx="66" cy="60" r="8.4" fill="var(--p4)"/><circle cx="84" cy="60" r="8.4" fill="var(--p6)"/><circle cx="99" cy="60" r="5" fill="var(--gold)" opacity=".5"/></svg>
-      <h1 class="hometitle">JO&#8209;One</h1>
+      <h1 class="hometitle"><span class="wm wmbig"><span>JO</span><span class="dots"><i></i><i></i><i></i><i></i></span><span>ONE</span></span></h1>
       <p class="homelede">Which piece of a protein does the immune system grip?</p>
       <p class="homeclaim">A selectivity filter. It scores every slice of a protein against
       117 HLA class II types and flags the ones that grip too many.</p>
@@ -464,28 +588,31 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       </ol>
 
       <button type="button" class="go start" id="startbtn">Start</button>
-      <p class="homefoot">A research filter, not a clinical tool. See <b>Notes</b> for the sources and the safety record.</p>
+      <p class="homefoot"><b>Beta.</b> A research filter, not a clinical tool. See <b>Notes</b> for the sources and the safety record.</p>
     </div>
   </div>
   <div class="view" id="view-hla">
     <div class="inner">
       <p class="steplede sci-only"><b>Step 1 of 4</b> &middot; whose holder</p>
       <p class="steplede abs-only"><b>Step 1 of 4</b> &middot; whose body are we testing</p>
-      <div class="panel">
-        <h3>HLA type</h3>
-        <select id="allele" aria-label="HLA type" style="width:100%"></select>
-        <p class="tiny" style="margin:9px 0 0">117 types. If you don't know yours, leave <b>DRB1*03:01</b> — the one linked to anti-Jo-1.</p>
+      <div class="panel hlacard">
+        <h3><span class="sci-only">HLA type</span><span class="abs-only">Whose body</span></h3>
+        <div class="hlafield">
+          <select id="allele" aria-label="Which holder"></select>
+        </div>
+        <p class="tiny" style="margin:11px 0 0"><span class="sci-only">117 types. If you don't know yours, leave <b>DRB1*03:01</b> &mdash; the one linked to anti-Jo-1.</span><span class="abs-only">117 kinds of holder. If you don't know which one is yours, leave it as it is &mdash; this is the one tied to the Jo-1 illness.</span></p>
       </div>
       <div class="panel">
-        <h3>Checked live</h3>
+        <h3><span class="sci-only">Checked live</span><span class="abs-only">Three known examples</span></h3>
         <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
         <p class="tiny" style="margin:0" id="validnote"></p>
       </div>
       <div class="panel">
-        <h3>Its pockets</h3>
+        <h3><span class="sci-only">Its pockets</span><span class="abs-only">Its four holes</span></h3>
         <div id="pocketlive"></div>
       </div>
-      <button type="button" class="go nextbtn" data-next="t-prot">Next &mdash; the protein</button>
+      <p class="btncap">Then choose the protein to cut up.</p>
+      <button type="button" class="go nextbtn" data-next="t-prot">Next</button>
     </div>
   </div>
 
@@ -527,8 +654,9 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </label>
       </div>
 
-      <button type="button" class="go" id="runprot">Scan the protein</button>
-      <button type="button" class="go" id="rundec" hidden>Scan every variant</button>
+      <p class="btncap"><span class="sci-only">Cuts the protein into every slice and scores each one.</span><span class="abs-only">Cuts the protein into every piece and tests each one.</span></p>
+      <button type="button" class="go" id="runprot">Scan</button>
+      <button type="button" class="go" id="rundec" hidden>Scan</button>
     </div>
   </div>
 
@@ -538,7 +666,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <h3>Nothing scanned yet</h3>
         <p>Go to step 2, press <b>Scan</b>, and the whole protein is cut into pieces
            and scored. The results land here.</p>
-        <button type="button" class="go" id="toscan">Take me to step 2</button>
+        <button type="button" class="go" id="toscan">Go</button>
       </div>
       <div class="mapwrap">
         <div class="selband" id="selband" hidden></div>
@@ -558,7 +686,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
             <button type="button" id="m-in" aria-label="Zoom in" title="Zoom in">+</button>
           </div>
         </div>
-        <button type="button" class="go ccmain" id="cc2"><span class="sci-only">Check this slice against all 117 types</span><span class="abs-only">Does this piece grip other people too?</span></button>
+        <p class="btncap"><span class="sci-only">This slice against all 117 HLA types.</span><span class="abs-only">Does this piece grip other people too?</span></p>
+        <button type="button" class="go ccmain" id="cc2">Check</button>
         <div class="prog" id="cc2prog" hidden><i id="cc2bar"></i></div>
       </div>
       <p class="anchkey" id="anchkey" hidden>
@@ -569,8 +698,21 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <span class="sci-only" style="color:var(--mute)">the four pockets that hold the slice</span>
         <span class="abs-only" style="color:var(--mute)">the four spots that do the holding</span>
       </p>
+      <p class="btncap" style="margin-top:14px">The best of all 495 stops, as a list.</p>
+      <button type="button" class="go nextbtn" data-next="t-list">Next</button>
+    </div>
+  </div>
+
+  <div class="view" id="view-list" hidden>
+    <div class="inner">
+      <div class="noscan" id="noscan2" hidden>
+        <h3>Nothing scanned yet</h3>
+        <p>Scan a protein in step 2 and the shortlist lands here.</p>
+        <button type="button" class="go" id="toscan2">Go</button>
+      </div>
       <div class="narrow">
-        <button type="button" class="go" id="rankbtn"><span class="sci-only">Narrow: rank the top 20 by selectivity</span><span class="abs-only">Narrow it down &mdash; find the fussiest pieces</span></button>
+        <p class="btncap"><span class="sci-only">Rank the top 20 by selectivity, not by strength.</span><span class="abs-only">Find the fussiest pieces &mdash; the ones that grip you and few others.</span></p>
+        <button type="button" class="go" id="rankbtn">Narrow</button>
         <div class="prog" id="rkprog" hidden><i id="rkbar"></i></div>
         <p class="tiny" id="rknote" style="margin:8px 0 0" hidden></p>
         <div class="sortrow" id="sortrow" hidden>
@@ -598,47 +740,139 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </div>
       </div>
 
-      <button type="button" class="go nextbtn" data-next="t-3d" style="margin-top:12px">Next &mdash; see it in the groove</button>
+      <p class="btncap" style="margin-top:14px">See the chosen slice sitting in the groove.</p>
+      <button type="button" class="go nextbtn" data-next="t-3d">Next</button>
     </div>
   </div>
 
   <div class="view" id="view-3d" hidden>
-    <div id="mol"></div>
-    <div id="molpan" hidden></div>
-    <div class="caption" id="molsrc">scaled geometric model</div>
+    <div class="molstage">
+      <div id="mol"></div>
+      <div id="molpan" hidden></div>
+      <div class="caption" id="molsrc">scaled geometric model</div>
+      <button type="button" class="bigout" id="b-small">Show the buttons</button>
+    </div>
+    <div class="stepstrip" id="stepstrip" hidden>
+      <button type="button" id="s-prev" aria-label="Previous in the list">&#9664;</button>
+      <span id="s-pos">&mdash;</span>
+      <button type="button" id="s-next" aria-label="Next in the list">&#9654;</button>
+    </div>
     <div class="vtools">
       <p class="molwhat" id="molwhat"></p>
-      <button type="button" id="b-anch" aria-pressed="true">Holes</button>
-      <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
-      <button type="button" id="b-surf" aria-pressed="false">Surface</button>
-      <button type="button" id="b-move" aria-pressed="false" title="Drag to slide the model">Move</button>
-      <button type="button" id="b-reset">Reset</button>
-      <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
-      <label class="drop" for="pdbin">Load .pdb</label>
-      <input type="file" id="pdbin" accept=".pdb,.ent,.cif,.mmcif">
-      <span class="key" style="margin:0 0 0 auto">
-        <span><i style="background:var(--p1)"></i>P1</span>
-        <span><i style="background:var(--p4)"></i>P4</span>
-        <span><i style="background:var(--p6)"></i>P6</span>
-        <span><i style="background:var(--p9)"></i>P9</span>
-        <span><i style="background:var(--tcr)"></i>T cell face</span>
+      <div class="vrow">
+        <button type="button" id="b-anch" aria-pressed="true">Holes</button>
+        <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
+        <button type="button" id="b-surf" aria-pressed="false">Surface</button>
+        <button type="button" id="b-move" aria-pressed="false" title="Drag to slide the model">Move</button>
+        <button type="button" id="b-reset">Reset</button>
+        <button type="button" id="b-full" title="Give the picture the whole screen">Full view</button>
+        <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
+        <label class="drop" for="pdbin">Load .pdb</label>
+        <input type="file" id="pdbin" accept=".pdb,.ent,.cif,.mmcif">
+      </div>
+      <span class="key">
+        <span><i style="background:var(--p1)"></i><span class="sci-only">P1</span><span class="abs-only">hole 1</span></span>
+        <span><i style="background:var(--p4)"></i><span class="sci-only">P4</span><span class="abs-only">hole 2</span></span>
+        <span><i style="background:var(--p6)"></i><span class="sci-only">P6</span><span class="abs-only">hole 3</span></span>
+        <span><i style="background:var(--p9)"></i><span class="sci-only">P9</span><span class="abs-only">hole 4</span></span>
+        <span><i style="background:var(--tcr)"></i><span class="sci-only">T cell face</span><span class="abs-only">the side the body reads</span></span>
       </span>
     </div>
   </div>
 
   <div class="view" id="view-info" hidden>
     <div class="inner">
+      <div class="panel story">
+        <h3>The story</h3>
+        <p style="margin:0 0 8px">Jo-1 is a protein every one of your cells needs. In some people the
+        immune system turns on it, and the muscles and the lungs pay for it.</p>
+        <p style="margin:0 0 8px">The whole thing starts in a groove. One HLA molecule picks up a short
+        piece of Jo-1, fifteen letters long, and holds it up for a T cell to read. <b>Which piece gets
+        picked decides everything that follows.</b></p>
+        <p style="margin:0 0 8px">So that is the question this app was built around &mdash; and it was
+        built by a designer, on a phone, because it turns out a phone can answer it.</p>
+      </div>
+
+      <div class="panel story">
+        <h3>Why this method</h3>
+        <p style="margin:0 0 8px">JO-One was built by <b>Moosa Silwadi</b>, an architect and designer,
+        after his own diagnosis of anti-Jo-1 antisynthetase syndrome in 2026. Not a laboratory
+        project &mdash; one person reading, asking, and checking.</p>
+        <p style="margin:0 0 8px">The reading kept arriving at the same fork. One road quiets the whole
+        immune system: it works, and it costs you your ordinary defences against germs. The other road
+        goes after one thing only &mdash; the single groove where this disease is ordered.
+        <b>A key for one lock, instead of cutting the power to the whole building.</b></p>
+        <p style="margin:0 0 8px">That is the method JO-One was built for. It does not treat anything
+        and it does not design a medicine. It narrows: hundreds of possible slices down to the few
+        worth a laboratory's time, and it refuses the ones that would grip everybody else's holder too.</p>
+        <p style="margin:0">Two attempts at this idea reached trial years ago and both were stopped,
+        because a peptide that sits in the groove can wake the cells it was meant to quiet. That is in
+        the Warning panel below, and it is the reason the app narrows carefully instead of promising
+        anything.</p>
+      </div>
+
       <div class="panel">
-        <h3>What this is for</h3>
-        <p style="margin:0 0 8px"><b>A browser tool that screens peptide candidates against 117 HLA
-        class II types and flags the ones that bind too many &mdash; a selectivity filter, built on
-        published predictors.</b></p>
-        <p style="margin:0 0 8px">Scoring one HLA type at a time is what the established tools do, and
-        they do it well. The question this app adds is the next one: <b>does the same peptide also grip
-        everybody else's holder?</b> A peptide that grips many types would blunt normal defence against
-        germs, so a tight score on its own is not good news.</p>
-        <p class="tiny" style="margin:0">Every number here is a prediction, not a measurement &mdash; a
-        shortlist for the bench, never a result.</p>
+        <h3>What makes it useful</h3>
+        <p style="margin:0 0 8px">The established tools score a piece against <b>one</b> HLA type. That
+        is the right first question, and they answer it well.</p>
+        <p style="margin:0 0 8px">This app asks the second one: <b>does the same piece also grip
+        everybody else's holder?</b> A piece that grips many types would blunt normal defence against
+        germs &mdash; so a tight score on its own is not good news. It is a warning sign waiting to be
+        checked.</p>
+        <p style="margin:0">117 holders, every one of them, in about two seconds, in your own browser.
+        That check is the app.</p>
+      </div>
+
+      <div class="panel">
+        <h3>What is new here</h3>
+        <dl class="howto qa">
+          <dt>The 117 check is the main move</dt>
+          <dd>Not a feature buried in a menu. It is the button under the map, and the whole app is
+          arranged around it.</dd>
+          <dt>Narrowing turns the list upside down</dt>
+          <dd>Rank the top 20 by how few other people they grip and the order reverses: the tightest
+          piece is often the worst candidate. That reversal is the finding, and it is the thing you
+          cannot see by scoring one holder at a time.</dd>
+          <dt>It runs on your phone, not on a server</dt>
+          <dd>The trained networks are inside the page. No upload, no account, no waiting. Your
+          sequence never leaves your phone.</dd>
+          <dt>One engine, two languages</dt>
+          <dd>Science gives you the nanomolar numbers. Abstract gives you the same answer in plain
+          words. One switch, same engine underneath.</dd>
+          <dt>The groove is a real picture</dt>
+          <dd>Built on measured coordinates from PDB 1A6A, with your own letters laid along the
+          measured path &mdash; turn it, slide it, open it full screen. Not a cartoon drawn to look
+          convincing.</dd>
+        </dl>
+      </div>
+
+      <div class="panel">
+        <h3>Questions</h3>
+        <dl class="howto qa">
+          <dt>Is this medical advice?</dt>
+          <dd>No. It is a research filter. It cannot diagnose anything and it cannot tell you anything
+          about your own body.</dd>
+          <dt>Do I need to know my HLA type?</dt>
+          <dd>No. Leave DRB1*03:01 &mdash; the type linked to anti-Jo-1 &mdash; and the app works.</dd>
+          <dt>Where do the numbers come from?</dt>
+          <dd>The MHCnuggets class II networks, trained on measured binding data and published with
+          their paper. They are predictions, not measurements.</dd>
+          <dt>Is anything I paste sent anywhere?</dt>
+          <dd>No. Everything runs inside the page on your device.</dd>
+          <dt>Why 117 and not more?</dt>
+          <dd>117 is how many class II holders have a trained network in that release. More types
+          exist; they have no model yet.</dd>
+          <dt>Can I put in any protein?</dt>
+          <dd>Yes. Paste a sequence or drop a FASTA file and the whole thing is cut into fifteen-letter
+          pieces and scored.</dd>
+          <dt>What counts as a good result?</dt>
+          <dd>Tight on your holder <b>and</b> loose on the other 116. Tight on everything is the result
+          that should stop you.</dd>
+          <dt>Does this design a medicine?</dt>
+          <dd>No. It narrows. It takes hundreds of possibilities down to a handful worth a laboratory's
+          time &mdash; and the Warning panel below says what happened the last two times this idea
+          went to trial.</dd>
+        </dl>
       </div>
 
       <div class="panel">
@@ -660,7 +894,16 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </dl>
       </div>
 
-      <div class="panel">
+      <div class="panel abs-only">
+        <h3>Reading the answer</h3>
+        <p class="tiny" style="margin:0 0 6px">Every piece gets one of four words for how hard the
+        holder grips it: <b>very tight</b>, <b>tight</b>, <b>moderate</b>, <b>loose</b>.</p>
+        <p class="tiny" style="margin:0">After the 117 check it also says how many other people's
+        holders grip the same piece. <b>None</b> is the good answer. <b>Three or more</b> is the
+        answer that should stop you.</p>
+      </div>
+
+      <div class="panel sci-only">
         <h3>Reading the numbers</h3>
         <p class="tiny" style="margin:0 0 6px">Strength is in nanomolar (nM). <b>Lower is tighter.</b>
         Under 50 is very tight, under 500 tight, under 5 000 moderate, above that loose.</p>
@@ -670,13 +913,13 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <b>Not selective</b> &mdash; three or more, which is the result that should stop you.</p>
       </div>
 
-      <div class="panel">
+      <div class="panel sci-only">
         <h3>Known pairs, checked live</h3>
         <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
         <p class="tiny" style="margin:0" id="validnote"></p>
       </div>
 
-      <div class="note">
+      <div class="note sci-only">
         <h3>What the number is</h3>
         <p style="margin:0 0 7px"><b>Tightness is only half the question.</b> A peptide that grips many HLA types would also blunt normal defence against germs. The button under a selected slice scores it against all 117 networks. Across the 61 Jo-1 decoys this reorders the list: the tightest are often the least selective.</p>
         <p style="margin:0">A predicted binding strength in nanomolar from the MHCnuggets network for that HLA type, trained on measured binding data. It is a prediction, not a measurement. A lab would also run NetMHCIIpan and then test in cells. Treat a result here as a shortlist.</p>
@@ -692,7 +935,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <p style="margin:6px 0 0">A peptide that binds the groove can wake the very cells it was meant to quiet.</p>
       </div>
 
-      <div class="panel">
+      <div class="panel sci-only">
         <h3>Register of the selected slice</h3>
         <div class="reg"><div class="regrow" id="regrow"></div></div>
         <div class="key">
@@ -705,13 +948,13 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <p class="tiny" style="margin-top:9px" id="regnote"></p>
       </div>
 
-      <div class="panel">
+      <div class="panel sci-only">
         <h3>Pockets of the selected holder</h3>
         <div id="pocketlive"></div>
         <p class="tiny" style="margin:9px 0 0">Read from the IPD-IMGT/HLA protein alignments, release 3.66.0. These are the polymorphic &beta;-chain positions that line each pocket: P1 = &beta;85, &beta;86; P4 = &beta;13, &beta;70, &beta;71, &beta;74; P6 = &beta;11, &beta;30; P9 = &beta;9, &beta;57. For DQ and DP only the &beta; chain is shown; the &alpha; chain also contributes.</p>
       </div>
 
-      <div class="panel">
+      <div class="panel sci-only">
         <h3>What the DR3 pockets prefer</h3>
         <dl class="pk">
           <dt style="color:var(--p1)">P1</dt><dd><span class="y">L I V M</span> &gt; F Y. Val85 + Val86 make it a smaller pocket than other DR types. Charged, G, P excluded.</dd>
@@ -730,7 +973,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V1300 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V2700 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
     </div>
@@ -1606,11 +1849,15 @@ function paintPockets(){
   if(!pk){ host.innerHTML='<p class="tiny" style="margin:0">No sequence on file for this type.</p>'; return; }
   var cols={P1:'var(--p1)',P4:'var(--p4)',P6:'var(--p6)',P9:'var(--p9)'};
   var pos={P1:'\u03b285, \u03b286',P4:'\u03b213, \u03b270, \u03b271, \u03b274',P6:'\u03b211, \u03b230',P9:'\u03b29, \u03b257'};
-  host.innerHTML = '<p class="tiny mono" style="margin:0 0 8px">'+esc(pk.beta)+'</p><div class="pocketbars">'
+  var plain={P1:'hole 1',P4:'hole 2',P6:'hole 3',P9:'hole 4'};
+  var said={P1:'holds the first tooth',P4:'holds the second',P6:'holds the third',P9:'holds the fourth'};
+  host.innerHTML = '<p class="tiny mono sci-only" style="margin:0 0 8px">'+esc(pk.beta)+'</p><div class="pocketbars">'
     + ['P1','P4','P6','P9'].map(function(k){
-        return '<div class="pb"><div class="h" style="color:'+cols[k]+'">'+k+'</div>'
+        return '<div class="pb"><div class="h" style="color:'+cols[k]+'">'
+             + '<span class="sci-only">'+k+'</span><span class="abs-only">'+plain[k]+'</span></div>'
              + '<div class="r">'+pk[k].split('').join(' ')+'</div>'
-             + '<div class="n">'+pos[k]+'</div></div>';
+             + '<div class="n"><span class="sci-only">'+pos[k]+'</span>'
+             + '<span class="abs-only">'+said[k]+'</span></div></div>';
       }).join('') + '</div>';
 }
 function runControls(){
@@ -1624,8 +1871,10 @@ function runControls(){
   paintPockets();
   var homeHere=CONTROLS.filter(function(c){ return c.home===alleleLabel(); });
   document.getElementById('validnote').textContent = homeHere.length
-    ? ('▸ marks the epitope whose published HLA type is the one selected. It should be the tightest of the three here.')
-    : ('None of the three belongs to this HLA type, so all three should look loose. Switch to DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.');
+    ? (ABS ? '\u25b8 marks the piece that is known to be held by the holder you picked. It should be the tightest of the three.'
+           : '\u25b8 marks the epitope whose published HLA type is the one selected. It should be the tightest of the three here.')
+    : (ABS ? 'None of the three belongs to this holder, so all three should look loose. Pick DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.'
+           : 'None of the three belongs to this HLA type, so all three should look loose. Switch to DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.');
 }
 
 var loading=false, loadError=null;
@@ -1663,7 +1912,7 @@ sel.addEventListener('change', function(){ setAllele().then(function(){
   results=[]; drawRows();
   if(isModel) restyle();
   var cap=document.getElementById('molsrc');
-  if(cap && isModel && curReg) cap.textContent = curReg.seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms';
+  if(cap && isModel && curReg) cap.textContent = srcLine(curReg.seq);
   paintPockets();
 }); });
 
@@ -1684,21 +1933,29 @@ function setMode(m){
   var rn=document.getElementById('rknote'); if(rn) rn.hidden=true;
   drawRows();
 }
-var TABS=[['t-hla','view-hla'],['t-prot','view-work'],['t-res','view-res'],['t-3d','view-3d'],['t-info','view-info']];
-var VIEWS=['view-home','view-hla','view-work','view-res','view-3d','view-info'];
+var TABS=[['t-hla','view-hla'],['t-prot','view-work'],['t-res','view-res'],['t-list','view-list'],['t-3d','view-3d'],['t-info','view-info']];
+var VIEWS=['view-home','view-hla','view-work','view-res','view-list','view-3d','view-info'];
 function showView(v){
   VIEWS.forEach(function(x){ document.getElementById(x).hidden=(x!==v); });
   document.getElementById('tabstrip').hidden = (v==='view-home');
+  // every step wears its own colour
+  document.documentElement.setAttribute('data-page', v.replace('view-',''));
+  var has = (typeof results!=='undefined' && results.length>0);
   if(v==='view-res'){
-    var has = (typeof results!=='undefined' && results.length>0);
     document.getElementById('noscan').hidden = has;
-    ['.mapwrap','.narrow','#count','#rows','#sheetwrap'].forEach(function(sel){
+    ['.mapwrap','#anchkey','#view-res .nextbtn','#view-res .btncap'].forEach(function(sel){
       var el=document.querySelector(sel); if(el) el.hidden = !has;
     });
     if(has) setTimeout(drawMap,30);
   }
+  if(v==='view-list'){
+    document.getElementById('noscan2').hidden = has;
+    ['.narrow','#count','#rows','#sheetwrap','#view-list .nextbtn','#view-list>.inner>.btncap']
+      .forEach(function(sel){ var el=document.querySelector(sel); if(el) el.hidden = !has; });
+  }
   if(v==='view-3d'){
     if(typeof sayWhat==='function') sayWhat();
+    if(typeof markStep==='function') markStep();
     if(viewer) setTimeout(function(){
       viewer.resize(); viewer.render();
       if(typeof loadReal==='function') loadReal();   // try for the measured atoms
@@ -1715,6 +1972,7 @@ function showHome(){
   showView('view-home');
 }
 document.getElementById('startbtn').addEventListener('click', function(){ showTab('t-hla'); });
+document.getElementById('toscan2').addEventListener('click', function(){ showTab('t-prot'); });
 document.getElementById('homelink').addEventListener('click', showHome);
 document.getElementById('holderpill').addEventListener('click', function(){ showTab('t-hla'); });
 TABS.forEach(function(t){
@@ -2245,6 +2503,11 @@ function threadSlice(m){
 
 /* ---- the measured structure, fetched by the browser from the protein databank ---- */
 var RCSB_ID='1A6A', realTried=false;
+function srcLine(seq){
+  if(!seq) return ABS ? 'a drawing of the groove' : 'scaled geometric model';
+  return ABS ? (seq+'  \u00b7  '+alleleLabel()+'  \u00b7  a drawing, not real measured atoms')
+             : (seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms');
+}
 function loadReal(){
   if(realTried || !viewer) return; realTried=true;
   var cap=document.getElementById('molsrc');
@@ -2255,7 +2518,8 @@ function loadReal(){
             'https://files.rcsb.org/view/'+RCSB_ID+'.pdb'];
   function attempt(i){
     if(i>=urls.length){ realTried=false;
-      cap.textContent='could not reach the protein databank \u00b7 showing the scaled model';
+      cap.textContent = ABS ? 'could not fetch the real groove \u00b7 showing the drawing'
+                            : 'could not reach the protein databank \u00b7 showing the scaled model';
       return; }
     fetch(urls[i]).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
       .then(function(t){
@@ -2273,9 +2537,10 @@ function useReal(text, fromCache){
     viewer.removeAllLabels();
     viewer.addModel(text,'pdb');
     isModel=false;
-    document.getElementById('molsrc').textContent =
-      RCSB_ID+' \u00b7 groove and path measured \u00b7 your letters laid on that path '
-      + '\u00b7 their side branches are modelled';
+    document.getElementById('molsrc').textContent = ABS
+      ? (RCSB_ID+' \u00b7 a real measured groove \u00b7 your letters laid along it')
+      : (RCSB_ID+' \u00b7 groove and path measured \u00b7 your letters laid on that path '
+         + '\u00b7 their side branches are modelled');
     styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     sayWhat();
     viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
@@ -2283,7 +2548,9 @@ function useReal(text, fromCache){
     var tb=document.getElementById('b-real'); if(tb) tb.hidden=true;
   }catch(e){
     realTried=false;
-    document.getElementById('molsrc').textContent='could not read the structure \u00b7 showing the scaled model';
+    document.getElementById('molsrc').textContent = ABS
+      ? 'could not fetch the real one \u00b7 showing the drawing'
+      : 'could not read the structure \u00b7 showing the scaled model';
   }
 }
 function reskin3d(){
@@ -2328,7 +2595,7 @@ function sayWhat(){
 window.__showPeptide=function(reg){
   curReg=reg;
   var cap=document.getElementById('molsrc');
-  if(cap && isModel) cap.textContent = reg ? (reg.seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms') : 'scaled geometric model';
+  if(cap && isModel) cap.textContent = srcLine(reg && reg.seq);
   restyle();                      // the measured view re-threads with the new slice
 };
 
@@ -2360,6 +2627,12 @@ document.getElementById('b-teeth').addEventListener('click', function(){
     var on = this.getAttribute('aria-pressed')!=='true';
     this.setAttribute('aria-pressed', on?'true':'false');
     pad.hidden = !on;
+    var w=document.getElementById('molwhat');
+    if(w){
+      if(on) w.innerHTML = '<b>Sliding.</b> Drag the picture to move it. '
+                         + 'Press <b>Move</b> again to go back to turning it.';
+      else sayWhat();
+    }
   });
   var dragging=false, lx=0, ly=0;
   pad.addEventListener('pointerdown', function(e){
@@ -2369,20 +2642,69 @@ document.getElementById('b-teeth').addEventListener('click', function(){
   pad.addEventListener('pointermove', function(e){
     if(!dragging||!viewer) return;
     var dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
-    try{ viewer.translate(dx,dy,0,true); }catch(err){}
+    // the picture goes the way the finger goes
+    try{ viewer.translate(-dx,-dy,0,true); }catch(err){}
   });
   function stop(){ dragging=false; }
   pad.addEventListener('pointerup', stop);
   pad.addEventListener('pointercancel', stop);
 })();
+/* Full view - the picture takes the whole screen, the controls step aside */
+(function(){
+  var view=document.getElementById('view-3d');
+  var inb=document.getElementById('b-full'), outb=document.getElementById('b-small');
+  if(!view||!inb||!outb) return;
+  function set(on){
+    view.classList.toggle('full', on);
+    inb.setAttribute('aria-pressed', on?'true':'false');
+    setTimeout(function(){
+      if(!viewer) return;
+      try{ viewer.resize(); viewer.render(); }catch(e){}
+    },60);
+  }
+  inb.addEventListener('click', function(){ set(true); });
+  outb.addEventListener('click', function(){ set(false); });
+})();
 document.getElementById('b-reset').addEventListener('click', function(){
   if(!viewer) return;
+  document.getElementById('view-3d').classList.remove('full');
   document.getElementById('b-move').setAttribute('aria-pressed','false');
   document.getElementById('molpan').hidden=true;
+  try{ viewer.resize(); }catch(e){}
   viewer.zoomTo();
   if(isModel){ viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); }
   viewer.render();
 });
+/* walk the shortlist from inside the picture */
+function stepList(d){
+  var cards=document.querySelectorAll('#rows .card');
+  if(!cards.length) return;
+  var cur=-1;
+  for(var k=0;k<cards.length;k++){
+    if(cards[k].getAttribute('aria-selected')==='true'){ cur=k; break; }
+  }
+  if(cur<0) cur=0;
+  var next=cur+d;
+  if(next<0||next>=cards.length) return;
+  select(parseInt(cards[next].getAttribute('data-i'),10));
+  if(viewer){ try{ restyle(); viewer.render(); }catch(e){} }
+  markStep();
+}
+function markStep(){
+  var strip=document.getElementById('stepstrip'); if(!strip) return;
+  var cards=document.querySelectorAll('#rows .card');
+  if(!cards.length){ strip.hidden=true; return; }
+  var cur=0;
+  for(var k=0;k<cards.length;k++){
+    if(cards[k].getAttribute('aria-selected')==='true'){ cur=k; break; }
+  }
+  strip.hidden=false;
+  document.getElementById('s-pos').textContent=(cur+1)+' of '+cards.length;
+  document.getElementById('s-prev').disabled=(cur===0);
+  document.getElementById('s-next').disabled=(cur===cards.length-1);
+}
+document.getElementById('s-prev').addEventListener('click', function(){ stepList(-1); });
+document.getElementById('s-next').addEventListener('click', function(){ stepList(1); });
 document.getElementById('b-real').addEventListener('click', function(){
   realTried=false; loadReal();
 });
@@ -2558,9 +2880,10 @@ document.getElementById('toscan').addEventListener('click', function(){
 document.getElementById('sort-sel').addEventListener('click', function(){ setSort('sel'); });
 document.getElementById('sort-str').addEventListener('click', function(){ setSort('str'); });
 
-// the map holds the top while the list is beside it, then lets go
+// the map and the list are separate screens now - nothing to pin
 (function(){
   var vr=document.getElementById('view-res'), rows=document.getElementById('rows');
+  if(true) return;
   if(!vr||!rows) return;
   var pending=false;
   vr.addEventListener('scroll', function(){
@@ -2609,6 +2932,14 @@ setAllele();
                    : 'Showing the numbers \u2014 tap for plain words';
     if(typeof results!=='undefined' && results.length) drawRows();
     else if(typeof drawMap==='function') drawMap();
+    // the lines written by script have to be re-written in the other language
+    if(typeof runControls==='function'){ try{ runControls(); }catch(e){} }
+    if(typeof selected!=='undefined' && selected>=0 && typeof select==='function'){ try{ select(selected); }catch(e){} }
+    if(typeof sayWhat==='function'){ try{ sayWhat(); }catch(e){} }
+    var cap=document.getElementById('molsrc');
+    if(cap && typeof isModel!=='undefined' && isModel && typeof srcLine==='function'){
+      try{ cap.textContent = srcLine(typeof curReg!=='undefined' && curReg ? curReg.seq : null); }catch(e){}
+    }
   }
   var m0='science'; try{ var sm=localStorage.getItem(MKEY); if(sm==='abstract'||sm==='science') m0=sm; }catch(e){}
   applyMode(m0);
