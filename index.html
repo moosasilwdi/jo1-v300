@@ -536,6 +536,23 @@ input[type=file]{display:none}
    round, up and down tip it, and nothing ever rolls it sideways. That is what keeps
    every edge of the model square to the little reference block, not just the
    uprights. The sliding pad sits above this one and takes over when Move is on. */
+/* One line per part of the holder, each with its own switch. Turning a part off is
+   how you learn what it is for: take the walls away and the floor is all that is
+   left holding your piece. */
+.partsbox{position:absolute;left:10px;top:34px;z-index:4;width:188px;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:6px;box-shadow:0 6px 22px rgba(0,0,0,.28)}
+.partsbox button{display:flex;align-items:center;gap:8px;width:100%;
+  background:none;border:0;padding:6px 7px;border-radius:7px;cursor:pointer;
+  font-size:12.5px;line-height:1.25;color:var(--ink);text-align:left;box-shadow:none;
+  text-shadow:none;font-weight:600}
+.partsbox button:hover{background:var(--sunk)}
+.partsbox i{flex:0 0 auto;width:26px;height:15px;border-radius:999px;position:relative;
+  background:var(--line);transition:background .12s}
+.partsbox i::after{content:'';position:absolute;top:2px;left:2px;width:11px;height:11px;
+  border-radius:50%;background:#fff;transition:left .12s}
+.partsbox button[aria-pressed="true"] i{background:var(--ok,#1a7448)}
+.partsbox button[aria-pressed="true"] i::after{left:13px}
 #molrot{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent;z-index:1}
 #molrot:active{cursor:grabbing}
 #molpan{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent;z-index:2}
@@ -610,9 +627,16 @@ a.sendmail:active{filter:brightness(.96)}
 /* The stage behind the picture is a fixed dark panel, so the line over it is dark
    too. It used to be drawn in the page's pale panel colour, which washed a white
    band down over the top of the picture. */
+/* the line over the picture is painted in the stage's own colour, so it turns over
+   with it instead of leaving a dark band across a white stage */
 #view-3d .caption{position:absolute;top:0;left:0;right:0;z-index:2;
-  font-size:10.5px;line-height:1.4;color:#9aa6b4;font-family:var(--mono);
+  font-size:10.5px;line-height:1.4;color:#59636f;font-family:var(--mono);
   pointer-events:none;padding:7px max(12px,env(safe-area-inset-left,0px));
+  background:linear-gradient(to bottom, rgba(255,255,255,.95) 72%, rgba(255,255,255,0))}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #view-3d .caption{color:#9aa6b4;
+    background:linear-gradient(to bottom, rgba(11,16,22,.95) 72%, rgba(11,16,22,0))}}
+:root[data-theme="dark"] #view-3d .caption{color:#9aa6b4;
   background:linear-gradient(to bottom, rgba(11,16,22,.95) 72%, rgba(11,16,22,0))}
 /* The key always takes two rows, in both wordings. Left to wrap on its own it was
    one row in Science and two in Abstract, and the picture box jumped 27px when you
@@ -895,6 +919,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
     <div class="molstage">
       <div id="mol"></div>
       <div id="molrot"></div>
+      <div class="partsbox" id="partsbox" hidden></div>
       <div id="molpan" hidden></div>
       <!-- the reference block: which way you are looking, on the model's own axes -->
       <div class="viewcube" id="viewcube" aria-hidden="true"><svg id="vcsvg" viewBox="-1.95 -1.95 3.9 3.9"></svg></div>
@@ -914,6 +939,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <button type="button" id="b-anch" aria-pressed="true">Holes</button>
         <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
         <button type="button" id="b-names" aria-pressed="false">Names</button>
+        <button type="button" id="b-parts" aria-pressed="false">Parts</button>
         <button type="button" id="b-cell" aria-pressed="false">Cell</button>
         <button type="button" id="b-surf" aria-pressed="false">Surface</button>
         <button type="button" id="b-move" aria-pressed="false" title="Drag to slide the model">Move</button>
@@ -1135,7 +1161,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V7000 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V7200 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2658,6 +2684,22 @@ var CLASS_COL = {phobic:'#c9ced6', acid:'#c0564a', base:'#2f5fa8', polar:'#49937
    token when the viewer was built and never again, so it kept whatever the machine
    was wearing at that moment - black on a dark desktop even after the app went light.
    The pale walls of the groove only read on a dark stage, so dark is the choice. */
+/* The stage used to be black always, which is why the holder had to be drawn pale.
+   It now follows the app's own light and dark, and every pale piece of the picture
+   turns over with it - pale on a dark stage, dark on a white one - so the form is
+   readable either way instead of vanishing into the background. */
+function stageDark(){
+  var t=document.documentElement.getAttribute('data-theme');
+  if(t==='dark') return true;
+  if(t==='light') return false;
+  try{ return matchMedia('(prefers-color-scheme:dark)').matches; }catch(e){ return true; }
+}
+function stageCol(){ return stageDark() ? '#0b1016' : '#ffffff'; }
+var INKS={
+  dark : {floor:'#aab7c7', wall:'#e4eaf1', holder:'#dde5ee', bar:'#eef2f7', spine:'#99a3b0'},
+  light: {floor:'#6f7c8d', wall:'#a3b0bf', holder:'#73808f', bar:'#9fabba', spine:'#5d6673'}
+};
+function ink(k){ return INKS[stageDark()?'dark':'light'][k]; }
 var STAGE='#0b1016';
 /* Reset used to re-apply the opening TURNS, which are relative - so every press
    turned the picture further and you never got back. The opening view is saved
@@ -2833,20 +2875,25 @@ function drawTeaching(){
        - the two lips leave a narrow SLOT down the middle, and that slot is the only
          part of your piece anything can see. The studs poke up through it. That is
          what the immune cell reads: the tops of the two walls and that strip. */
-  viewer.addBox({center:{x:0,y:0,z:-7}, dimensions:{w:46,h:24,d:3.4}, color:'#8fd3ab'});
+  if(partOn('floor'))
+    viewer.addBox({center:{x:0,y:0,z:-7}, dimensions:{w:46,h:24,d:3.4}, color:'#8fd3ab'});
   /* The near wall is CUT AWAY over half its length - a section - so you can see
      straight into the channel: the piece lying in it and the pegs underneath
      dropping into their holes. The far wall is left whole so the shape still reads. */
-  viewer.addBox({center:{x:0,y:7.6,z:-0.6}, dimensions:{w:46,h:3.2,d:10}, color:'#63b98a'});
-  viewer.addBox({center:{x:0,y:4.7,z:4.0}, dimensions:{w:46,h:3.4,d:2.2}, color:'#4ea878'});
-  viewer.addBox({center:{x:12,y:-7.6,z:-0.6}, dimensions:{w:22,h:3.2,d:10}, color:'#63b98a'});
-  viewer.addBox({center:{x:12,y:-4.7,z:4.0}, dimensions:{w:22,h:3.4,d:2.2}, color:'#4ea878'});
-  // the cut face, so the section reads as a cut and not as a broken wall
-  viewer.addBox({center:{x:1.1,y:-7.6,z:-0.6}, dimensions:{w:0.6,h:3.2,d:10}, color:'#2f7d55'});
-  viewer.addBox({center:{x:1.1,y:-4.7,z:4.0}, dimensions:{w:0.6,h:3.4,d:2.2}, color:'#2f7d55'});
+  if(partOn('wall1')){
+    viewer.addBox({center:{x:0,y:7.6,z:-0.6}, dimensions:{w:46,h:3.2,d:10}, color:'#63b98a'});
+    viewer.addBox({center:{x:0,y:4.7,z:4.0}, dimensions:{w:46,h:3.4,d:2.2}, color:'#4ea878'});
+  }
+  if(partOn('wall2')){
+    viewer.addBox({center:{x:12,y:-7.6,z:-0.6}, dimensions:{w:22,h:3.2,d:10}, color:'#63b98a'});
+    viewer.addBox({center:{x:12,y:-4.7,z:4.0}, dimensions:{w:22,h:3.4,d:2.2}, color:'#4ea878'});
+    // the cut face, so the section reads as a cut and not as a broken wall
+    viewer.addBox({center:{x:1.1,y:-7.6,z:-0.6}, dimensions:{w:0.6,h:3.2,d:10}, color:'#2f7d55'});
+    viewer.addBox({center:{x:1.1,y:-4.7,z:4.0}, dimensions:{w:0.6,h:3.4,d:2.2}, color:'#2f7d55'});
+  }
 
   // the four sockets, sunk into the floor
-  for(var k=0;k<4;k++){
+  for(var k=0; partOn('floor') && k<4; k++){
     var i=AT[k];
     if(curReg) i = curReg.start + AT[k];
     if(i<0||i>=n) continue;
@@ -2860,9 +2907,10 @@ function drawTeaching(){
   }
 
   // the bar: your piece, lying in the cradle
-  viewer.addBox({center:{x:0,y:0,z:0.4}, dimensions:{w:41,h:8.4,d:3.4}, color:'#eef2f7'});
+  if(partOn('piece'))
+    viewer.addBox({center:{x:0,y:0,z:0.4}, dimensions:{w:41,h:8.4,d:3.4}, color:ink('bar')});
 
-  for(var i2=0;i2<n;i2++){
+  for(var i2=0; partOn('piece') && i2<n; i2++){
     var off = curReg ? i2-curReg.start : i2;
     var hole = AT.indexOf(off);
     var face = TCR_POS.indexOf(off)>=0;
@@ -2921,8 +2969,15 @@ function styleModel(surface){
     viewer.render();
     return;
   }
-  viewer.setStyle({chain:'A'},{cartoon:{color:'#aab7c7',thickness:0.55,arrows:true}});
-  viewer.setStyle({chain:'B'},{cartoon:{color:'#e4eaf1',thickness:0.85,style:'oval'}});
+  /* In the scaled model I built, chain A IS the sheet that makes the floor and the
+     two stretches of chain B ARE the two helices that make the walls, so each part
+     is selected exactly, with no guessing. */
+  viewer.setStyle({chain:'A'}, partOn('floor')
+    ? {cartoon:{color:ink('floor'),thickness:0.55,arrows:true}} : {});
+  viewer.setStyle({chain:'B',resi:'105-130'}, partOn('wall1')
+    ? {cartoon:{color:ink('wall'),thickness:0.85,style:'oval'}} : {});
+  viewer.setStyle({chain:'B',resi:'131-156'}, partOn('wall2')
+    ? {cartoon:{color:ink('wall'),thickness:0.85,style:'oval'}} : {});
   viewer.setStyle({chain:'P'},{});
   viewer.removeAllLabels(); viewer.removeAllShapes();
 
@@ -2931,6 +2986,7 @@ function styleModel(surface){
   var cols = {0:cssv('--p1'),3:cssv('--p4'),5:cssv('--p6'),8:cssv('--p9')};
   var m = viewer.getModel(0), prev = null;
   var pep2 = pep, n2 = n;
+  if(!partOn('piece')) n2 = 0;
   for(var i=0;i<n2;i++){
     var ri = PEP_FIRST+i, aa = pep2[i];
     var off = curReg ? i-curReg.start : i;
@@ -2966,11 +3022,15 @@ function styleModel(surface){
     });
   }
   if(document.getElementById('b-names').getAttribute('aria-pressed')==='true'){
-    partLabel(m,{chain:'P'}, 'your piece · peptide', '#1565d8', [16,0,11]);
+    if(partOn('piece')) partLabel(m,{chain:'P'},
+      ABS?'your piece':'peptide', '#1565d8', [16,0,11]);
     if(!settingOn()){
-      partLabel(m,{chain:'A'}, 'the floor · sheet', '#4a5768', [-15,0,-10]);
-      partLabel(m,{chain:'B',resi:'105-130'}, 'a wall · helix', '#6b7889', [0,10,4]);
-      partLabel(m,{chain:'B',resi:'131-156'}, 'a wall · helix', '#6b7889', [0,-10,4]);
+      if(partOn('floor')) partLabel(m,{chain:'A'},
+        ABS?'the floor':'\u03b2-sheet platform', '#4a5768', [-15,0,-10]);
+      if(partOn('wall1')) partLabel(m,{chain:'B',resi:'105-130'},
+        ABS?'a wall':'\u03b11 helix', '#6b7889', [0,10,4]);
+      if(partOn('wall2')) partLabel(m,{chain:'B',resi:'131-156'},
+        ABS?'a wall':'\u03b21 helix', '#6b7889', [0,-10,4]);
     }
   }
   if(settingOn()){
@@ -3016,6 +3076,57 @@ function sideRadius(aa){
   var v=SIDE_VOL[aa]; if(!v) return 0;
   return Math.cbrt(3*v/(4*Math.PI));
 }
+/* WHICH RIBBON IS WHICH, worked out from the structure itself
+   The piece lies along the channel. Stand at it and look around: the two walls are
+   the ribbon on either side of it at about its own height, the floor is the ribbon
+   under it, and whatever is further below carries the whole groove.
+
+   So: take the piece's own line as one direction; take 'up' as the direction from
+   the bulk of the protein towards the piece; 'across' is the third. Then every
+   residue of the holder is placed by where it sits in those three directions. No
+   residue numbers are assumed and the file is not asked to label anything, so this
+   works on a structure written any way at all. */
+function grooveSplit(m){
+  if(!m) return null;
+  try{
+    var all=m.selectedAtoms({atom:'CA'}); if(all.length<40) return null;
+    var byChain={};
+    all.forEach(function(a){ (byChain[a.chain]=byChain[a.chain]||[]).push(a); });
+    // the piece is the short chain lying inside the others
+    var names=Object.keys(byChain);
+    var pep=null;
+    names.forEach(function(c){ if(byChain[c].length<=30 && (!pep || byChain[c].length<byChain[pep].length)) pep=c; });
+    if(!pep) return null;
+    var hold=names.filter(function(c){ return c!==pep; });
+    if(!hold.length) return null;
+
+    function mean(list){ var x=0,y=0,z=0; list.forEach(function(a){x+=a.x;y+=a.y;z+=a.z;});
+      return {x:x/list.length, y:y/list.length, z:z/list.length}; }
+    function sub(a,b){ return {x:a.x-b.x, y:a.y-b.y, z:a.z-b.z}; }
+    function dot(a,b){ return a.x*b.x+a.y*b.y+a.z*b.z; }
+    function cross(a,b){ return {x:a.y*b.z-a.z*b.y, y:a.z*b.x-a.x*b.z, z:a.x*b.y-a.y*b.x}; }
+    function norm(a){ var l=Math.sqrt(dot(a,a))||1; return {x:a.x/l, y:a.y/l, z:a.z/l}; }
+
+    var P=byChain[pep], c=mean(P);
+    var along=norm(sub(P[P.length-1], P[0]));
+    var holdAtoms=[]; hold.forEach(function(ch){ holdAtoms=holdAtoms.concat(byChain[ch]); });
+    var up=sub(c, mean(holdAtoms));
+    up=norm(sub(up, {x:along.x*dot(up,along), y:along.y*dot(up,along), z:along.z*dot(up,along)}));
+    var across=norm(cross(up,along));
+
+    var floor={}, w1={}, w2={}, body={};
+    holdAtoms.forEach(function(a){
+      var d=sub(a,c), h=dot(d,up), s=dot(d,across);
+      var bag = (h < -14) ? body : (h < -4) ? floor : (s>0 ? w1 : w2);
+      (bag[a.chain]=bag[a.chain]||[]).push(a.resi);
+    });
+    function sels(bag){ return Object.keys(bag).map(function(ch){ return {chain:ch, resi:bag[ch]}; }); }
+    var out={pep:pep, pepResi:P.map(function(a){return a.resi;}),
+             floor:sels(floor), wall1:sels(w1), wall2:sels(w2), body:sels(body)};
+    if(!out.floor.length || !out.wall1.length || !out.wall2.length) return null;
+    return out;
+  }catch(e){ return null; }
+}
 function styleReal(surface){
   var holesOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
   var teethOn = document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
@@ -3026,12 +3137,30 @@ function styleReal(surface){
      drawing tells them: the flat sheet underneath is the floor, the two coils above
      it are the walls. In a measured file each chain gives a piece of both, so the
      SHAPE of the ribbon picks the colour, not the chain it belongs to. */
-  viewer.setStyle({},{cartoon:{color:HOLD_WALL,opacity:1,thickness:0.95,arrows:true}});
-  viewer.setStyle({chain:['C','P']},{});
+  /* Which ribbon is floor and which is wall is worked out from WHERE each piece
+     sits, not from the file saying so - so it works on any structure, however it is
+     written. The piece lies in the channel; the two walls flank it, one on each
+     side; the floor is the sheet underneath; and what is left is the body that
+     carries the groove. See grooveSplit below. */
+  var FLOOR={cartoon:{color:ink('floor'),opacity:1,thickness:0.75,arrows:true}};
+  var WALL ={cartoon:{color:ink('wall'),opacity:1,thickness:1.05,style:'oval'}};
+  var REST ={cartoon:{color:ink('floor'),opacity:0.38,thickness:0.5}};
+  var SPL=grooveSplit(viewer.getModel(0)); LAST_SPLIT=SPL;
+  viewer.setStyle({},{});
+  if(SPL){
+    if(partOn('body'))  SPL.body.forEach(function(sel){ viewer.setStyle(sel,REST); });
+    if(partOn('floor')) SPL.floor.forEach(function(sel){ viewer.setStyle(sel,FLOOR); });
+    if(partOn('wall1')) SPL.wall1.forEach(function(sel){ viewer.setStyle(sel,WALL); });
+    if(partOn('wall2')) SPL.wall2.forEach(function(sel){ viewer.setStyle(sel,WALL); });
+  }else{
+    // nothing to measure from - draw the holder whole rather than guess at its parts
+    viewer.setStyle({chain:['A','B']},FLOOR);
+  }
+  viewer.setStyle({chain:SPL?SPL.pep:['C','P']},{});
   viewer.removeAllShapes(); viewer.removeAllLabels();
   var m=viewer.getModel(0);
 
-  if(teethOn) threadSlice(m);
+  if(teethOn && partOn('piece')) threadSlice(m, SPL?SPL.pep:'C', SPL?SPL.pepResi:null);
 
   if(holesOn){
     REAL_POCKETS.forEach(function(pk){
@@ -3043,6 +3172,19 @@ function styleReal(surface){
         borderThickness:0,inFront:true});
     });
   }
+  /* Names did nothing at all on the measured picture, which is why the floor and
+     the walls could not be found in it. They are named here the way Science names
+     them, and only the parts actually on screen are named. */
+  if(document.getElementById('b-names').getAttribute('aria-pressed')==='true'){
+    if(SPL){
+      if(partOn('floor')) partLabel(m, SPL.floor[0], '\u03b2-sheet platform', '#4a5768', [0,0,-16]);
+      if(partOn('wall1')) partLabel(m, SPL.wall1[0], '\u03b11 helix', '#6b7889', [0,10,6]);
+      if(partOn('wall2')) partLabel(m, SPL.wall2[0], '\u03b21 helix', '#6b7889', [0,-10,6]);
+      if(partOn('piece')) partLabel(m, {chain:SPL.pep}, 'peptide', '#1565d8', [16,0,12]);
+      if(partOn('body') && SPL.body.length)
+        partLabel(m, SPL.body[0], '\u03b12 and \u03b22 domains', '#5a6472', [0,0,-30]);
+    }
+  }
   if(surface) viewer.addSurface($3Dmol.SurfaceType.VDW,
       {opacity:0.55,color:cssv('--sunk')},{chain:['A','B']});
   else viewer.removeAllSurfaces();
@@ -3050,7 +3192,14 @@ function styleReal(surface){
 }
 
 /* lay the chosen slice on the measured path */
-function threadSlice(m){
+function threadSlice(m, pepChain, pepResi){
+  var PCH = pepChain || 'C';
+  /* The measured peptide in 1A6A is numbered 87 to 101. Another file may number its
+     piece any way it likes, so if those numbers are not there the chain's own
+     numbers are used in order instead, and the piece still draws. */
+  var NUMS=[]; for(var q=0;q<15;q++) NUMS.push(CLIP_FIRST+q);
+  if(!m.selectedAtoms({chain:PCH,resi:NUMS[0],atom:'CA'}).length && pepResi && pepResi.length)
+    NUMS = pepResi.slice(0,15);
   var pep = (curReg && curReg.seq) ? curReg.seq : null;
   var start = (curReg && curReg.start!=null) ? curReg.start : null;
   var ink=cssv('--ink'), mute=cssv('--mute');
@@ -3063,8 +3212,10 @@ function threadSlice(m){
   var n = pep ? Math.min(pep.length,15) : 15;
   for(var i=0;i<n;i++){
     // your letter i goes on the CLIP residue that holds the same position
-    var resi = pep ? (CLIP_P1 + (i-start)) : (CLIP_FIRST+i);
-    var ca=m.selectedAtoms({chain:'C',resi:resi,atom:'CA'});
+    var k = pep ? (4 + (i-start)) : i;        // P1 is the fifth of the fifteen
+    if(k<0 || k>=NUMS.length) continue;
+    var resi = NUMS[k];
+    var ca=m.selectedAtoms({chain:PCH,resi:resi,atom:'CA'});
     if(!ca.length) continue;
     var c={x:ca[0].x,y:ca[0].y,z:ca[0].z};
     viewer.addSphere({center:c,radius:0.95,color:mute});
@@ -3073,7 +3224,7 @@ function threadSlice(m){
     if(!pep) continue;
     var aa=pep[i], R=sideRadius(aa);
     if(R<=0) continue;
-    var cb=m.selectedAtoms({chain:'C',resi:resi,atom:'CB'});
+    var cb=m.selectedAtoms({chain:PCH,resi:resi,atom:'CB'});
     var d;
     if(cb.length) d={x:cb[0].x-c.x,y:cb[0].y-c.y,z:cb[0].z-c.z};
     else d={x:0,y:0,z:1};
@@ -3146,10 +3297,81 @@ function useReal(text, fromCache){
 }
 function reskin3d(){
   if(!viewer) return;
-  viewer.setBackgroundColor(STAGE);
+  viewer.setBackgroundColor(stageCol());
   restyle();
   viewer.render();
 }
+/* The stage used to be repainted only when the theme BUTTON was pressed, so a theme
+   changed any other way - restored from last time, or the phone turning itself dark
+   while the app is open - left a white stage under a dark app, or the other way
+   about. It now follows the theme however the theme changes. */
+(function(){
+  try{
+    new MutationObserver(function(){ reskin3d(); })
+      .observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+  }catch(e){}
+  try{
+    var mq=matchMedia('(prefers-color-scheme:dark)');
+    if(mq.addEventListener) mq.addEventListener('change', function(){ reskin3d(); });
+    else if(mq.addListener) mq.addListener(function(){ reskin3d(); });
+  }catch(e){}
+})();
+/* ================= the parts of the holder, one switch each =================
+   The holder is not one lump. It is a floor with two walls standing on it, and your
+   piece lying between them. Turning a part off is how you see what it does: take the
+   walls away and only the floor is left; take the floor away and the piece has
+   nothing to lie on.
+
+   Science calls the parts by their own names. The floor is a sheet of eight strands,
+   four from each chain. Each wall is a helix - one from the alpha chain, one from the
+   beta chain. Below the groove sit the two domains that carry it.
+
+   In the drawing I know exactly which shape is which. In a measured file the parts
+   are found by their SHAPE - a coil is a wall, a flat strand is floor - inside the
+   half of each chain that builds the groove. If a file does not say which is which,
+   that part is simply left showing rather than guessed at. */
+var PARTS={floor:true, wall1:true, wall2:true, piece:true, body:true};
+var LAST_SPLIT=null;
+function partOn(k){ return PARTS[k]!==false; }
+function partRows(){
+  var sci = [['floor','\u03b2-sheet platform'],['wall1','\u03b11 helix'],
+             ['wall2','\u03b21 helix'],['piece','peptide'],
+             ['body','\u03b12 and \u03b22 domains']];
+  var abs = [['floor','the floor'],['wall1','wall, far side'],
+             ['wall2','wall, near side'],['piece','your piece'],
+             ['body','the rest of the protein']];
+  var rows = (typeof ABS!=='undefined' && ABS) ? abs : sci;
+  /* The drawing is the groove alone, and some measured files hold nothing but the
+     groove either. The body line is offered only when there really is one. */
+  var hasBody = !isModel && LAST_SPLIT && LAST_SPLIT.body && LAST_SPLIT.body.length;
+  if(!hasBody) rows = rows.filter(function(r){ return r[0]!=='body'; });
+  return rows;
+}
+function buildParts(){
+  var box=document.getElementById('partsbox'); if(!box) return;
+  box.innerHTML = partRows().map(function(r){
+    return '<button type="button" data-part="'+r[0]+'" aria-pressed="'+(partOn(r[0])?'true':'false')+'">'
+         + '<i></i><span>'+r[1]+'</span></button>';
+  }).join('');
+  [].forEach.call(box.querySelectorAll('button'), function(bt){
+    bt.addEventListener('click', function(){
+      var k=this.getAttribute('data-part');
+      PARTS[k] = !partOn(k);
+      this.setAttribute('aria-pressed', partOn(k)?'true':'false');
+      restyle();
+    });
+  });
+}
+(function(){
+  var bt=document.getElementById('b-parts'), box=document.getElementById('partsbox');
+  if(!bt||!box) return;
+  bt.addEventListener('click', function(){
+    var on = this.getAttribute('aria-pressed')!=='true';
+    this.setAttribute('aria-pressed', on?'true':'false');
+    box.hidden = !on;
+    if(on) buildParts();
+  });
+})();
 /* Marking something on the picture must never move the picture. Holes, Teeth, Names
    and Surface all come through here, and each one tears the drawing down and builds
    it again - which is where a stray re-frame can creep in. So the camera is written
@@ -3161,6 +3383,8 @@ function restyle(){
   try{ if(viewer && viewer.getView) keep=viewer.getView(); }catch(e){}
   if(isModel) styleModel(s); else styleReal(s);
   if(keep){ try{ viewer.setView(keep); }catch(e){} }
+  var pb=document.getElementById('partsbox');
+  if(pb && !pb.hidden) buildParts();
   sayWhat();
 }
 /* one line under the picture naming exactly what is on screen */
@@ -3314,7 +3538,7 @@ function boot3D(){
     host.innerHTML='<div style="padding:20px;font-size:13px;color:var(--mute)">The 3D viewer could not load. The screen above still works.</div>';
     return;
   }
-  viewer=$3Dmol.createViewer(host,{backgroundColor:STAGE});
+  viewer=$3Dmol.createViewer(host,{backgroundColor:stageCol()});
   viewer.addModel(pdbText,'pdb');
   styleModel(false);
   viewer.zoomTo(); markBase();
@@ -3398,9 +3622,16 @@ document.getElementById('b-cell').addEventListener('click', function(){
     if(!dragging||!viewer) return;
     var dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
     moved += Math.abs(dx)+Math.abs(dy);
+    /* The picture goes the way the finger goes. Measured: dragging DOWN used to send
+       the top of the model UP the screen - against the finger - so the up-and-down
+       sign is flipped. Left and right already followed the finger. */
     curTurn += dx*0.45;
-    curTip  += dy*0.45;
-    if(curTip>90) curTip=90; if(curTip<-90) curTip=-90;
+    curTip  -= dy*0.45;
+    /* Tipping stops at the two ends that make sense: level with the groove at one
+       end, and just short of straight down over it at the other. Dead overhead the
+       uprights point at the eye and have no direction left on the screen; past
+       level there is only the underside of the floor to see. */
+    if(curTip>90) curTip=90; if(curTip<8) curTip=8;
     if(applyTurnTip()) viewer.render();
   });
   function stop(){ dragging=false; }
