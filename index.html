@@ -206,6 +206,11 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .abs-only{display:none}
 :root[data-mode="abstract"] .abs-only{display:revert}
 :root[data-mode="abstract"] .sci-only{display:none!important}
+/* Surface puts a smooth skin on the measured atoms. The teaching drawing has no
+   atoms to skin - the skin landed inside the solid cradle, so the button changed
+   nothing you could see. A button that does nothing is worse than no button, so in
+   Abstract it is not there at all. */
+:root[data-mode="abstract"] #b-surf{display:none}
 :root[data-mode="abstract"] .card .nmv{display:none}
 :root[data-mode="abstract"] .card .meter .trk{height:9px;border-radius:5px}
 :root[data-mode="abstract"] .maphead .big{font-size:17px;font-family:var(--sans);
@@ -527,7 +532,13 @@ input[type=file]{display:none}
 .molstage{position:relative;flex:1 1 auto;min-height:0;background:var(--sunk)}
 #mol{position:absolute;inset:0;width:100%;height:100%;background:var(--sunk);overflow:hidden}
 /* the slide pad covers the picture only, never the controls */
-#molpan{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent}
+/* Turning the picture is a turntable, not a free tumble: left and right swing it
+   round, up and down tip it, and nothing ever rolls it sideways. That is what keeps
+   every edge of the model square to the little reference block, not just the
+   uprights. The sliding pad sits above this one and takes over when Move is on. */
+#molrot{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent;z-index:1}
+#molrot:active{cursor:grabbing}
+#molpan{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent;z-index:2}
 #molpan:active{cursor:grabbing}
 /* the reference block sits clear of the caption and of the slide pad */
 .viewcube{position:absolute;right:9px;bottom:9px;width:72px;height:72px;z-index:3;
@@ -883,6 +894,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
   <div class="view" id="view-3d" hidden>
     <div class="molstage">
       <div id="mol"></div>
+      <div id="molrot"></div>
       <div id="molpan" hidden></div>
       <!-- the reference block: which way you are looking, on the model's own axes -->
       <div class="viewcube" id="viewcube" aria-hidden="true"><svg id="vcsvg" viewBox="-1.95 -1.95 3.9 3.9"></svg></div>
@@ -1123,7 +1135,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V6800 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V7000 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2650,8 +2662,9 @@ var STAGE='#0b1016';
 /* Reset used to re-apply the opening TURNS, which are relative - so every press
    turned the picture further and you never got back. The opening view is saved
    here instead, and Reset puts that view back, exactly. */
-var HOME_VIEW=null, BASE_VIEW=null, ZOOM_CELL=0.86;
-function markHome(){ try{ if(viewer) HOME_VIEW=viewer.getView(); }catch(e){} }
+var HOME_VIEW=null, BASE_VIEW=null, CELL_BACK=null, ZOOM_CELL=0.86;
+var HOME_TURN=55, HOME_TIP=35, CELL_TURN=55, CELL_TIP=35;
+function markHome(){ try{ if(viewer){ HOME_VIEW=viewer.getView(); HOME_TURN=curTurn; HOME_TIP=curTip; } }catch(e){} }
 /* the view before any turning, kept so the story picture can be built from a known
    starting point instead of adding turns onto whatever the picture is wearing */
 function markBase(){ try{ if(viewer) BASE_VIEW=viewer.getView(); }catch(e){} }
@@ -2661,16 +2674,37 @@ function markBase(){ try{ if(viewer) BASE_VIEW=viewer.getView(); }catch(e){} }
    Under that pair the upright axis can only swing straight up or straight down the
    screen - never sideways - so the model's uprights stay upright, like the block's. */
 var VIEW_TURN=55, VIEW_TIP=35;
+/* Where the picture is looked at from, kept as two plain angles: how far it is
+   swung round, and how far it is tipped. Nothing else. A view built from only
+   these two can never be ROLLED - so the model's uprights stay upright and every
+   one of its edges stays square to the reference block, at any angle. */
+var curTurn=VIEW_TURN, curTip=VIEW_TIP;
+function quatFor(a,t){
+  var ar=a*Math.PI/360, tr=t*Math.PI/360;
+  var st=Math.sin(tr), ct=Math.cos(tr), sa=Math.sin(ar), ca=Math.cos(ar);
+  return [-st*ca, st*sa, ct*sa, ct*ca];
+}
+/* turn and tip the picture where it already is - same place, same zoom */
+function applyTurnTip(){
+  if(!viewer||!viewer.setView) return false;
+  try{
+    var v=viewer.getView(); if(!v||v.length<8) return false;
+    var q=quatFor(curTurn,curTip);
+    v[4]=q[0]; v[5]=q[1]; v[6]=q[2]; v[7]=q[3];
+    viewer.setView(v);
+    return true;
+  }catch(e){ return false; }
+}
 function setTurnTip(a,t,zoomf){
   if(!viewer||!viewer.setView) return false;
   try{
     viewer.zoomTo();
     var v=viewer.getView(); if(!v||v.length<8) return false;
-    var ar=a*Math.PI/360, tr=t*Math.PI/360;
-    var st=Math.sin(tr), ct=Math.cos(tr), sa=Math.sin(ar), ca=Math.cos(ar);
-    v[4]=-st*ca; v[5]=st*sa; v[6]=ct*sa; v[7]=ct*ca;
+    var q=quatFor(a,t);
+    v[4]=q[0]; v[5]=q[1]; v[6]=q[2]; v[7]=q[3];
     viewer.setView(v);
     viewer.zoomTo(); viewer.zoom(zoomf);
+    curTurn=a; curTip=t;
     return true;
   }catch(e){ return false; }
 }
@@ -3102,7 +3136,7 @@ function useReal(text, fromCache){
     sayWhat();
     viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
     viewer.rotate(-18,'x'); viewer.render();
-    var tb=document.getElementById('b-real'); if(tb) tb.hidden=true;
+    if(typeof syncRealBtn==='function') syncRealBtn();
   }catch(e){
     realTried=false;
     document.getElementById('molsrc').textContent = ABS
@@ -3182,7 +3216,7 @@ function showDrawn(){
     viewer.removeAllLabels();
     viewer.addModel(pdbText,'pdb');
     isModel=true; realTried=false;
-    var tb=document.getElementById('b-real'); if(tb) tb.hidden=false;
+    if(typeof syncRealBtn==='function') syncRealBtn();
     styleModel(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     var cap=document.getElementById('molsrc');
     if(cap) cap.textContent = srcLine(curReg && curReg.seq);
@@ -3222,11 +3256,12 @@ function drawViewCube(){
   /* An axonometric reference: the block turns, but its upright edges stay upright
      on the screen. The picture itself carries a roll, so the block is turned back
      in the plane of the screen until the model's UP points straight up. */
-  var U=vcRot(q,[0,0,1]), us=Math.sqrt(U[0]*U[0]+U[1]*U[1]), ca=1, sa=0;
-  if(us>0.08){
-    var ang=Math.atan2(-U[1],U[0]), d=(-Math.PI/2)-ang;
-    ca=Math.cos(d); sa=Math.sin(d);
-  }
+  /* The block used to be turned back in the plane of the screen until the model's
+     up pointed straight up. That hid a roll the MODEL still had, so after a drag the
+     block sat square while the model leaned. Turning is a turntable now, so there is
+     no roll to hide: the block is drawn exactly as the picture is, and the two agree
+     on every axis. */
+  var U=vcRot(q,[0,0,1]), ca=1, sa=0;
   var P=[],i;
   for(i=0;i<VC_V.length;i++){
     var r=vcRot(q,VC_V[i]);
@@ -3284,7 +3319,7 @@ function boot3D(){
   styleModel(false);
   viewer.zoomTo(); markBase();
   if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(0.62); } viewer.render();
-  sayWhat(); markHome();
+  sayWhat(); markHome(); syncRealBtn();
   drawViewCube(); vcStart();
 }
 document.getElementById('b-surf').addEventListener('click', function(){
@@ -3301,6 +3336,12 @@ document.getElementById('b-names').addEventListener('click', function(){
 });
 document.getElementById('b-cell').addEventListener('click', function(){
   var on = this.getAttribute('aria-pressed')!=='true';
+  /* Cell is allowed to move the picture - it tips over to look along the groove.
+     But switching it off used to snap back to the OPENING view, which threw away
+     whatever angle you had turned the picture to yourself. So the angle you were
+     looking from is written down on the way in and given back on the way out. */
+  if(on){ try{ CELL_BACK = viewer && viewer.getView ? viewer.getView() : null;
+            CELL_TURN=curTurn; CELL_TIP=curTip; }catch(e){ CELL_BACK=null; } }
   this.setAttribute('aria-pressed', on?'true':'false');
   restyle();
   if(!viewer) return;
@@ -3313,6 +3354,7 @@ document.getElementById('b-cell').addEventListener('click', function(){
     /* The story view is set the same way: no turn, tipped right over, so you look
        along the groove and the layers stack straight up the screen - uprights upright. */
     if(on){ if(!setTurnTip(0,90,ZOOM_CELL)){ viewer.zoomTo(); viewer.zoom(ZOOM_CELL); } }
+    else if(CELL_BACK && viewer.setView){ viewer.setView(CELL_BACK); curTurn=CELL_TURN; curTip=CELL_TIP; }
     else if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){
       if(HOME_VIEW && viewer.setView) viewer.setView(HOME_VIEW);
       viewer.zoomTo(); viewer.zoom(0.62);
@@ -3339,6 +3381,37 @@ document.getElementById('b-cell').addEventListener('click', function(){
   if(window.ResizeObserver){ try{ new ResizeObserver(mark).observe(row); }catch(e){} }
   mark(); setTimeout(mark,300);
   window.JO1_vmark = mark;
+})();
+/* Turning the picture: a turntable. Left and right swing it round, up and down tip
+   it, and it is never rolled - so the model keeps every edge square to the reference
+   block at any angle, not only its uprights. */
+(function(){
+  var pad=document.getElementById('molrot');
+  if(!pad) return;
+  var dragging=false, lx=0, ly=0, moved=0;
+  pad.addEventListener('pointerdown', function(e){
+    if(e.isPrimary===false) return;
+    dragging=true; moved=0; lx=e.clientX; ly=e.clientY;
+    pad.setPointerCapture && pad.setPointerCapture(e.pointerId);
+  });
+  pad.addEventListener('pointermove', function(e){
+    if(!dragging||!viewer) return;
+    var dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
+    moved += Math.abs(dx)+Math.abs(dy);
+    curTurn += dx*0.45;
+    curTip  += dy*0.45;
+    if(curTip>90) curTip=90; if(curTip<-90) curTip=-90;
+    if(applyTurnTip()) viewer.render();
+  });
+  function stop(){ dragging=false; }
+  pad.addEventListener('pointerup', stop);
+  pad.addEventListener('pointercancel', stop);
+  /* the wheel and two-finger pinch still belong to the viewer underneath */
+  pad.addEventListener('wheel', function(e){
+    if(!viewer) return;
+    try{ viewer.zoom(e.deltaY<0?1.1:0.9); viewer.render(); }catch(err){}
+    e.preventDefault();
+  }, {passive:false});
 })();
 (function(){
   var btn=document.getElementById('b-move'), pad=document.getElementById('molpan');
@@ -3400,6 +3473,7 @@ document.getElementById('b-reset').addEventListener('click', function(){
   }
   try{ viewer.resize(); }catch(e){}
   /* put back the saved opening view - the same one every time */
+  CELL_BACK=null; curTurn=HOME_TURN; curTip=HOME_TIP;
   if(HOME_VIEW && viewer.setView){ try{ viewer.setView(HOME_VIEW); }catch(e){ viewer.zoomTo(); } }
   else viewer.zoomTo();
   viewer.render();
@@ -3435,7 +3509,22 @@ function markStep(){
 }
 document.getElementById('s-prev').addEventListener('click', function(){ stepList(-1); });
 document.getElementById('s-next').addEventListener('click', function(){ stepList(1); });
+/* Real structure is a SWITCH, not a one-way door. It used to load the measured file
+   and then hide itself, leaving no way back to the drawing. Now it says which way it
+   will go, and goes back when pressed again. Pressed in Abstract it used to do
+   nothing at all - the drawing was put straight back - so now it moves the wording
+   to Science first, because the measured atoms are what Science means. */
+function syncRealBtn(){
+  var tb=document.getElementById('b-real'); if(!tb) return;
+  tb.hidden=false;
+  if(isModel){ tb.textContent='Real structure'; tb.setAttribute('aria-pressed','false');
+               tb.title='Download the measured structure'; }
+  else { tb.textContent='Drawing'; tb.setAttribute('aria-pressed','true');
+         tb.title='Go back to the drawing'; }
+}
 document.getElementById('b-real').addEventListener('click', function(){
+  if(!isModel){ showDrawn(); syncRealBtn(); return; }   // the measured file is showing - go back
+  if(ABS){ var sci=document.getElementById('m-sci'); if(sci){ sci.click(); syncRealBtn(); return; } }
   realTried=false; loadReal();
 });
 document.getElementById('pdbin').addEventListener('change', function(e){
@@ -3450,6 +3539,7 @@ document.getElementById('pdbin').addEventListener('change', function(e){
       document.getElementById('molsrc').textContent=f.name+' · solved structure';
       styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
       viewer.zoomTo(); viewer.render(); markHome();
+      syncRealBtn();
     }catch(err){ document.getElementById('molsrc').textContent='could not read that file'; }
   };
   rd.readAsText(f);
