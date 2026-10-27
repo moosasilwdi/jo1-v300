@@ -1,11 +1,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>JO-One</title>
+<title>JO1</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="JO-One">
+<meta name="apple-mobile-web-app-title" content="JO1">
 <meta name="theme-color" content="#eceff3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e131a" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -288,15 +288,14 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 .appbar .logo{width:25px;height:25px;flex:0 0 auto;border-radius:6px}
 .appbar .brand{font-weight:700;letter-spacing:-.01em;font-size:15px;white-space:nowrap}
 /* the wordmark: JO in a solid block, ONE running free */
-.wm{font-weight:700;letter-spacing:-.03em;line-height:1;white-space:nowrap;color:var(--ink);
-  font-size:16px;display:inline-flex;align-items:baseline}
-.wm .chip{background:var(--ink);color:var(--bg);border-radius:.16em;
-  padding:.05em .11em .13em;margin-right:.05em}
-.wmbig{font-size:34px;letter-spacing:-.028em}
+/* the mark is now one drawn shape, not type, so it is sized by height and takes
+   the page's own ink - dark on a light page, pale on a dark one */
+.wm{display:block;height:19px;width:45.6px;color:var(--ink);flex:0 0 auto;overflow:visible}
+.wmbig{height:46px;width:110.5px}
 /* the logo alone, for a moment, before the app */
 .splash{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;
   background:var(--bg);cursor:pointer;transition:opacity .34s ease}
-.splash .wm{animation:rise .5s ease both;font-size:54px}
+.splash .wm{animation:rise .5s ease both;height:62px;width:148.9px}
 .splash.gone{opacity:0;pointer-events:none}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.splash .wm{animation:none}}
@@ -560,9 +559,20 @@ a.sendmail:active{filter:brightness(.96)}
   background:var(--panel);border-top:1px solid var(--line)}
 /* one strip of controls that slides sideways, so it never eats the picture */
 .vrow{display:flex;gap:7px;flex-wrap:nowrap;align-items:center;overflow-x:auto;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-inline:14px}
 .vrow::-webkit-scrollbar{display:none}
 .vrow>*{flex:0 0 auto}
+/* The strip holds more buttons than the panel is wide, so it slides. Without a sign
+   of that, the button at the edge just looks cut in half. These two fades are that
+   sign: one appears on whichever side still has buttons out of view, and goes when
+   that side is reached, so nothing is ever sliced with no explanation. */
+.vwrap{position:relative}
+.vwrap::before,.vwrap::after{content:'';position:absolute;top:0;bottom:0;width:34px;
+  pointer-events:none;opacity:0;transition:opacity .15s;z-index:2}
+.vwrap::before{left:0;background:linear-gradient(to right,var(--panel) 34%,rgba(0,0,0,0))}
+.vwrap::after{right:0;background:linear-gradient(to left,var(--panel) 34%,rgba(0,0,0,0))}
+.vwrap.more-l::before{opacity:1}
+.vwrap.more-r::after{opacity:1}
 .vtools .key{margin-top:8px}
 /* step through the shortlist without leaving the picture */
 .stepstrip{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:14px;
@@ -619,11 +629,13 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 </style>
 
 <div class="device">
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="jo1mark" viewBox="0 0 1424 593"><path fill="currentColor" fill-rule="evenodd" d="M1103.5 588.9 C1088.4 587.6 1064.9 583.4 1050.7 579.5 C1013.5 569.3 976.9 550.9 946.0 526.9 C933.8 517.5 912.1 496.3 901.7 483.7 C834.6 402.6 815.8 291.3 852.7 193.5 C882.9 113.7 944.7 51.9 1024.5 21.7 C1054.5 10.4 1084.5 4.5 1118.0 3.3 C1188.9 0.8 1259.5 25.0 1314.7 70.7 C1327.3 81.1 1348.5 102.8 1357.9 115.0 C1381.9 145.8 1400.3 182.6 1410.5 219.7 C1414.6 234.5 1418.5 257.5 1420.0 274.5 C1423.7 318.4 1415.5 368.3 1397.9 409.7 C1382.3 446.4 1362.8 475.3 1334.5 503.5 C1306.3 531.8 1277.4 551.3 1240.7 566.9 C1198.9 584.7 1148.5 592.7 1103.5 588.9 Z M68.0 463.3 C61.1 462.7 47.1 460.1 41.5 458.3 C33.1 455.7 23.3 450.0 18.9 445.3 C13.6 439.6 8.6 428.8 5.8 417.5 C3.8 409.0 3.7 405.6 3.3 359.5 L2.9 310.4 L41.7 303.1 C63.0 299.1 81.3 295.6 82.2 295.4 C83.9 294.9 84.0 297.8 84.0 346.9 L84.0 399.0 L163.0 399.0 L242.0 399.0 L242.0 258.5 L242.0 118.0 L282.0 118.0 L322.0 118.0 L322.0 258.8 C322.0 376.8 321.8 401.0 320.5 409.0 C317.0 432.3 309.5 445.7 296.1 452.9 C288.3 457.0 283.4 458.7 272.0 461.2 C262.8 463.3 259.9 463.3 167.5 463.5 C115.2 463.6 70.5 463.5 68.0 463.3 Z M1179.0 289.4 C1179.0 123.7 1178.9 114.9 1177.2 115.3 C1176.3 115.6 1143.2 120.7 1103.8 126.6 L1032.0 137.4 L1032.0 160.7 L1032.0 184.0 L1069.0 184.0 L1106.0 184.0 L1106.0 324.0 L1106.0 464.0 L1142.5 464.0 L1179.0 464.0 L1179.0 289.4 Z M434.5 457.9 C414.6 455.6 398.8 449.6 390.4 441.3 C381.9 432.8 376.1 417.0 374.0 396.9 C372.6 383.2 372.6 188.3 374.0 175.2 C377.1 146.8 385.9 130.4 402.5 122.5 C411.2 118.4 423.3 115.4 436.9 114.0 C451.5 112.6 721.0 112.6 735.6 114.1 C754.9 116.0 769.9 120.9 779.2 128.2 C784.7 132.5 790.6 142.1 793.5 151.3 C798.9 168.4 799.0 169.6 799.0 286.0 C799.0 376.4 798.7 395.1 797.5 403.5 C794.0 426.9 786.4 440.8 773.2 447.8 C765.3 452.0 760.5 453.7 749.0 456.3 C739.6 458.4 738.2 458.4 591.0 458.6 C505.8 458.7 439.1 458.4 434.5 457.9 Z M719.0 284.5 L719.0 175.0 L586.5 175.0 L454.0 175.0 L454.0 284.5 L454.0 394.0 L586.5 394.0 L719.0 394.0 L719.0 284.5 Z"/></symbol></svg>
+
 <div class="splash" id="splash">
-  <span class="wm wmbig"><span class="chip">JO</span><span>ONE</span></span>
+  <svg class="wm wmbig" role="img" aria-label="JO1"><use href="#jo1mark"/></svg>
 </div>
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><span class="wm"><span class="chip">JO</span><span>ONE</span></span></button><span class="beta">BETA</span>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="wm" role="img" aria-label="JO1"><use href="#jo1mark"/></svg></button><span class="beta">BETA</span>
   <span class="dot" id="statdot" title="network status" hidden></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder" hidden>—</button>
   <select id="notesel" class="notesel" aria-label="Notes and contact">
@@ -885,7 +897,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
     </div>
     <div class="vtools">
       <p class="molwhat" id="molwhat"></p>
-      <div class="vrow">
+      <div class="vwrap" id="vwrap">
+      <div class="vrow" id="vrow">
         <button type="button" id="b-anch" aria-pressed="true">Holes</button>
         <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
         <button type="button" id="b-names" aria-pressed="false">Names</button>
@@ -897,6 +910,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
         <label class="drop" for="pdbin">Load .pdb</label>
         <input type="file" id="pdbin" accept=".pdb,.ent,.cif,.mmcif">
+      </div>
       </div>
       <span class="key">
         <span><i style="background:var(--p1)"></i><span class="sci-only">P1</span><span class="abs-only">hole 1</span></span>
@@ -924,14 +938,14 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       </div>
       <div class="panel story">
         <h3>Why this method</h3>
-        <p style="margin:0 0 8px">JO-One was built by <b>Moosa Silwadi</b>, an architect and designer,
+        <p style="margin:0 0 8px">JO1 was built by <b>Moosa Silwadi</b>, an architect and designer,
         after his own diagnosis of anti-Jo-1 antisynthetase syndrome in 2026. Not a laboratory
         project &mdash; one person reading, asking, and checking.</p>
         <p style="margin:0 0 8px">The reading kept arriving at the same fork. One road quiets the whole
         immune system: it works, and it costs you your ordinary defences against germs. The other road
         goes after one thing only &mdash; the single groove where this disease is ordered.
         <b>A key for one lock, instead of cutting the power to the whole building.</b></p>
-        <p style="margin:0 0 8px">That is the method JO-One was built for. It does not treat anything
+        <p style="margin:0 0 8px">That is the method JO1 was built for. It does not treat anything
         and it does not design a medicine. It narrows: hundreds of possible slices down to the few
         worth a laboratory's time, and it refuses the ones that would grip everybody else's holder too.</p>
         <p style="margin:0">Two attempts at this idea reached trial years ago and both were stopped,
@@ -1109,7 +1123,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V6700 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V6800 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -1126,7 +1140,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <div class="panel">
           <h3>Who made it</h3>
           <p style="margin:0 0 4px"><b>Moosa Silwadi</b></p>
-          <p class="tiny" style="margin:0 0 12px">Founder of JO-One and TIMELINE</p>
+          <p class="tiny" style="margin:0 0 12px">Founder of JO1 and TIMELINE</p>
           <div class="sponsor">
             <svg viewBox="0 0 44 44" aria-hidden="true"><rect width="44" height="44" rx="11" fill="var(--tile)"/><path d="M11 15h22M22 15v16" stroke="#f5b700" stroke-width="3.4" stroke-linecap="round"/><path d="M27 22l6-4v8z" fill="#f5b700"/></svg>
             <div><span class="tiny">Sponsored by</span><b>TIMELINE</b><span class="tiny">timelinelab.app</span></div>
@@ -2222,7 +2236,7 @@ function stepBy(d){
     markNav();
   });
   var mail=document.getElementById('mailto');
-  if(mail){ var a='timelinelabteam@gmail.com'; mail.textContent=a; mail.href='mailto:'+a+'?subject=JO-One'; }
+  if(mail){ var a='timelinelabteam@gmail.com'; mail.textContent=a; mail.href='mailto:'+a+'?subject=JO1'; }
   var vl=document.getElementById('verline');
   if(vl){ var m2=(document.querySelector('.refs')||{textContent:''}).textContent.match(/V\d{4}/); vl.textContent=m2?m2[0]:''; }
 })();
@@ -2959,6 +2973,9 @@ var REAL_POCKETS=[
    that measured path, letter for letter, P1 over P1. The path is measured; only the
    side branches of your own letters are modelled, and the caption says so. */
 var CLIP_FIRST=87, CLIP_P1=91;
+/* the two inks the holder is drawn in - the same two the drawn model uses, so the
+   floor and the walls keep their colours when you switch between the two pictures */
+var HOLD_WALL='#dde5ee';
 var SIDE_VOL={G:0,A:27,S:29,C:44,D:40,P:41,N:44,T:51,E:62,V:54,Q:64,H:79,
               M:94,I:93,L:93,K:100,R:148,F:115,Y:117,W:163};
 function sideRadius(aa){
@@ -2968,8 +2985,15 @@ function sideRadius(aa){
 function styleReal(surface){
   var holesOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
   var teethOn = document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
-  viewer.setStyle({},{cartoon:{color:cssv('--ink'),opacity:0.40,thickness:0.5}});
-  viewer.setStyle({chain:'C'},{});
+  /* The holder used to be one ribbon at 40% see-through and 0.5 thin. On the dark
+     stage that all but disappeared, so the floor and the walls were simply missing
+     from the measured picture while the drawing showed them plainly.
+     Now it is drawn solid, and the floor is told from the walls the same way the
+     drawing tells them: the flat sheet underneath is the floor, the two coils above
+     it are the walls. In a measured file each chain gives a piece of both, so the
+     SHAPE of the ribbon picks the colour, not the chain it belongs to. */
+  viewer.setStyle({},{cartoon:{color:HOLD_WALL,opacity:1,thickness:0.95,arrows:true}});
+  viewer.setStyle({chain:['C','P']},{});
   viewer.removeAllShapes(); viewer.removeAllLabels();
   var m=viewer.getModel(0);
 
@@ -3092,9 +3116,17 @@ function reskin3d(){
   restyle();
   viewer.render();
 }
+/* Marking something on the picture must never move the picture. Holes, Teeth, Names
+   and Surface all come through here, and each one tears the drawing down and builds
+   it again - which is where a stray re-frame can creep in. So the camera is written
+   down before and put back after, and the only button allowed to move the view is
+   Cell, which moves it on purpose after this has run. */
 function restyle(){
   var s=document.getElementById('b-surf').getAttribute('aria-pressed')==='true';
+  var keep=null;
+  try{ if(viewer && viewer.getView) keep=viewer.getView(); }catch(e){}
   if(isModel) styleModel(s); else styleReal(s);
+  if(keep){ try{ viewer.setView(keep); }catch(e){} }
   sayWhat();
 }
 /* one line under the picture naming exactly what is on screen */
@@ -3177,6 +3209,7 @@ function vcRot(q,v){
           iy*qw+iw*(-qy)+iz*(-qx)-ix*(-qz),
           iz*qw+iw*(-qz)+ix*(-qy)-iy*(-qx)];
 }
+var VC_MARK='M1103.5 588.9 C1088.4 587.6 1064.9 583.4 1050.7 579.5 C1013.5 569.3 976.9 550.9 946.0 526.9 C933.8 517.5 912.1 496.3 901.7 483.7 C834.6 402.6 815.8 291.3 852.7 193.5 C882.9 113.7 944.7 51.9 1024.5 21.7 C1054.5 10.4 1084.5 4.5 1118.0 3.3 C1188.9 0.8 1259.5 25.0 1314.7 70.7 C1327.3 81.1 1348.5 102.8 1357.9 115.0 C1381.9 145.8 1400.3 182.6 1410.5 219.7 C1414.6 234.5 1418.5 257.5 1420.0 274.5 C1423.7 318.4 1415.5 368.3 1397.9 409.7 C1382.3 446.4 1362.8 475.3 1334.5 503.5 C1306.3 531.8 1277.4 551.3 1240.7 566.9 C1198.9 584.7 1148.5 592.7 1103.5 588.9 Z M68.0 463.3 C61.1 462.7 47.1 460.1 41.5 458.3 C33.1 455.7 23.3 450.0 18.9 445.3 C13.6 439.6 8.6 428.8 5.8 417.5 C3.8 409.0 3.7 405.6 3.3 359.5 L2.9 310.4 L41.7 303.1 C63.0 299.1 81.3 295.6 82.2 295.4 C83.9 294.9 84.0 297.8 84.0 346.9 L84.0 399.0 L163.0 399.0 L242.0 399.0 L242.0 258.5 L242.0 118.0 L282.0 118.0 L322.0 118.0 L322.0 258.8 C322.0 376.8 321.8 401.0 320.5 409.0 C317.0 432.3 309.5 445.7 296.1 452.9 C288.3 457.0 283.4 458.7 272.0 461.2 C262.8 463.3 259.9 463.3 167.5 463.5 C115.2 463.6 70.5 463.5 68.0 463.3 Z M1179.0 289.4 C1179.0 123.7 1178.9 114.9 1177.2 115.3 C1176.3 115.6 1143.2 120.7 1103.8 126.6 L1032.0 137.4 L1032.0 160.7 L1032.0 184.0 L1069.0 184.0 L1106.0 184.0 L1106.0 324.0 L1106.0 464.0 L1142.5 464.0 L1179.0 464.0 L1179.0 289.4 Z M434.5 457.9 C414.6 455.6 398.8 449.6 390.4 441.3 C381.9 432.8 376.1 417.0 374.0 396.9 C372.6 383.2 372.6 188.3 374.0 175.2 C377.1 146.8 385.9 130.4 402.5 122.5 C411.2 118.4 423.3 115.4 436.9 114.0 C451.5 112.6 721.0 112.6 735.6 114.1 C754.9 116.0 769.9 120.9 779.2 128.2 C784.7 132.5 790.6 142.1 793.5 151.3 C798.9 168.4 799.0 169.6 799.0 286.0 C799.0 376.4 798.7 395.1 797.5 403.5 C794.0 426.9 786.4 440.8 773.2 447.8 C765.3 452.0 760.5 453.7 749.0 456.3 C739.6 458.4 738.2 458.4 591.0 458.6 C505.8 458.7 439.1 458.4 434.5 457.9 Z M719.0 284.5 L719.0 175.0 L586.5 175.0 L454.0 175.0 L454.0 284.5 L454.0 394.0 L586.5 394.0 L719.0 394.0 L719.0 284.5 Z';
 var vcLast='';
 function drawViewCube(){
   var host=document.getElementById('vcsvg'); if(!host||!viewer) return;
@@ -3209,13 +3242,18 @@ function drawViewCube(){
     parts.push('<polygon points="'+pts.join(' ')+'" fill="'+F.f
       +'" stroke="#0b1016" stroke-width="0.045" stroke-linejoin="round"/>');
     if(F.mark){
-      var cx=0, cy=0;
-      for(i=0;i<4;i++){ cx+=P[F.i[i]][0]/4; cy+=P[F.i[i]][1]/4; }
-      var sq=Math.max(0.18, Math.abs(nr[2]));
-      marks.push('<g transform="translate('+cx.toFixed(3)+' '+cy.toFixed(3)+') scale(1,'+sq.toFixed(3)+')">'
-        +'<rect x="-0.50" y="-0.21" width="0.50" height="0.42" rx="0.06" fill="#111720"/>'
-        +'<text x="-0.25" y="0.145" text-anchor="middle" font-size="0.37" font-weight="700" fill="#f3f6fa">JO</text>'
-        +'<text x="0.06" y="0.145" font-size="0.37" font-weight="700" fill="#111720">ONE</text></g>');
+      /* The mark is PRINTED ON the face, not laid flat on top of it. The face's own
+         four corners give the two directions the face runs in on screen; the mark is
+         drawn in those two directions, so it turns, leans and foreshortens exactly as
+         the face does - ink on a box, not a sticker that always faces you. */
+      var A=P[F.i[0]], B=P[F.i[1]], C=P[F.i[2]], D=P[F.i[3]];
+      var ox=(A[0]+B[0]+C[0]+D[0])/4, oy=(A[1]+B[1]+C[1]+D[1])/4;
+      var fux=(A[0]-D[0])/2, fuy=(A[1]-D[1])/2;    // the way the writing runs
+      var fvx=(A[0]-B[0])/2, fvy=(A[1]-B[1])/2;    // the way the letters stand
+      marks.push('<g transform="matrix('+fux.toFixed(4)+' '+fuy.toFixed(4)+' '
+        +fvx.toFixed(4)+' '+fvy.toFixed(4)+' '+ox.toFixed(4)+' '+oy.toFixed(4)+')">'
+        +'<g transform="scale(0.0010253) translate(-712.0 -296.5)">'
+        +'<path fill="#111720" fill-rule="evenodd" d="'+VC_MARK+'"/></g></g>');
     }
   }
   host.innerHTML = parts.join('') + marks.join('');
@@ -3285,6 +3323,23 @@ document.getElementById('b-cell').addEventListener('click', function(){
   if(cap && on) cap.textContent='the groove is to scale \u00b7 the skin, stem and immune cell are drawn';
   else if(cap && typeof srcLine==='function') cap.textContent=srcLine(curReg && curReg.seq);
 });
+/* Show a fade on whichever side of the control strip still has buttons out of
+   sight, so a button at the edge is never just sliced off with no reason given. */
+(function(){
+  var row=document.getElementById('vrow'), wrap=document.getElementById('vwrap');
+  if(!row||!wrap) return;
+  function mark(){
+    var over = row.scrollWidth - row.clientWidth;
+    if(over<=2){ wrap.classList.remove('more-l','more-r'); return; }
+    wrap.classList.toggle('more-l', row.scrollLeft > 2);
+    wrap.classList.toggle('more-r', row.scrollLeft < over - 2);
+  }
+  row.addEventListener('scroll', mark, {passive:true});
+  addEventListener('resize', mark);
+  if(window.ResizeObserver){ try{ new ResizeObserver(mark).observe(row); }catch(e){} }
+  mark(); setTimeout(mark,300);
+  window.JO1_vmark = mark;
+})();
 (function(){
   var btn=document.getElementById('b-move'), pad=document.getElementById('molpan');
   if(!btn||!pad) return;
@@ -3407,7 +3462,7 @@ document.getElementById('pdbin').addEventListener('change', function(e){
 function sendText(){
   var r = (typeof results!=='undefined' && selected>=0) ? results[selected] : null;
   var L=[];
-  L.push('JO-One  ' + ((document.querySelector('.refs')||{textContent:''})
+  L.push('JO1  ' + ((document.querySelector('.refs')||{textContent:''})
           .textContent.match(/V\d{4}/)||['V?'])[0]);
   L.push('made ' + new Date().toISOString().slice(0,10));
   L.push('');
@@ -3432,7 +3487,7 @@ function sendText(){
     if(typeof results!=='undefined') L.push('Out of ' + results.length + ' slices scanned.');
   }
   L.push('');
-  L.push('Made with JO-One, a research filter. Predictions from trained networks,');
+  L.push('Made with JO1, a research filter. Predictions from trained networks,');
   L.push('not laboratory measurements. Not a clinical result and not medical advice.');
   return L.join('\n');
 }
@@ -3442,7 +3497,7 @@ function fillSend(){
   box.textContent=t;
   var mail=document.getElementById('b-mail');
   if(mail) mail.href='mailto:timelinelabteam@gmail.com?subject='
-    + encodeURIComponent('JO-One result') + '&body=' + encodeURIComponent(t);
+    + encodeURIComponent('JO1 result') + '&body=' + encodeURIComponent(t);
 }
 (function(){
   var b=document.getElementById('b-send'), box=document.getElementById('sendbox'),
