@@ -67,7 +67,7 @@
 
 /* Each step wears its own colour, vivid. Button text is white everywhere and
    carries a dark outline, which is what makes it readable on the light fills. */
-:root[data-page="home"]{--gold:#1ea84c;--mauve:#1ea84c;--btn:#1ea84c;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#0f7a36;--accink:#0f7a36}
+:root[data-page="home"]{--gold:#f5b700;--mauve:#f5b700;--btn:#111720;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#8a6104;--accink:#8a6104}
 :root[data-page="hla"]{--gold:#1565d8;--mauve:#1565d8;--btn:#1565d8;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 2px rgba(0,0,0,.38);--mauvedeep:#1565d8;--accink:#1565d8}
 :root[data-page="work"]{--gold:#cf2c20;--mauve:#cf2c20;--btn:#cf2c20;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 2px rgba(0,0,0,.38);--mauvedeep:#cf2c20;--accink:#cf2c20}
 :root[data-page="res"]{--gold:#f5b700;--mauve:#f5b700;--btn:#f5b700;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#8a6104;--accink:#8a6104}
@@ -75,7 +75,7 @@
 :root[data-page="3d"]{--gold:#1ea84c;--mauve:#1ea84c;--btn:#1ea84c;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#0f7a36;--accink:#0f7a36}
 :root[data-page="info"]{--gold:#1565d8;--mauve:#1565d8;--btn:#1565d8;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 2px rgba(0,0,0,.38);--mauvedeep:#1565d8;--accink:#1565d8}
 @media (prefers-color-scheme:dark){
-:root:not([data-theme="light"])[data-page="home"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
+:root:not([data-theme="light"])[data-page="home"]{--gold:#ffc233;--mauve:#ffc233;--btn:#39445a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
 :root:not([data-theme="light"])[data-page="hla"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
 :root:not([data-theme="light"])[data-page="work"]{--gold:#ff6f68;--mauve:#ff6f68;--btn:#ff6f68;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#ff6f68;--accink:#ff6f68}
 :root:not([data-theme="light"])[data-page="res"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
@@ -83,19 +83,24 @@
 :root:not([data-theme="light"])[data-page="3d"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
 :root:not([data-theme="light"])[data-page="info"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
 }
-:root[data-theme="dark"][data-page="home"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
+:root[data-theme="dark"][data-page="home"]{--gold:#ffc233;--mauve:#ffc233;--btn:#39445a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
 :root[data-theme="dark"][data-page="hla"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
 :root[data-theme="dark"][data-page="work"]{--gold:#ff6f68;--mauve:#ff6f68;--btn:#ff6f68;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#ff6f68;--accink:#ff6f68}
 :root[data-theme="dark"][data-page="res"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
 :root[data-theme="dark"][data-page="list"]{--gold:#ffc233;--mauve:#ffc233;--btn:#ffc233;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 0 rgba(0,0,0,.55), 1px 1px 0 rgba(0,0,0,.45), -1px 1px 0 rgba(0,0,0,.45), 0 0 4px rgba(0,0,0,.5);--mauvedeep:#ffc233;--accink:#ffc233}
 :root[data-theme="dark"][data-page="3d"]{--gold:#45c46a;--mauve:#45c46a;--btn:#45c46a;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#45c46a;--accink:#45c46a}
 :root[data-theme="dark"][data-page="info"]{--gold:#6aa9ff;--mauve:#6aa9ff;--btn:#6aa9ff;--onmauve:#fff;--onbtn:#fff;--btnsh:0 1px 1px rgba(0,0,0,.5), 0 0 3px rgba(0,0,0,.45);--mauvedeep:#6aa9ff;--accink:#6aa9ff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li:nth-child(1){--stc:#6aa9ff;--sti:#6aa9ff;--stn:#ff6f68}
-:root:not([data-theme="light"]) .steps li:nth-child(2){--stc:#ff6f68;--sti:#ff6f68;--stn:#ffc233}
-:root:not([data-theme="light"]) .steps li:nth-child(3){--stc:#ffc233;--sti:#ffc233;--stn:#45c46a}}
-:root[data-theme="dark"] .steps li:nth-child(1){--stc:#6aa9ff;--sti:#6aa9ff;--stn:#ff6f68}
-:root[data-theme="dark"] .steps li:nth-child(2){--stc:#ff6f68;--sti:#ff6f68;--stn:#ffc233}
-:root[data-theme="dark"] .steps li:nth-child(3){--stc:#ffc233;--sti:#ffc233;--stn:#45c46a}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .steps li:nth-child(1){--sti:#6aa9ff}
+:root:not([data-theme="light"]) .steps li:nth-child(2){--sti:#ff6f68}
+:root:not([data-theme="light"]) .steps li:nth-child(3){--sti:#ffc233}
+:root:not([data-theme="light"]) .steps li:nth-child(4){--sti:#ffc233}
+:root:not([data-theme="light"]) .steps li:nth-child(5){--sti:#45c46a}}
+:root[data-theme="dark"] .steps li:nth-child(1){--sti:#6aa9ff}
+:root[data-theme="dark"] .steps li:nth-child(2){--sti:#ff6f68}
+:root[data-theme="dark"] .steps li:nth-child(3){--sti:#ffc233}
+:root[data-theme="dark"] .steps li:nth-child(4){--sti:#ffc233}
+:root[data-theme="dark"] .steps li:nth-child(5){--sti:#45c46a}
 *{box-sizing:border-box}
 /* anything hidden stays hidden, even where a rule sets display */
 [hidden]{display:none!important}
@@ -104,6 +109,7 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   display:flex;align-items:center;justify-content:center;overflow:hidden}
 /* On a big screen the app sits in a phone-shaped frame; on a phone it fills the screen. */
 .device{
+  position:relative;
   width:min(430px,100%); height:min(920px,94vh);
   display:flex; flex-direction:column; overflow:hidden;
   background:var(--bg); border-radius:38px; border:1px solid var(--frame);
@@ -120,13 +126,13 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
 
 /* steps */
-.tabstrip button i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;
-  width:25px;height:25px;border-radius:50%;background:var(--sunk);color:var(--mute);
-  font-family:var(--mono);font-size:12px;font-weight:600;flex:0 0 auto;
+.dots button i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;
+  width:20px;height:20px;border-radius:50%;background:var(--sunk);color:var(--mute);
+  font-family:var(--mono);font-size:10px;font-weight:600;flex:0 0 auto;
   border:1px solid var(--line);transition:background .14s,color .14s,border-color .14s}
-.tabstrip button[aria-pressed="true"] i{background:var(--btn);color:#fff;text-shadow:var(--btnsh);border-color:var(--btn);
+.dots button[aria-pressed="true"] i{background:var(--btn);color:#fff;text-shadow:var(--btnsh);border-color:var(--btn);
   box-shadow:0 2px 6px -1px color-mix(in srgb,var(--btn) 55%,transparent)}
-.tabstrip button i{box-shadow:var(--sink)}
+.dots button i{box-shadow:var(--sink)}
 
 /* the protein map — the picture you touch */
 .mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;
@@ -151,12 +157,6 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .btncap{font-size:12.5px;line-height:1.45;color:var(--mute);margin:12px 0 7px;text-align:center}
 .narrow .btncap{margin-top:0}
 #cc2,#rankbtn{position:relative}
-#cc2[data-busy] span,#rankbtn[data-done] span{visibility:hidden}
-#cc2[data-busy]::after,#rankbtn[data-done]::after{
-  position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-  text-align:center;padding:0 10px}
-#cc2[data-busy]::after{content:"Checking\2026"}
-#rankbtn[data-done]::after{content:"Again"}
 #cc2prog{margin-top:8px}
 .selband{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
   margin:-2px 0 10px;padding:9px 11px;border-radius:10px;
@@ -176,14 +176,31 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;
   margin-left:auto;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .holderpill:hover{border-color:var(--gold)}
-.appbar .modebtn{margin-left:auto}
-.modebtn{flex:0 0 auto;padding:6px 11px;border-radius:999px;font-family:var(--mono);
-  font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
-  background:var(--panel);border:1px solid var(--line);color:var(--mute);
-  cursor:pointer;box-shadow:var(--lift);white-space:nowrap}
-.modebtn:hover{border-color:var(--gold);color:var(--accink)}
-:root[data-mode="abstract"] .modebtn{color:var(--accink);border-color:var(--gold);
-  background:color-mix(in srgb,var(--gold) 10%,var(--panel))}
+.appbar .notesel{margin-left:auto;flex:0 1 auto;max-width:168px;font-family:var(--sans);
+  font-size:12.5px;font-weight:600;padding:7px 28px 7px 11px;border-radius:999px;
+  background-color:var(--panel);background-position:right 10px center;background-size:10px 6px;
+  border-color:color-mix(in srgb,var(--gold) 45%,var(--line));color:var(--accink);box-shadow:var(--lift)}
+.appbar .notesel[hidden]+.themebtn,.appbar .themebtn{margin-left:auto}
+.appbar .notesel:not([hidden])+.themebtn{margin-left:8px}
+/* both words on screen, one of them lit - a choice, not a label */
+
+/* the switch sits inside the screens it changes, not in the header */
+.modeslot{display:flex;justify-content:flex-end;margin:0 0 12px}
+.modeslot:empty{display:none}
+.sponsor{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:12px;
+  background:var(--sunk);border:1px solid var(--line)}
+.sponsor svg{width:40px;height:40px;flex:0 0 40px}
+.sponsor b{display:block;font-size:15px;letter-spacing:.02em;line-height:1.25}
+.sponsor .tiny{display:block;line-height:1.3}
+#view-3d .modeslot{justify-content:center;padding:6px max(12px,env(safe-area-inset-left,0px)) 0;margin:0}
+.modesw{flex:0 0 auto;display:flex;gap:1px;padding:1px;border-radius:999px;
+  background:var(--sunk);border:1px solid var(--line);box-shadow:var(--sink)}
+.modesw button{padding:6px 12px;border-radius:999px;border:0;background:transparent;
+  font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;
+  font-weight:600;color:var(--mute);box-shadow:none;white-space:nowrap;cursor:pointer}
+.modesw button:hover{color:var(--ink);border:0}
+.modesw button[aria-pressed="true"]{background:var(--btn);color:#fff;
+  text-shadow:var(--btnsh);box-shadow:var(--lift)}
 
 /* Abstract hides the laboratory wording and shows the plain one */
 .abs-only{display:none}
@@ -193,76 +210,103 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 :root[data-mode="abstract"] .card .meter .trk{height:9px;border-radius:5px}
 :root[data-mode="abstract"] .maphead .big{font-size:17px;font-family:var(--sans);
   font-weight:700;letter-spacing:0}
+/* the light/dark switch stays neutral on every page - it is not part of the page's colour */
 .themebtn{flex:0 0 auto;width:32px;height:32px;padding:0;display:inline-flex;align-items:center;
   justify-content:center;border-radius:50%;
-  background:color-mix(in srgb,var(--mauve) 12%,var(--panel));
-  border:1px solid color-mix(in srgb,var(--mauve) 45%,var(--line));
-  color:var(--accink);cursor:pointer;box-shadow:var(--lift)}
-.themebtn:hover{border-color:var(--mauve);background:color-mix(in srgb,var(--mauve) 20%,var(--panel))}
-.themebtn:focus-visible{outline:2px solid var(--mauve);outline-offset:2px}
+  background:var(--sunk);border:1px solid var(--line);
+  color:var(--mute);cursor:pointer;box-shadow:var(--lift)}
+.themebtn:hover{border-color:var(--mute);color:var(--ink)}
+.themebtn:focus-visible{outline:2px solid var(--mute);outline-offset:2px}
 .themebtn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;
   stroke-linecap:round;stroke-linejoin:round}
 .themebtn .moon{display:none}
 :root[data-theme="light"] .themebtn .moon{display:block}
 :root[data-theme="light"] .themebtn .sun{display:none}
 .nextbtn{width:100%;margin-top:4px}
+.jump .nextbtn{width:auto;margin-top:0}
+.stepstrip .backbtn{width:auto}
 #runprot,#rundec{width:100%}
 /* landing */
-.home{display:flex;flex-direction:column;align-items:center;text-align:center;padding-block:10px 0}
+.home{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;min-height:100%;padding-block:2px 0}
+/* on a short phone the claim steps aside so the journey still fits without scrolling */
+@media (max-height:760px){
+  .homeclaim{display:none}
+  .fan{max-width:230px;margin-bottom:0}
+  .fancap{font-size:9.5px}
+  .homelede{margin:3px 0 4px;font-size:12.5px}
+  .journey .steps li{height:56px}
+  .journey .steps li svg{flex:0 0 34px;width:34px;height:34px}
+  .journey .steps b{font-size:13.5px}
+  .homefoot{font-size:10px}
+}
 .hero{width:92px;height:92px;margin-bottom:16px;border-radius:21px;box-shadow:0 14px 30px -14px rgba(0,0,0,.6)}
-.hometitle{font-size:30px;font-weight:700;letter-spacing:-.025em;margin:0;text-wrap:balance}
-.homelede{color:var(--mute);max-width:28ch;margin:9px 0 12px;font-size:14.5px;line-height:1.45;text-wrap:balance}
-.homeclaim{max-width:34ch;margin:0 0 24px;font-size:12.5px;line-height:1.5;color:var(--mute);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
+/* every stop in Jo-1, drawn once each - the lit one is 154-168, the tightest */
+.fan{width:100%;max-width:300px;margin:0 0 4px}
+.fan svg{display:block;width:100%;height:auto}
+.fancap{font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;color:var(--mute);margin:2px 0 0}
+.fancap b{color:var(--accink);font-size:12px}
+.homelede{color:var(--mute);max-width:30ch;margin:6px 0 8px;font-size:13.5px;line-height:1.4;text-wrap:balance}
+.homeclaim{max-width:36ch;margin:0 0 10px;font-size:11.5px;line-height:1.45;color:var(--mute);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px 0}
 .howto{margin:0}
 .howto dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;color:var(--accink);margin-top:11px}
 .howto dt:first-child{margin-top:0}
 .howto dd{margin:3px 0 0;font-size:12.5px;line-height:1.5;color:var(--mute)}
 .howto dd b{color:var(--ink)}
-/* The three steps are a path. Each number wears the colour of the screen it opens,
-   so the landing teaches the colour code before you have pressed anything. */
-.steps{list-style:none;margin:2px 0 26px;padding:0;width:100%;text-align:left;counter-reset:st}
-.steps li{position:relative;display:flex;align-items:flex-start;gap:15px;
-  padding:0 0 20px 0;background:none;border:0;border-radius:0;box-shadow:none}
-.steps li:last-child{padding-bottom:0}
-.steps li:nth-child(1){--stc:#1565d8;--sti:#1565d8;--stn:#cf2c20}
-.steps li:nth-child(2){--stc:#cf2c20;--sti:#cf2c20;--stn:#f5b700}
-.steps li:nth-child(3){--stc:#f5b700;--sti:#8a6104;--stn:#1ea84c}
-/* the rail running from one step to the next */
-.steps li::after{content:"";position:absolute;left:17px;top:38px;bottom:0;width:2px;border-radius:2px;
-  background:linear-gradient(to bottom,var(--stc),var(--stn))}
-.steps li:last-child::after{display:none}
-.steps li::before{counter-increment:st;content:counter(st);
-  flex:0 0 36px;width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:15px;font-weight:600;line-height:1;
-  color:var(--sti);background:color-mix(in srgb,var(--stc) 11%,var(--panel));
-  box-shadow:inset 0 0 0 2px var(--stc);position:relative;z-index:1}
-.steps svg{display:none}
-.steps li>div{padding-top:7px}
-.steps b{display:block;font-size:15px;font-weight:600;letter-spacing:-.008em}
-.steps span{display:block;font-size:12.5px;color:var(--mute);margin-top:2px;line-height:1.4}
+/* The journey snakes down the screen: the marks sit left, right, left, right, left,
+   and one line travels between them, changing colour as it falls. */
+.journey{position:relative;width:100%;margin:2px 0 10px}
+/* the drawing stretches over the WHOLE row grid, so the crossings stay in the gaps
+   between rows whatever height the rows are. A fixed pixel height drifted off the
+   grid and the line ran through the words. */
+.snake{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0}
+.steps{list-style:none;margin:0;padding:0;width:100%;position:relative;z-index:1}
+.steps li{height:66px;display:flex;align-items:center;gap:10px;
+  background:none;border:0;border-radius:0;box-shadow:none;padding:0;margin:0;
+  /* the words follow their own mark. Without this they inherit the landing's
+     centring and every row's text drifts to the right, whichever side its mark is on. */
+  text-align:left}
+.steps li:nth-child(even){flex-direction:row-reverse;text-align:right}
+.steps li svg{flex:0 0 42px;width:42px;height:42px;display:block;
+  background:color-mix(in srgb,var(--stc) 13%,var(--bg));border-radius:50%;padding:4px;
+  color:var(--stc);box-shadow:0 0 0 5px var(--bg)}
+.steps li>div{flex:1 1 auto;min-width:0}
+.steps li:nth-child(1){--stc:#1565d8;--sti:#1565d8}
+.steps li:nth-child(2){--stc:#cf2c20;--sti:#cf2c20}
+.steps li:nth-child(3){--stc:#f5b700;--sti:#8a6104}
+.steps li:nth-child(4){--stc:#f5b700;--sti:#8a6104}
+.steps li:nth-child(5){--stc:#1ea84c;--sti:#0f7a36}
+.steps b{display:block;font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.steps li>div>span{display:block;font-size:11.5px;color:var(--mute);margin-top:2px;line-height:1.35}
 button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;border-radius:13px;
   letter-spacing:.01em;box-shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 26px -12px var(--btn)}
-.homefoot{font-size:11.5px;color:var(--mute);max-width:34ch;margin:16px 0 0;line-height:1.45}
+.homefoot{font-size:11px;color:var(--mute);max-width:38ch;margin:4px 0 0;line-height:1.4}
 .appbar .home-link{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;cursor:pointer;color:inherit}
 .appbar .home-link:hover .brand{color:var(--accink)}
 .appbar .logo{width:25px;height:25px;flex:0 0 auto;border-radius:6px}
 .appbar .brand{font-weight:700;letter-spacing:-.01em;font-size:15px;white-space:nowrap}
-/* the wordmark: JO, the four pockets, ONE */
-.wm{font-weight:700;letter-spacing:-.022em;line-height:1;white-space:nowrap;color:var(--ink);
-  font-size:16px;display:inline-flex;align-items:center}
-.wm .dots{display:inline-flex;gap:.11em;margin:0 .17em}
-.wm .dots i{width:.2em;height:.2em;border-radius:50%}
-.wm .dots i:nth-child(1){background:var(--wm1)}
-.wm .dots i:nth-child(2){background:var(--wm2)}
-.wm .dots i:nth-child(3){background:var(--wm3)}
-.wm .dots i:nth-child(4){background:var(--wm4)}
-.wmbig{font-size:40px;letter-spacing:-.028em}
-.appbar .beta{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;
-  color:#fff;background:var(--btn);text-shadow:var(--btnsh);border-radius:4px;padding:2px 6px;
-  white-space:nowrap;flex:0 0 auto}
+/* the wordmark: JO in a solid block, ONE running free */
+.wm{font-weight:700;letter-spacing:-.03em;line-height:1;white-space:nowrap;color:var(--ink);
+  font-size:16px;display:inline-flex;align-items:baseline}
+.wm .chip{background:var(--ink);color:var(--bg);border-radius:.16em;
+  padding:.05em .11em .13em;margin-right:.05em}
+.wmbig{font-size:34px;letter-spacing:-.028em}
+/* the logo alone, for a moment, before the app */
+.splash{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);cursor:pointer;transition:opacity .34s ease}
+.splash .wm{animation:rise .5s ease both;font-size:54px}
+.splash.gone{opacity:0;pointer-events:none}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.splash .wm{animation:none}}
+/* BETA: a small plain label, not a coloured badge - white card, black letters */
+.appbar .beta{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.08em;
+  color:#111720;background:#fff;border:1px solid var(--line);border-radius:3px;padding:1px 4px;
+  white-space:nowrap;flex:0 0 auto;line-height:1.35}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .appbar .beta{background:#e8edf4;color:#0d141d;border-color:#e8edf4}}
+:root[data-theme="dark"] .appbar .beta{background:#e8edf4;color:#0d141d;border-color:#e8edf4}
 .appbar .ver{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--mute);
   border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
 .appbar .dot{width:7px;height:7px;border-radius:50%;background:var(--mute);flex:0 0 auto}
@@ -271,19 +315,38 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 .appbar select{flex:1 1 auto;min-width:0;max-width:300px;margin-left:auto}
 
 /* tabs */
+/* the walking buttons keep one ink on every page - they are not part of the page's colour */
+:root{--nav:#111720}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav:#39445a}}
+:root[data-theme="dark"]{--nav:#39445a}
 /* bottom tab bar — the app's home row */
-.tabstrip{flex:0 0 auto;order:3;display:flex;background:var(--panel);
-  border-top:1px solid var(--line);height:var(--tabh);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  padding-left:max(4px,env(safe-area-inset-left,0px));padding-right:max(4px,env(safe-area-inset-right,0px))}
-.tabstrip button{flex:1;min-width:0;border:0;background:transparent;color:var(--mute);
-  font-size:9.5px;letter-spacing:-.01em;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  font-family:var(--sans);font-size:10px;font-weight:600;cursor:pointer;border-radius:0;
-  padding:0 2px;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.tabstrip button[aria-pressed="true"]{color:var(--accink)}
-.tabstrip button:hover{color:var(--ink)}
-.tabstrip button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.tabstrip{flex:0 0 auto;order:3;display:flex;align-items:center;justify-content:center;gap:0;background:var(--panel);
+  border-top:1px solid var(--line);min-height:var(--tabh);
+  padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
+  padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+/* Back, the number and Next are ONE control: two black halves with the number
+   built into the seam between them. Black on every page, whatever colour the page is. */
+.tabstrip .navbtn{flex:0 0 112px;width:112px;height:46px;padding:0;font-size:15px;margin:0;
+  background:var(--nav);border-color:var(--nav);color:#fff;text-shadow:none}
+#nav-back{border-radius:999px 0 0 999px;padding-right:21px}
+#nav-next{border-radius:0 999px 999px 0;padding-left:21px}
+.tabstrip .navbtn:disabled{opacity:.3}
+/* with no number to show, the two halves close into one plain pill */
+.tabstrip .stepbox.none{display:none}
+.tabstrip .stepbox.none+.navbtn{padding-left:0}
+.tabstrip .stepbox.none~#nav-back,.tabstrip #nav-back:has(+.stepbox.none){padding-right:0}
+/* where you are - shown, never pressed */
+.dots{display:none}
+/* one box, and the number inside it changes - set into the seam, so the three read as one */
+.stepbox{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  margin:0 -20px;position:relative;z-index:2}
+.stepbox i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;
+  width:44px;height:44px;border-radius:50%;font-family:var(--mono);font-size:17px;font-weight:600;
+  background:var(--btn);color:#fff;text-shadow:var(--btnsh);
+  border:3px solid var(--panel);box-shadow:none}
+.stepbox.none{visibility:hidden}
+.dots button{border:0;background:none;padding:0;box-shadow:none;cursor:default;pointer-events:none}
+.dots button:focus-visible{outline:none}
 
 /* views */
 .views{flex:1 1 auto;min-height:0;position:relative}
@@ -324,8 +387,8 @@ button{font-family:var(--sans);font-size:13px;background:var(--panel);color:var(
   box-shadow:var(--lift);transition:box-shadow .12s,transform .12s,border-color .12s}
 button:hover{border-color:var(--gold)}
 button:active{box-shadow:var(--press);transform:translateY(1px)}
-.tabstrip button,.appbar .home-link{box-shadow:none}
-.tabstrip button:active,.appbar .home-link:active{box-shadow:none;transform:none}
+.appbar .home-link{box-shadow:none}
+.appbar .home-link:active{box-shadow:none;transform:none}
 button[aria-pressed="true"]{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);font-weight:600}
 button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 button.go{background:var(--btn);color:#fff;text-shadow:var(--btnsh);
@@ -467,6 +530,27 @@ input[type=file]{display:none}
 /* the slide pad covers the picture only, never the controls */
 #molpan{position:absolute;inset:0;cursor:grab;touch-action:none;background:transparent}
 #molpan:active{cursor:grabbing}
+/* the reference block sits clear of the caption and of the slide pad */
+.viewcube{position:absolute;right:9px;bottom:9px;width:72px;height:72px;z-index:3;
+  pointer-events:none;opacity:.95}
+.viewcube svg{width:100%;height:100%;display:block;overflow:visible}
+#view-3d.full .viewcube{right:14px;bottom:14px}
+/* the result, packed up to pass on. Nothing leaves the phone by itself - this
+   writes it out and the person decides where it goes. */
+.sendwrap{margin-top:12px}
+.sendtext{white-space:pre-wrap;word-break:break-word;font-family:var(--mono);font-size:11.5px;
+  line-height:1.55;color:var(--ink);background:var(--sunk);border:1px solid var(--line);
+  border-radius:10px;padding:11px 12px;margin:11px 0 0;max-height:240px;overflow:auto}
+.sendrow{display:flex;gap:9px;margin-top:10px}
+.sendrow .go{flex:1 1 0;text-align:center}
+/* the mail link has to LOOK like the button beside it - button.go only dresses
+   real buttons, so the link is dressed the same way here */
+a.sendmail{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+  background:var(--btn);color:#fff;text-shadow:var(--btnsh);border:1px solid var(--btn);
+  border-radius:11px;font-weight:600;font-size:14px;padding:11px 18px;
+  box-shadow:0 1px 0 rgba(0,0,0,.25), 0 6px 14px -8px color-mix(in srgb,var(--btn) 70%,transparent)}
+a.sendmail:hover{filter:brightness(1.08)}
+a.sendmail:active{filter:brightness(.96)}
 .molwhat{margin:0 0 7px;font-size:12px;line-height:1.5;color:var(--mute)}
 .molwhat:empty{display:none}
 .molwhat b{color:var(--ink)}
@@ -484,7 +568,12 @@ input[type=file]{display:none}
 .stepstrip{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:14px;
   padding:8px max(12px,env(safe-area-inset-left,0px));
   background:var(--panel);border-top:1px solid var(--line)}
-.stepstrip button{padding:8px 18px;font-size:15px;line-height:1}
+.stepstrip button{padding:8px 16px;font-size:15px;line-height:1}
+.stepstrip .backbtn{font-size:12.5px;padding:8px 12px;margin-right:auto}
+/* Next sits at the top of the list as well as the end, so it is always in reach */
+.jump{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.jump span{flex:1 1 auto;font-size:12px;line-height:1.4;color:var(--mute)}
+.jump .go{flex:0 0 auto;padding:9px 20px}
 .stepstrip button:disabled{opacity:.3}
 .stepstrip #s-pos{font-family:var(--mono);font-size:12.5px;color:var(--ink);
   min-width:86px;text-align:center;font-variant-numeric:tabular-nums}
@@ -497,10 +586,17 @@ input[type=file]{display:none}
   font-size:12px;padding:9px 13px;border-radius:999px;
   background:var(--panel);border:1px solid var(--line);color:var(--ink);box-shadow:var(--raise)}
 #view-3d.full .bigout{display:block}
+/* The stage behind the picture is a fixed dark panel, so the line over it is dark
+   too. It used to be drawn in the page's pale panel colour, which washed a white
+   band down over the top of the picture. */
 #view-3d .caption{position:absolute;top:0;left:0;right:0;z-index:2;
-  font-size:10.5px;line-height:1.4;color:var(--mute);font-family:var(--mono);
+  font-size:10.5px;line-height:1.4;color:#9aa6b4;font-family:var(--mono);
   pointer-events:none;padding:7px max(12px,env(safe-area-inset-left,0px));
-  background:linear-gradient(to bottom, var(--sunk) 72%, transparent)}
+  background:linear-gradient(to bottom, rgba(11,16,22,.95) 72%, rgba(11,16,22,0))}
+/* The key always takes two rows, in both wordings. Left to wrap on its own it was
+   one row in Science and two in Abstract, and the picture box jumped 27px when you
+   switched. */
+#view-3d .key>span:last-child{flex:0 0 100%}
 
 .note{background:var(--sunk);border:1px solid var(--line);border-left:3px solid var(--p6);border-radius:9px;padding:11px 13px;margin-bottom:12px}
 .note h3{color:var(--p6)}
@@ -514,7 +610,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 @media (max-width:620px){
   .appbar .brand{font-size:14px}
   .appbar select{max-width:none}
-  .tabstrip button{font-size:12px}
+
   button.go{width:100%}
   .ctrls .fld{flex:1 1 100%}
   .ctrls .fld select{width:100%}
@@ -523,12 +619,24 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 </style>
 
 <div class="device">
+<div class="splash" id="splash">
+  <span class="wm wmbig"><span class="chip">JO</span><span>ONE</span></span>
+</div>
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><span class="wm"><span>JO</span><span class="dots"><i></i><i></i><i></i><i></i></span><span>ONE</span></span></button><span class="beta">BETA</span>
+  <button type="button" class="home-link" id="homelink" title="Back to the start"><span class="wm"><span class="chip">JO</span><span>ONE</span></span></button><span class="beta">BETA</span>
   <span class="dot" id="statdot" title="network status" hidden></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder" hidden>—</button>
-  <button type="button" class="modebtn" id="modebtn" title="Plain words or the numbers"
-          aria-label="Switch between Abstract and Science">Abstract</button>
+  <select id="notesel" class="notesel" aria-label="Notes and contact">
+    <option value="" selected>Notes</option>
+    <option value="about">About</option>
+    <option value="faq">Questions</option>
+    <option value="how">How to use it</option>
+    <option value="read">Reading it</option>
+    <option value="safety">Safety</option>
+    <option value="ref">Reference</option>
+    <option value="src">Sources</option>
+    <option value="contact">Contact</option>
+  </select>
   <button type="button" class="themebtn" id="themebtn" title="Light or dark" aria-label="Switch between light and dark">
     <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg>
     <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z"/></svg>
@@ -536,58 +644,64 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 </div>
 
 <nav class="tabstrip" id="tabstrip">
-  <button type="button" id="t-hla"><i>1</i>Holder</button>
-  <button type="button" id="t-prot"><i>2</i>Protein</button>
-  <button type="button" id="t-res"><i>3</i>Graph</button>
-  <button type="button" id="t-list"><i>4</i>List</button>
-  <button type="button" id="t-3d"><i>5</i>Groove</button>
-  <button type="button" id="t-info"><i>i</i>Notes</button>
+  <button type="button" class="go navbtn" id="nav-back">Back</button>
+  <div class="stepbox" id="stepbox" aria-hidden="true"><i id="stepnum">1</i></div>
+  <div class="dots" id="navdots" aria-hidden="true" hidden>
+    <button type="button" id="t-hla" disabled><i>1</i></button>
+    <button type="button" id="t-prot" disabled><i>2</i></button>
+    <button type="button" id="t-res" disabled><i>3</i></button>
+    <button type="button" id="t-list" disabled><i>4</i></button>
+    <button type="button" id="t-3d" disabled><i>5</i></button>
+    <button type="button" id="t-info" disabled><i>i</i></button>
+  </div>
+  <button type="button" class="go navbtn" id="nav-next">Next</button>
 </nav>
 
+<div class="modesw" id="modebtn" role="group" aria-label="Wording and picture">
+    <button type="button" id="m-sci" aria-pressed="true" title="The numbers and the measured structure">Science</button>
+    <button type="button" id="m-abs" aria-pressed="false" title="Plain words and a simple drawing">Abstract</button>
+  </div>
 <div class="views">
 
 
   <div class="view" id="view-home">
     <div class="inner home">
-      <h1 class="hometitle"><span class="wm wmbig"><span>JO</span><span class="dots"><i></i><i></i><i></i><i></i></span><span>ONE</span></span></h1>
+      <div class="fan">
+        <svg viewBox="0 0 298 74" aria-hidden="true">
+          <g fill="var(--line)"><circle cx="4.0" cy="4.0" r="1.35"/><circle cx="10.6" cy="4.0" r="1.35"/><circle cx="17.2" cy="4.0" r="1.35"/><circle cx="23.8" cy="4.0" r="1.35"/><circle cx="30.4" cy="4.0" r="1.35"/><circle cx="37.0" cy="4.0" r="1.35"/><circle cx="43.6" cy="4.0" r="1.35"/><circle cx="50.2" cy="4.0" r="1.35"/><circle cx="56.8" cy="4.0" r="1.35"/><circle cx="63.4" cy="4.0" r="1.35"/><circle cx="70.0" cy="4.0" r="1.35"/><circle cx="76.6" cy="4.0" r="1.35"/><circle cx="83.2" cy="4.0" r="1.35"/><circle cx="89.8" cy="4.0" r="1.35"/><circle cx="96.4" cy="4.0" r="1.35"/><circle cx="103.0" cy="4.0" r="1.35"/><circle cx="109.6" cy="4.0" r="1.35"/><circle cx="116.2" cy="4.0" r="1.35"/><circle cx="122.8" cy="4.0" r="1.35"/><circle cx="129.4" cy="4.0" r="1.35"/><circle cx="136.0" cy="4.0" r="1.35"/><circle cx="142.6" cy="4.0" r="1.35"/><circle cx="149.2" cy="4.0" r="1.35"/><circle cx="155.8" cy="4.0" r="1.35"/><circle cx="162.4" cy="4.0" r="1.35"/><circle cx="169.0" cy="4.0" r="1.35"/><circle cx="175.6" cy="4.0" r="1.35"/><circle cx="182.2" cy="4.0" r="1.35"/><circle cx="188.8" cy="4.0" r="1.35"/><circle cx="195.4" cy="4.0" r="1.35"/><circle cx="202.0" cy="4.0" r="1.35"/><circle cx="208.6" cy="4.0" r="1.35"/><circle cx="215.2" cy="4.0" r="1.35"/><circle cx="221.8" cy="4.0" r="1.35"/><circle cx="228.4" cy="4.0" r="1.35"/><circle cx="235.0" cy="4.0" r="1.35"/><circle cx="241.6" cy="4.0" r="1.35"/><circle cx="248.2" cy="4.0" r="1.35"/><circle cx="254.8" cy="4.0" r="1.35"/><circle cx="261.4" cy="4.0" r="1.35"/><circle cx="268.0" cy="4.0" r="1.35"/><circle cx="274.6" cy="4.0" r="1.35"/><circle cx="281.2" cy="4.0" r="1.35"/><circle cx="287.8" cy="4.0" r="1.35"/><circle cx="294.4" cy="4.0" r="1.35"/><circle cx="4.0" cy="10.6" r="1.35"/><circle cx="10.6" cy="10.6" r="1.35"/><circle cx="17.2" cy="10.6" r="1.35"/><circle cx="23.8" cy="10.6" r="1.35"/><circle cx="30.4" cy="10.6" r="1.35"/><circle cx="37.0" cy="10.6" r="1.35"/><circle cx="43.6" cy="10.6" r="1.35"/><circle cx="50.2" cy="10.6" r="1.35"/><circle cx="56.8" cy="10.6" r="1.35"/><circle cx="63.4" cy="10.6" r="1.35"/><circle cx="70.0" cy="10.6" r="1.35"/><circle cx="76.6" cy="10.6" r="1.35"/><circle cx="83.2" cy="10.6" r="1.35"/><circle cx="89.8" cy="10.6" r="1.35"/><circle cx="96.4" cy="10.6" r="1.35"/><circle cx="103.0" cy="10.6" r="1.35"/><circle cx="109.6" cy="10.6" r="1.35"/><circle cx="116.2" cy="10.6" r="1.35"/><circle cx="122.8" cy="10.6" r="1.35"/><circle cx="129.4" cy="10.6" r="1.35"/><circle cx="136.0" cy="10.6" r="1.35"/><circle cx="142.6" cy="10.6" r="1.35"/><circle cx="149.2" cy="10.6" r="1.35"/><circle cx="155.8" cy="10.6" r="1.35"/><circle cx="162.4" cy="10.6" r="1.35"/><circle cx="169.0" cy="10.6" r="1.35"/><circle cx="175.6" cy="10.6" r="1.35"/><circle cx="182.2" cy="10.6" r="1.35"/><circle cx="188.8" cy="10.6" r="1.35"/><circle cx="195.4" cy="10.6" r="1.35"/><circle cx="202.0" cy="10.6" r="1.35"/><circle cx="208.6" cy="10.6" r="1.35"/><circle cx="215.2" cy="10.6" r="1.35"/><circle cx="221.8" cy="10.6" r="1.35"/><circle cx="228.4" cy="10.6" r="1.35"/><circle cx="235.0" cy="10.6" r="1.35"/><circle cx="241.6" cy="10.6" r="1.35"/><circle cx="248.2" cy="10.6" r="1.35"/><circle cx="254.8" cy="10.6" r="1.35"/><circle cx="261.4" cy="10.6" r="1.35"/><circle cx="268.0" cy="10.6" r="1.35"/><circle cx="274.6" cy="10.6" r="1.35"/><circle cx="281.2" cy="10.6" r="1.35"/><circle cx="287.8" cy="10.6" r="1.35"/><circle cx="294.4" cy="10.6" r="1.35"/><circle cx="4.0" cy="17.2" r="1.35"/><circle cx="10.6" cy="17.2" r="1.35"/><circle cx="17.2" cy="17.2" r="1.35"/><circle cx="23.8" cy="17.2" r="1.35"/><circle cx="30.4" cy="17.2" r="1.35"/><circle cx="37.0" cy="17.2" r="1.35"/><circle cx="43.6" cy="17.2" r="1.35"/><circle cx="50.2" cy="17.2" r="1.35"/><circle cx="56.8" cy="17.2" r="1.35"/><circle cx="63.4" cy="17.2" r="1.35"/><circle cx="70.0" cy="17.2" r="1.35"/><circle cx="76.6" cy="17.2" r="1.35"/><circle cx="83.2" cy="17.2" r="1.35"/><circle cx="89.8" cy="17.2" r="1.35"/><circle cx="96.4" cy="17.2" r="1.35"/><circle cx="103.0" cy="17.2" r="1.35"/><circle cx="109.6" cy="17.2" r="1.35"/><circle cx="116.2" cy="17.2" r="1.35"/><circle cx="122.8" cy="17.2" r="1.35"/><circle cx="129.4" cy="17.2" r="1.35"/><circle cx="136.0" cy="17.2" r="1.35"/><circle cx="142.6" cy="17.2" r="1.35"/><circle cx="149.2" cy="17.2" r="1.35"/><circle cx="155.8" cy="17.2" r="1.35"/><circle cx="162.4" cy="17.2" r="1.35"/><circle cx="169.0" cy="17.2" r="1.35"/><circle cx="175.6" cy="17.2" r="1.35"/><circle cx="182.2" cy="17.2" r="1.35"/><circle cx="188.8" cy="17.2" r="1.35"/><circle cx="195.4" cy="17.2" r="1.35"/><circle cx="202.0" cy="17.2" r="1.35"/><circle cx="208.6" cy="17.2" r="1.35"/><circle cx="215.2" cy="17.2" r="1.35"/><circle cx="221.8" cy="17.2" r="1.35"/><circle cx="228.4" cy="17.2" r="1.35"/><circle cx="235.0" cy="17.2" r="1.35"/><circle cx="241.6" cy="17.2" r="1.35"/><circle cx="248.2" cy="17.2" r="1.35"/><circle cx="254.8" cy="17.2" r="1.35"/><circle cx="261.4" cy="17.2" r="1.35"/><circle cx="268.0" cy="17.2" r="1.35"/><circle cx="274.6" cy="17.2" r="1.35"/><circle cx="281.2" cy="17.2" r="1.35"/><circle cx="287.8" cy="17.2" r="1.35"/><circle cx="294.4" cy="17.2" r="1.35"/><circle cx="4.0" cy="23.8" r="1.35"/><circle cx="10.6" cy="23.8" r="1.35"/><circle cx="17.2" cy="23.8" r="1.35"/><circle cx="23.8" cy="23.8" r="1.35"/><circle cx="30.4" cy="23.8" r="1.35"/><circle cx="37.0" cy="23.8" r="1.35"/><circle cx="43.6" cy="23.8" r="1.35"/><circle cx="50.2" cy="23.8" r="1.35"/><circle cx="56.8" cy="23.8" r="1.35"/><circle cx="63.4" cy="23.8" r="1.35"/><circle cx="70.0" cy="23.8" r="1.35"/><circle cx="76.6" cy="23.8" r="1.35"/><circle cx="83.2" cy="23.8" r="1.35"/><circle cx="89.8" cy="23.8" r="1.35"/><circle cx="96.4" cy="23.8" r="1.35"/><circle cx="103.0" cy="23.8" r="1.35"/><circle cx="109.6" cy="23.8" r="1.35"/><circle cx="116.2" cy="23.8" r="1.35"/><circle cx="129.4" cy="23.8" r="1.35"/><circle cx="136.0" cy="23.8" r="1.35"/><circle cx="142.6" cy="23.8" r="1.35"/><circle cx="149.2" cy="23.8" r="1.35"/><circle cx="155.8" cy="23.8" r="1.35"/><circle cx="162.4" cy="23.8" r="1.35"/><circle cx="169.0" cy="23.8" r="1.35"/><circle cx="175.6" cy="23.8" r="1.35"/><circle cx="182.2" cy="23.8" r="1.35"/><circle cx="188.8" cy="23.8" r="1.35"/><circle cx="195.4" cy="23.8" r="1.35"/><circle cx="202.0" cy="23.8" r="1.35"/><circle cx="208.6" cy="23.8" r="1.35"/><circle cx="215.2" cy="23.8" r="1.35"/><circle cx="221.8" cy="23.8" r="1.35"/><circle cx="228.4" cy="23.8" r="1.35"/><circle cx="235.0" cy="23.8" r="1.35"/><circle cx="241.6" cy="23.8" r="1.35"/><circle cx="248.2" cy="23.8" r="1.35"/><circle cx="254.8" cy="23.8" r="1.35"/><circle cx="261.4" cy="23.8" r="1.35"/><circle cx="268.0" cy="23.8" r="1.35"/><circle cx="274.6" cy="23.8" r="1.35"/><circle cx="281.2" cy="23.8" r="1.35"/><circle cx="287.8" cy="23.8" r="1.35"/><circle cx="294.4" cy="23.8" r="1.35"/><circle cx="4.0" cy="30.4" r="1.35"/><circle cx="10.6" cy="30.4" r="1.35"/><circle cx="17.2" cy="30.4" r="1.35"/><circle cx="23.8" cy="30.4" r="1.35"/><circle cx="30.4" cy="30.4" r="1.35"/><circle cx="37.0" cy="30.4" r="1.35"/><circle cx="43.6" cy="30.4" r="1.35"/><circle cx="50.2" cy="30.4" r="1.35"/><circle cx="56.8" cy="30.4" r="1.35"/><circle cx="63.4" cy="30.4" r="1.35"/><circle cx="70.0" cy="30.4" r="1.35"/><circle cx="76.6" cy="30.4" r="1.35"/><circle cx="83.2" cy="30.4" r="1.35"/><circle cx="89.8" cy="30.4" r="1.35"/><circle cx="96.4" cy="30.4" r="1.35"/><circle cx="103.0" cy="30.4" r="1.35"/><circle cx="109.6" cy="30.4" r="1.35"/><circle cx="116.2" cy="30.4" r="1.35"/><circle cx="122.8" cy="30.4" r="1.35"/><circle cx="129.4" cy="30.4" r="1.35"/><circle cx="136.0" cy="30.4" r="1.35"/><circle cx="142.6" cy="30.4" r="1.35"/><circle cx="149.2" cy="30.4" r="1.35"/><circle cx="155.8" cy="30.4" r="1.35"/><circle cx="162.4" cy="30.4" r="1.35"/><circle cx="169.0" cy="30.4" r="1.35"/><circle cx="175.6" cy="30.4" r="1.35"/><circle cx="182.2" cy="30.4" r="1.35"/><circle cx="188.8" cy="30.4" r="1.35"/><circle cx="195.4" cy="30.4" r="1.35"/><circle cx="202.0" cy="30.4" r="1.35"/><circle cx="208.6" cy="30.4" r="1.35"/><circle cx="215.2" cy="30.4" r="1.35"/><circle cx="221.8" cy="30.4" r="1.35"/><circle cx="228.4" cy="30.4" r="1.35"/><circle cx="235.0" cy="30.4" r="1.35"/><circle cx="241.6" cy="30.4" r="1.35"/><circle cx="248.2" cy="30.4" r="1.35"/><circle cx="254.8" cy="30.4" r="1.35"/><circle cx="261.4" cy="30.4" r="1.35"/><circle cx="268.0" cy="30.4" r="1.35"/><circle cx="274.6" cy="30.4" r="1.35"/><circle cx="281.2" cy="30.4" r="1.35"/><circle cx="287.8" cy="30.4" r="1.35"/><circle cx="294.4" cy="30.4" r="1.35"/><circle cx="4.0" cy="37.0" r="1.35"/><circle cx="10.6" cy="37.0" r="1.35"/><circle cx="17.2" cy="37.0" r="1.35"/><circle cx="23.8" cy="37.0" r="1.35"/><circle cx="30.4" cy="37.0" r="1.35"/><circle cx="37.0" cy="37.0" r="1.35"/><circle cx="43.6" cy="37.0" r="1.35"/><circle cx="50.2" cy="37.0" r="1.35"/><circle cx="56.8" cy="37.0" r="1.35"/><circle cx="63.4" cy="37.0" r="1.35"/><circle cx="70.0" cy="37.0" r="1.35"/><circle cx="76.6" cy="37.0" r="1.35"/><circle cx="83.2" cy="37.0" r="1.35"/><circle cx="89.8" cy="37.0" r="1.35"/><circle cx="96.4" cy="37.0" r="1.35"/><circle cx="103.0" cy="37.0" r="1.35"/><circle cx="109.6" cy="37.0" r="1.35"/><circle cx="116.2" cy="37.0" r="1.35"/><circle cx="122.8" cy="37.0" r="1.35"/><circle cx="129.4" cy="37.0" r="1.35"/><circle cx="136.0" cy="37.0" r="1.35"/><circle cx="142.6" cy="37.0" r="1.35"/><circle cx="149.2" cy="37.0" r="1.35"/><circle cx="155.8" cy="37.0" r="1.35"/><circle cx="162.4" cy="37.0" r="1.35"/><circle cx="169.0" cy="37.0" r="1.35"/><circle cx="175.6" cy="37.0" r="1.35"/><circle cx="182.2" cy="37.0" r="1.35"/><circle cx="188.8" cy="37.0" r="1.35"/><circle cx="195.4" cy="37.0" r="1.35"/><circle cx="202.0" cy="37.0" r="1.35"/><circle cx="208.6" cy="37.0" r="1.35"/><circle cx="215.2" cy="37.0" r="1.35"/><circle cx="221.8" cy="37.0" r="1.35"/><circle cx="228.4" cy="37.0" r="1.35"/><circle cx="235.0" cy="37.0" r="1.35"/><circle cx="241.6" cy="37.0" r="1.35"/><circle cx="248.2" cy="37.0" r="1.35"/><circle cx="254.8" cy="37.0" r="1.35"/><circle cx="261.4" cy="37.0" r="1.35"/><circle cx="268.0" cy="37.0" r="1.35"/><circle cx="274.6" cy="37.0" r="1.35"/><circle cx="281.2" cy="37.0" r="1.35"/><circle cx="287.8" cy="37.0" r="1.35"/><circle cx="294.4" cy="37.0" r="1.35"/><circle cx="4.0" cy="43.6" r="1.35"/><circle cx="10.6" cy="43.6" r="1.35"/><circle cx="17.2" cy="43.6" r="1.35"/><circle cx="23.8" cy="43.6" r="1.35"/><circle cx="30.4" cy="43.6" r="1.35"/><circle cx="37.0" cy="43.6" r="1.35"/><circle cx="43.6" cy="43.6" r="1.35"/><circle cx="50.2" cy="43.6" r="1.35"/><circle cx="56.8" cy="43.6" r="1.35"/><circle cx="63.4" cy="43.6" r="1.35"/><circle cx="70.0" cy="43.6" r="1.35"/><circle cx="76.6" cy="43.6" r="1.35"/><circle cx="83.2" cy="43.6" r="1.35"/><circle cx="89.8" cy="43.6" r="1.35"/><circle cx="96.4" cy="43.6" r="1.35"/><circle cx="103.0" cy="43.6" r="1.35"/><circle cx="109.6" cy="43.6" r="1.35"/><circle cx="116.2" cy="43.6" r="1.35"/><circle cx="122.8" cy="43.6" r="1.35"/><circle cx="129.4" cy="43.6" r="1.35"/><circle cx="136.0" cy="43.6" r="1.35"/><circle cx="142.6" cy="43.6" r="1.35"/><circle cx="149.2" cy="43.6" r="1.35"/><circle cx="155.8" cy="43.6" r="1.35"/><circle cx="162.4" cy="43.6" r="1.35"/><circle cx="169.0" cy="43.6" r="1.35"/><circle cx="175.6" cy="43.6" r="1.35"/><circle cx="182.2" cy="43.6" r="1.35"/><circle cx="188.8" cy="43.6" r="1.35"/><circle cx="195.4" cy="43.6" r="1.35"/><circle cx="202.0" cy="43.6" r="1.35"/><circle cx="208.6" cy="43.6" r="1.35"/><circle cx="215.2" cy="43.6" r="1.35"/><circle cx="221.8" cy="43.6" r="1.35"/><circle cx="228.4" cy="43.6" r="1.35"/><circle cx="235.0" cy="43.6" r="1.35"/><circle cx="241.6" cy="43.6" r="1.35"/><circle cx="248.2" cy="43.6" r="1.35"/><circle cx="254.8" cy="43.6" r="1.35"/><circle cx="261.4" cy="43.6" r="1.35"/><circle cx="268.0" cy="43.6" r="1.35"/><circle cx="274.6" cy="43.6" r="1.35"/><circle cx="281.2" cy="43.6" r="1.35"/><circle cx="287.8" cy="43.6" r="1.35"/><circle cx="294.4" cy="43.6" r="1.35"/><circle cx="4.0" cy="50.2" r="1.35"/><circle cx="10.6" cy="50.2" r="1.35"/><circle cx="17.2" cy="50.2" r="1.35"/><circle cx="23.8" cy="50.2" r="1.35"/><circle cx="30.4" cy="50.2" r="1.35"/><circle cx="37.0" cy="50.2" r="1.35"/><circle cx="43.6" cy="50.2" r="1.35"/><circle cx="50.2" cy="50.2" r="1.35"/><circle cx="56.8" cy="50.2" r="1.35"/><circle cx="63.4" cy="50.2" r="1.35"/><circle cx="70.0" cy="50.2" r="1.35"/><circle cx="76.6" cy="50.2" r="1.35"/><circle cx="83.2" cy="50.2" r="1.35"/><circle cx="89.8" cy="50.2" r="1.35"/><circle cx="96.4" cy="50.2" r="1.35"/><circle cx="103.0" cy="50.2" r="1.35"/><circle cx="109.6" cy="50.2" r="1.35"/><circle cx="116.2" cy="50.2" r="1.35"/><circle cx="122.8" cy="50.2" r="1.35"/><circle cx="129.4" cy="50.2" r="1.35"/><circle cx="136.0" cy="50.2" r="1.35"/><circle cx="142.6" cy="50.2" r="1.35"/><circle cx="149.2" cy="50.2" r="1.35"/><circle cx="155.8" cy="50.2" r="1.35"/><circle cx="162.4" cy="50.2" r="1.35"/><circle cx="169.0" cy="50.2" r="1.35"/><circle cx="175.6" cy="50.2" r="1.35"/><circle cx="182.2" cy="50.2" r="1.35"/><circle cx="188.8" cy="50.2" r="1.35"/><circle cx="195.4" cy="50.2" r="1.35"/><circle cx="202.0" cy="50.2" r="1.35"/><circle cx="208.6" cy="50.2" r="1.35"/><circle cx="215.2" cy="50.2" r="1.35"/><circle cx="221.8" cy="50.2" r="1.35"/><circle cx="228.4" cy="50.2" r="1.35"/><circle cx="235.0" cy="50.2" r="1.35"/><circle cx="241.6" cy="50.2" r="1.35"/><circle cx="248.2" cy="50.2" r="1.35"/><circle cx="254.8" cy="50.2" r="1.35"/><circle cx="261.4" cy="50.2" r="1.35"/><circle cx="268.0" cy="50.2" r="1.35"/><circle cx="274.6" cy="50.2" r="1.35"/><circle cx="281.2" cy="50.2" r="1.35"/><circle cx="287.8" cy="50.2" r="1.35"/><circle cx="294.4" cy="50.2" r="1.35"/><circle cx="4.0" cy="56.8" r="1.35"/><circle cx="10.6" cy="56.8" r="1.35"/><circle cx="17.2" cy="56.8" r="1.35"/><circle cx="23.8" cy="56.8" r="1.35"/><circle cx="30.4" cy="56.8" r="1.35"/><circle cx="37.0" cy="56.8" r="1.35"/><circle cx="43.6" cy="56.8" r="1.35"/><circle cx="50.2" cy="56.8" r="1.35"/><circle cx="56.8" cy="56.8" r="1.35"/><circle cx="63.4" cy="56.8" r="1.35"/><circle cx="70.0" cy="56.8" r="1.35"/><circle cx="76.6" cy="56.8" r="1.35"/><circle cx="83.2" cy="56.8" r="1.35"/><circle cx="89.8" cy="56.8" r="1.35"/><circle cx="96.4" cy="56.8" r="1.35"/><circle cx="103.0" cy="56.8" r="1.35"/><circle cx="109.6" cy="56.8" r="1.35"/><circle cx="116.2" cy="56.8" r="1.35"/><circle cx="122.8" cy="56.8" r="1.35"/><circle cx="129.4" cy="56.8" r="1.35"/><circle cx="136.0" cy="56.8" r="1.35"/><circle cx="142.6" cy="56.8" r="1.35"/><circle cx="149.2" cy="56.8" r="1.35"/><circle cx="155.8" cy="56.8" r="1.35"/><circle cx="162.4" cy="56.8" r="1.35"/><circle cx="169.0" cy="56.8" r="1.35"/><circle cx="175.6" cy="56.8" r="1.35"/><circle cx="182.2" cy="56.8" r="1.35"/><circle cx="188.8" cy="56.8" r="1.35"/><circle cx="195.4" cy="56.8" r="1.35"/><circle cx="202.0" cy="56.8" r="1.35"/><circle cx="208.6" cy="56.8" r="1.35"/><circle cx="215.2" cy="56.8" r="1.35"/><circle cx="221.8" cy="56.8" r="1.35"/><circle cx="228.4" cy="56.8" r="1.35"/><circle cx="235.0" cy="56.8" r="1.35"/><circle cx="241.6" cy="56.8" r="1.35"/><circle cx="248.2" cy="56.8" r="1.35"/><circle cx="254.8" cy="56.8" r="1.35"/><circle cx="261.4" cy="56.8" r="1.35"/><circle cx="268.0" cy="56.8" r="1.35"/><circle cx="274.6" cy="56.8" r="1.35"/><circle cx="281.2" cy="56.8" r="1.35"/><circle cx="287.8" cy="56.8" r="1.35"/><circle cx="294.4" cy="56.8" r="1.35"/><circle cx="4.0" cy="63.4" r="1.35"/><circle cx="10.6" cy="63.4" r="1.35"/><circle cx="17.2" cy="63.4" r="1.35"/><circle cx="23.8" cy="63.4" r="1.35"/><circle cx="30.4" cy="63.4" r="1.35"/><circle cx="37.0" cy="63.4" r="1.35"/><circle cx="43.6" cy="63.4" r="1.35"/><circle cx="50.2" cy="63.4" r="1.35"/><circle cx="56.8" cy="63.4" r="1.35"/><circle cx="63.4" cy="63.4" r="1.35"/><circle cx="70.0" cy="63.4" r="1.35"/><circle cx="76.6" cy="63.4" r="1.35"/><circle cx="83.2" cy="63.4" r="1.35"/><circle cx="89.8" cy="63.4" r="1.35"/><circle cx="96.4" cy="63.4" r="1.35"/><circle cx="103.0" cy="63.4" r="1.35"/><circle cx="109.6" cy="63.4" r="1.35"/><circle cx="116.2" cy="63.4" r="1.35"/><circle cx="122.8" cy="63.4" r="1.35"/><circle cx="129.4" cy="63.4" r="1.35"/><circle cx="136.0" cy="63.4" r="1.35"/><circle cx="142.6" cy="63.4" r="1.35"/><circle cx="149.2" cy="63.4" r="1.35"/><circle cx="155.8" cy="63.4" r="1.35"/><circle cx="162.4" cy="63.4" r="1.35"/><circle cx="169.0" cy="63.4" r="1.35"/><circle cx="175.6" cy="63.4" r="1.35"/><circle cx="182.2" cy="63.4" r="1.35"/><circle cx="188.8" cy="63.4" r="1.35"/><circle cx="195.4" cy="63.4" r="1.35"/><circle cx="202.0" cy="63.4" r="1.35"/><circle cx="208.6" cy="63.4" r="1.35"/><circle cx="215.2" cy="63.4" r="1.35"/><circle cx="221.8" cy="63.4" r="1.35"/><circle cx="228.4" cy="63.4" r="1.35"/><circle cx="235.0" cy="63.4" r="1.35"/><circle cx="241.6" cy="63.4" r="1.35"/><circle cx="248.2" cy="63.4" r="1.35"/><circle cx="254.8" cy="63.4" r="1.35"/><circle cx="261.4" cy="63.4" r="1.35"/><circle cx="268.0" cy="63.4" r="1.35"/><circle cx="274.6" cy="63.4" r="1.35"/><circle cx="281.2" cy="63.4" r="1.35"/><circle cx="287.8" cy="63.4" r="1.35"/><circle cx="294.4" cy="63.4" r="1.35"/><circle cx="4.0" cy="70.0" r="1.35"/><circle cx="10.6" cy="70.0" r="1.35"/><circle cx="17.2" cy="70.0" r="1.35"/><circle cx="23.8" cy="70.0" r="1.35"/><circle cx="30.4" cy="70.0" r="1.35"/><circle cx="37.0" cy="70.0" r="1.35"/><circle cx="43.6" cy="70.0" r="1.35"/><circle cx="50.2" cy="70.0" r="1.35"/><circle cx="56.8" cy="70.0" r="1.35"/><circle cx="63.4" cy="70.0" r="1.35"/><circle cx="70.0" cy="70.0" r="1.35"/><circle cx="76.6" cy="70.0" r="1.35"/><circle cx="83.2" cy="70.0" r="1.35"/><circle cx="89.8" cy="70.0" r="1.35"/><circle cx="96.4" cy="70.0" r="1.35"/><circle cx="103.0" cy="70.0" r="1.35"/><circle cx="109.6" cy="70.0" r="1.35"/><circle cx="116.2" cy="70.0" r="1.35"/><circle cx="122.8" cy="70.0" r="1.35"/><circle cx="129.4" cy="70.0" r="1.35"/><circle cx="136.0" cy="70.0" r="1.35"/><circle cx="142.6" cy="70.0" r="1.35"/><circle cx="149.2" cy="70.0" r="1.35"/><circle cx="155.8" cy="70.0" r="1.35"/><circle cx="162.4" cy="70.0" r="1.35"/><circle cx="169.0" cy="70.0" r="1.35"/><circle cx="175.6" cy="70.0" r="1.35"/><circle cx="182.2" cy="70.0" r="1.35"/><circle cx="188.8" cy="70.0" r="1.35"/><circle cx="195.4" cy="70.0" r="1.35"/><circle cx="202.0" cy="70.0" r="1.35"/><circle cx="208.6" cy="70.0" r="1.35"/><circle cx="215.2" cy="70.0" r="1.35"/><circle cx="221.8" cy="70.0" r="1.35"/><circle cx="228.4" cy="70.0" r="1.35"/><circle cx="235.0" cy="70.0" r="1.35"/><circle cx="241.6" cy="70.0" r="1.35"/><circle cx="248.2" cy="70.0" r="1.35"/><circle cx="254.8" cy="70.0" r="1.35"/><circle cx="261.4" cy="70.0" r="1.35"/><circle cx="268.0" cy="70.0" r="1.35"/><circle cx="274.6" cy="70.0" r="1.35"/><circle cx="281.2" cy="70.0" r="1.35"/><circle cx="287.8" cy="70.0" r="1.35"/><circle cx="294.4" cy="70.0" r="1.35"/></g>
+          <circle cx="122.8" cy="23.8" r="3.6" fill="var(--wm3)"/>
+          <circle cx="122.8" cy="23.8" r="7" fill="none" stroke="var(--wm3)" stroke-width="1.1" opacity=".55"/>
+        </svg>
+        <p class="fancap"><b>495</b> stops along Jo-1 &middot; <span class="sci-only">one grips tightest</span><span class="abs-only">one is held tightest</span></p>
+      </div>
       <p class="homelede">Which piece of a protein does the immune system grip?</p>
       <p class="homeclaim">A selectivity filter. It scores every slice of a protein against
       117 HLA class II types and flags the ones that grip too many.</p>
 
-      <ol class="steps">
-        <li>
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <rect x="4" y="12" width="40" height="6" rx="3" fill="currentColor" opacity=".25"/>
-            <rect x="4" y="30" width="40" height="6" rx="3" fill="currentColor" opacity=".25"/>
-            <path d="M8 24h32" stroke="#b5791a" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 5"/>
-          </svg>
-          <div><b>Pick the holder</b><span>One of 117 HLA types</span></div>
-        </li>
-        <li>
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <path d="M6 24h36" stroke="currentColor" stroke-width="2" opacity=".3"/>
-            <circle cx="8" cy="24" r="3.4" fill="currentColor" opacity=".45"/>
-            <circle cx="17" cy="24" r="4.2" fill="#1f7a8c"/>
-            <circle cx="26" cy="24" r="4.2" fill="#b5791a"/>
-            <circle cx="35" cy="24" r="4.2" fill="#2f5fa8"/>
-            <circle cx="43" cy="24" r="3.4" fill="currentColor" opacity=".45"/>
-          </svg>
-          <div><b>Feed it a protein</b><span>Jo-1 is already loaded</span></div>
-        </li>
-        <li>
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <rect x="6" y="13" width="36" height="5" rx="2.5" fill="currentColor" opacity=".18"/>
-            <rect x="6" y="13" width="31" height="5" rx="2.5" fill="#b5791a"/>
-            <rect x="6" y="22" width="36" height="5" rx="2.5" fill="currentColor" opacity=".18"/>
-            <rect x="6" y="22" width="20" height="5" rx="2.5" fill="#b5791a" opacity=".8"/>
-            <rect x="6" y="31" width="36" height="5" rx="2.5" fill="currentColor" opacity=".18"/>
-            <rect x="6" y="31" width="11" height="5" rx="2.5" fill="#b5791a" opacity=".55"/>
-          </svg>
-          <div><b>Read the ranking</b><span>Tightest grip first, drawn as a map</span></div>
-        </li>
-      </ol>
+      <div class="journey">
+        <svg class="snake" viewBox="0 0 100 330" preserveAspectRatio="none" aria-hidden="true">
+          <defs><linearGradient id="jg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--wm1)"/><stop offset="30%" stop-color="var(--wm2)"/>
+            <stop offset="62%" stop-color="var(--wm3)"/><stop offset="100%" stop-color="var(--wm4)"/>
+          </linearGradient></defs>
+          <!-- the path leaves each mark, runs the margin, crosses in the gap between rows,
+               and arrives at the next mark - it never passes through the words -->
+          <path d="M17 55 V62 Q17 67 24 67 H76 Q83 67 83 72 V79
+                   M83 121 V128 Q83 133 76 133 H24 Q17 133 17 138 V145
+                   M17 187 V194 Q17 199 24 199 H76 Q83 199 83 204 V211
+                   M83 253 V260 Q83 265 76 265 H24 Q17 265 17 270 V277"
+                fill="none" stroke="url(#jg)" stroke-width="2" stroke-linecap="round"
+                opacity=".75" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <ol class="steps">
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 12 Q20 3 36 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 28 Q20 37 36 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Pick the holder</b><span><span class="sci-only">One of 117 HLA types</span><span class="abs-only">Whose body are we testing</span></span></div></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M3 20h34" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="4" fill="currentColor"/><circle cx="20" cy="20" r="4" fill="currentColor"/><circle cx="28" cy="20" r="4" fill="currentColor"/></svg><div><b>Feed it a protein</b><span>Jo-1 is already loaded</span></div></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M3 31 L10 22 L15 27 L20 9 L26 24 L31 17 L37 27" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="9" r="3.8" fill="currentColor"/></svg><div><b>Walk the graph</b><span>Every stop, scored</span></div></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="10" width="34" height="5.6" rx="2.8" fill="currentColor"/><rect x="3" y="19" width="23" height="5.6" rx="2.8" fill="currentColor" opacity=".55"/><rect x="3" y="28" width="13" height="5.6" rx="2.8" fill="currentColor" opacity=".3"/></svg><div><b>Read the shortlist</b><span>Narrow to the fussiest few</span></div></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 11 Q20 2 36 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 29 Q20 38 36 29" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3.6" fill="currentColor"/><circle cx="20" cy="20" r="3.6" fill="currentColor"/><circle cx="28" cy="20" r="3.6" fill="currentColor"/></svg><div><b>See it in the groove</b><span>The chosen piece, held</span></div></li>
+        </ol>
+      </div>
 
-      <button type="button" class="go start" id="startbtn">Start</button>
       <p class="homefoot"><b>Beta.</b> A research filter, not a clinical tool. See <b>Notes</b> for the sources and the safety record.</p>
     </div>
   </div>
@@ -604,15 +718,13 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       </div>
       <div class="panel">
         <h3><span class="sci-only">Checked live</span><span class="abs-only">Three known examples</span></h3>
-        <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
-        <p class="tiny" style="margin:0" id="validnote"></p>
+        <p class="mono tiny js-valid" style="margin:0 0 6px">&mdash;</p>
+        <p class="tiny js-validnote" style="margin:0"></p>
       </div>
       <div class="panel">
         <h3><span class="sci-only">Its pockets</span><span class="abs-only">Its four holes</span></h3>
-        <div id="pocketlive"></div>
+        <div class="js-pockets"></div>
       </div>
-      <p class="btncap">Then choose the protein to cut up.</p>
-      <button type="button" class="go nextbtn" data-next="t-prot">Next</button>
     </div>
   </div>
 
@@ -662,6 +774,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-res">
     <div class="inner">
+      <div class="modeslot"></div>
       <div class="noscan" id="noscan" hidden>
         <h3>Nothing scanned yet</h3>
         <p>Go to step 2, press <b>Scan</b>, and the whole protein is cut into pieces
@@ -698,13 +811,12 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <span class="sci-only" style="color:var(--mute)">the four pockets that hold the slice</span>
         <span class="abs-only" style="color:var(--mute)">the four spots that do the holding</span>
       </p>
-      <p class="btncap" style="margin-top:14px">The best of all 495 stops, as a list.</p>
-      <button type="button" class="go nextbtn" data-next="t-list">Next</button>
     </div>
   </div>
 
   <div class="view" id="view-list" hidden>
     <div class="inner">
+      <div class="modeslot"></div>
       <div class="noscan" id="noscan2" hidden>
         <h3>Nothing scanned yet</h3>
         <p>Scan a protein in step 2 and the shortlist lands here.</p>
@@ -723,6 +835,19 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       <p class="tiny" id="count" style="margin:0 0 10px"></p>
       <div class="rowlist" id="rows"></div>
 
+      <div class="panel sendwrap" id="sendwrap" hidden>
+        <p class="btncap"><span class="sci-only">Package the chosen slice, the holder and the numbers to pass on.</span><span class="abs-only">Make a copy of what you found, to send to someone.</span></p>
+        <button type="button" class="go" id="b-send">Send</button>
+        <div id="sendbox" hidden>
+          <pre class="sendtext" id="sendtext"></pre>
+          <div class="sendrow">
+            <button type="button" class="go" id="b-copy">Copy</button>
+            <a class="go sendmail" id="b-mail" href="#">Email</a>
+          </div>
+          <p class="tiny" id="sendnote" style="margin:9px 0 0"></p>
+        </div>
+      </div>
+
       <div class="sheet" id="sheetwrap">
         <div class="grip" id="sheetgrip" role="button" tabindex="0" aria-expanded="false">
           <h3>Selected</h3>
@@ -740,8 +865,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </div>
       </div>
 
-      <p class="btncap" style="margin-top:14px">See the chosen slice sitting in the groove.</p>
-      <button type="button" class="go nextbtn" data-next="t-3d">Next</button>
     </div>
   </div>
 
@@ -749,9 +872,12 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
     <div class="molstage">
       <div id="mol"></div>
       <div id="molpan" hidden></div>
+      <!-- the reference block: which way you are looking, on the model's own axes -->
+      <div class="viewcube" id="viewcube" aria-hidden="true"><svg id="vcsvg" viewBox="-1.95 -1.95 3.9 3.9"></svg></div>
       <div class="caption" id="molsrc">scaled geometric model</div>
       <button type="button" class="bigout" id="b-small">Show the buttons</button>
     </div>
+    <div class="modeslot"></div>
     <div class="stepstrip" id="stepstrip" hidden>
       <button type="button" id="s-prev" aria-label="Previous in the list">&#9664;</button>
       <span id="s-pos">&mdash;</span>
@@ -762,6 +888,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
       <div class="vrow">
         <button type="button" id="b-anch" aria-pressed="true">Holes</button>
         <button type="button" id="b-teeth" aria-pressed="true">Teeth</button>
+        <button type="button" id="b-names" aria-pressed="false">Names</button>
+        <button type="button" id="b-cell" aria-pressed="false">Cell</button>
         <button type="button" id="b-surf" aria-pressed="false">Surface</button>
         <button type="button" id="b-move" aria-pressed="false" title="Drag to slide the model">Move</button>
         <button type="button" id="b-reset">Reset</button>
@@ -782,6 +910,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
   <div class="view" id="view-info" hidden>
     <div class="inner">
+      <div class="modeslot"></div>
+      <section class="notepage" data-note="about">
       <div class="panel story">
         <h3>The story</h3>
         <p style="margin:0 0 8px">Jo-1 is a protein every one of your cells needs. In some people the
@@ -792,7 +922,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <p style="margin:0 0 8px">So that is the question this app was built around &mdash; and it was
         built by a designer, on a phone, because it turns out a phone can answer it.</p>
       </div>
-
       <div class="panel story">
         <h3>Why this method</h3>
         <p style="margin:0 0 8px">JO-One was built by <b>Moosa Silwadi</b>, an architect and designer,
@@ -810,7 +939,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         the Warning panel below, and it is the reason the app narrows carefully instead of promising
         anything.</p>
       </div>
-
       <div class="panel">
         <h3>What makes it useful</h3>
         <p style="margin:0 0 8px">The established tools score a piece against <b>one</b> HLA type. That
@@ -822,7 +950,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <p style="margin:0">117 holders, every one of them, in about two seconds, in your own browser.
         That check is the app.</p>
       </div>
-
       <div class="panel">
         <h3>What is new here</h3>
         <dl class="howto qa">
@@ -845,7 +972,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           convincing.</dd>
         </dl>
       </div>
-
+      </section>
+      <section class="notepage" data-note="faq" hidden>
       <div class="panel">
         <h3>Questions</h3>
         <dl class="howto qa">
@@ -874,7 +1002,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           went to trial.</dd>
         </dl>
       </div>
-
+      </section>
+      <section class="notepage" data-note="how" hidden>
       <div class="panel">
         <h3>How to use it</h3>
         <dl class="howto">
@@ -893,7 +1022,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <dd>The selected slice drawn in the holder's groove, with the four pockets marked.</dd>
         </dl>
       </div>
-
+      </section>
+      <section class="notepage" data-note="read" hidden>
       <div class="panel abs-only">
         <h3>Reading the answer</h3>
         <p class="tiny" style="margin:0 0 6px">Every piece gets one of four words for how hard the
@@ -902,7 +1032,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         holders grip the same piece. <b>None</b> is the good answer. <b>Three or more</b> is the
         answer that should stop you.</p>
       </div>
-
       <div class="panel sci-only">
         <h3>Reading the numbers</h3>
         <p class="tiny" style="margin:0 0 6px">Strength is in nanomolar (nM). <b>Lower is tighter.</b>
@@ -912,19 +1041,13 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <b>Mostly selective</b> &mdash; one or two others.
         <b>Not selective</b> &mdash; three or more, which is the result that should stop you.</p>
       </div>
-
-      <div class="panel sci-only">
-        <h3>Known pairs, checked live</h3>
-        <p class="mono tiny" id="valid" style="margin:0 0 6px">&mdash;</p>
-        <p class="tiny" style="margin:0" id="validnote"></p>
-      </div>
-
       <div class="note sci-only">
         <h3>What the number is</h3>
         <p style="margin:0 0 7px"><b>Tightness is only half the question.</b> A peptide that grips many HLA types would also blunt normal defence against germs. The button under a selected slice scores it against all 117 networks. Across the 61 Jo-1 decoys this reorders the list: the tightest are often the least selective.</p>
         <p style="margin:0">A predicted binding strength in nanomolar from the MHCnuggets network for that HLA type, trained on measured binding data. It is a prediction, not a measurement. A lab would also run NetMHCIIpan and then test in cells. Treat a result here as a shortlist.</p>
       </div>
-
+      </section>
+      <section class="notepage" data-note="safety" hidden>
       <div class="warn">
         <h3>Warning &mdash; this strategy has harmed patients</h3>
         <p style="margin:0 0 6px">Peptides designed to occupy the same groove have gone to trial in multiple sclerosis, and both were stopped:</p>
@@ -934,7 +1057,21 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </ul>
         <p style="margin:6px 0 0">A peptide that binds the groove can wake the very cells it was meant to quiet.</p>
       </div>
-
+      </section>
+      <section class="notepage" data-note="ref" hidden>
+        <div class="panel abs-only">
+          <h3>Reference</h3>
+          <p style="margin:0">This part is the laboratory detail &mdash; which letters line each hole,
+          where they sit on the holder, and the frame the chosen piece was read in. It is written in
+          the laboratory's own words, so it only appears in <b>Science</b>.</p>
+          <p class="tiny" style="margin:10px 0 0">Switch the wording at the top of a step to Science
+          and come back here to read it.</p>
+        </div>
+      <div class="panel sci-only">
+        <h3>Known pairs, checked live</h3>
+        <p class="mono tiny js-valid" style="margin:0 0 6px">&mdash;</p>
+        <p class="tiny js-validnote" style="margin:0"></p>
+      </div>
       <div class="panel sci-only">
         <h3>Register of the selected slice</h3>
         <div class="reg"><div class="regrow" id="regrow"></div></div>
@@ -947,13 +1084,11 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </div>
         <p class="tiny" style="margin-top:9px" id="regnote"></p>
       </div>
-
       <div class="panel sci-only">
         <h3>Pockets of the selected holder</h3>
-        <div id="pocketlive"></div>
+        <div class="js-pockets"></div>
         <p class="tiny" style="margin:9px 0 0">Read from the IPD-IMGT/HLA protein alignments, release 3.66.0. These are the polymorphic &beta;-chain positions that line each pocket: P1 = &beta;85, &beta;86; P4 = &beta;13, &beta;70, &beta;71, &beta;74; P6 = &beta;11, &beta;30; P9 = &beta;9, &beta;57. For DQ and DP only the &beta; chain is shown; the &alpha; chain also contributes.</p>
       </div>
-
       <div class="panel sci-only">
         <h3>What the DR3 pockets prefer</h3>
         <dl class="pk">
@@ -964,7 +1099,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         </dl>
         <p class="tiny" style="margin-top:9px">Geluk 1994 gives two alternative submotifs. This rule-based reading is a cross-check on the network; across 285 Jo-1 variants the two agree only weakly (Spearman 0.17), so the network is what the ranking uses.</p>
       </div>
-
+      </section>
+      <section class="notepage" data-note="src" hidden>
       <div class="panel">
         <h3>Sources</h3>
         <div class="refs">
@@ -973,9 +1109,49 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO-One &middot; V2700 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO-One &middot; V6700 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
+      </section>
+      <section class="notepage" data-note="contact" hidden>
+        <div class="panel">
+          <h3>Contact</h3>
+          <p style="margin:0 0 10px">Questions, corrections, or a protein you would like screened &mdash;
+          write to us. Corrections to the science are especially welcome.</p>
+          <p class="mono" style="margin:0 0 12px;font-size:14px"><a id="mailto" href="#">&mdash;</a></p>
+          <p class="tiny" style="margin:0">Please do not send personal medical information. This is a
+          research filter, not a clinical service, and nobody here can advise on your treatment.</p>
+        </div>
+
+        <div class="panel">
+          <h3>Who made it</h3>
+          <p style="margin:0 0 4px"><b>Moosa Silwadi</b></p>
+          <p class="tiny" style="margin:0 0 12px">Founder of JO-One and TIMELINE</p>
+          <div class="sponsor">
+            <svg viewBox="0 0 44 44" aria-hidden="true"><rect width="44" height="44" rx="11" fill="var(--tile)"/><path d="M11 15h22M22 15v16" stroke="#f5b700" stroke-width="3.4" stroke-linecap="round"/><path d="M27 22l6-4v8z" fill="#f5b700"/></svg>
+            <div><span class="tiny">Sponsored by</span><b>TIMELINE</b><span class="tiny">timelinelab.app</span></div>
+          </div>
+          <p class="tiny" style="margin:12px 0 0">Beta <span class="mono" id="verline">&mdash;</span></p>
+        </div>
+
+        <div class="panel">
+          <h3>Privacy</h3>
+          <ul class="tiny" style="margin:0;padding-left:16px">
+            <li>No accounts, no advertising, no tracking.</li>
+            <li>Whatever you paste is scored on your own device. It is never sent anywhere.</li>
+            <li>The only thing the app fetches is the measured structure 1A6A, from the public
+                protein databank, and only when you open step 5 in Science.</li>
+            <li>Your theme and wording choices are remembered in your own browser, nowhere else.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Copyright</h3>
+          <p class="tiny" style="margin:0">&copy; 2026 Moosa Silwadi. All rights reserved, including the
+          drawings, the design, the method and the wording. The trained networks and the published
+          structures belong to their authors and are credited under Sources.</p>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -1844,7 +2020,8 @@ ALLELES.forEach(function(a){
 function alleleLabel(){ return sel.options[sel.selectedIndex].textContent; }
 
 function paintPockets(){
-  var host=document.getElementById('pocketlive'); if(!host) return;
+  var hosts=document.querySelectorAll('.js-pockets'); if(!hosts.length) return;
+  var host={ set innerHTML(v){ Array.prototype.forEach.call(hosts,function(h){ h.innerHTML=v; }); } };
   var pk=POCKETS_BY_ALLELE[alleleLabel()];
   if(!pk){ host.innerHTML='<p class="tiny" style="margin:0">No sequence on file for this type.</p>'; return; }
   var cols={P1:'var(--p1)',P4:'var(--p4)',P6:'var(--p6)',P9:'var(--p9)'};
@@ -1860,21 +2037,21 @@ function paintPockets(){
              + '<span class="abs-only">'+said[k]+'</span></div></div>';
       }).join('') + '</div>';
 }
+function setAll(sel,txt){ Array.prototype.forEach.call(document.querySelectorAll(sel),function(e){ e.textContent=txt; }); }
 function runControls(){
-  var box=document.getElementById('valid');
   var out=CONTROLS.map(function(c){
     var q=NUG.score(c.s);
     var hit=(c.home===alleleLabel());
     return (hit?'▸ ':'')+c.n+' '+nm(q?q.ic50:null)+' nM';
   }).join('   ·   ');
-  box.textContent=out;
+  setAll('.js-valid', out);
   paintPockets();
   var homeHere=CONTROLS.filter(function(c){ return c.home===alleleLabel(); });
-  document.getElementById('validnote').textContent = homeHere.length
+  setAll('.js-validnote', homeHere.length
     ? (ABS ? '\u25b8 marks the piece that is known to be held by the holder you picked. It should be the tightest of the three.'
            : '\u25b8 marks the epitope whose published HLA type is the one selected. It should be the tightest of the three here.')
     : (ABS ? 'None of the three belongs to this holder, so all three should look loose. Pick DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.'
-           : 'None of the three belongs to this HLA type, so all three should look loose. Switch to DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.');
+           : 'None of the three belongs to this HLA type, so all three should look loose. Switch to DRB1*01:01, DRB1*15:01 or DRB1*03:01 to see one of them tighten.'));
 }
 
 var loading=false, loadError=null;
@@ -1937,7 +2114,11 @@ var TABS=[['t-hla','view-hla'],['t-prot','view-work'],['t-res','view-res'],['t-l
 var VIEWS=['view-home','view-hla','view-work','view-res','view-list','view-3d','view-info'];
 function showView(v){
   VIEWS.forEach(function(x){ document.getElementById(x).hidden=(x!==v); });
-  document.getElementById('tabstrip').hidden = (v==='view-home');
+  // the reference block only draws while the picture is on screen
+  if(v==='view-3d' && typeof vcStart==='function') vcStart();
+  if(typeof placeSwitch==='function') placeSwitch(v);
+  if(typeof placeNoteSel==='function') placeNoteSel(v);
+  if(typeof markNav==='function') setTimeout(markNav,0);
   // every step wears its own colour
   document.documentElement.setAttribute('data-page', v.replace('view-',''));
   var has = (typeof results!=='undefined' && results.length>0);
@@ -1950,7 +2131,7 @@ function showView(v){
   }
   if(v==='view-list'){
     document.getElementById('noscan2').hidden = has;
-    ['.narrow','#count','#rows','#sheetwrap','#view-list .nextbtn','#view-list>.inner>.btncap']
+    ['.narrow','#count','#rows','#sheetwrap','#jumptop','#view-list .nextbtn','#view-list>.inner>.btncap','#sendwrap']
       .forEach(function(sel){ var el=document.querySelector(sel); if(el) el.hidden = !has; });
   }
   if(v==='view-3d'){
@@ -1971,14 +2152,96 @@ function showHome(){
   TABS.forEach(function(t){ document.getElementById(t[0]).setAttribute('aria-pressed','false'); });
   showView('view-home');
 }
-document.getElementById('startbtn').addEventListener('click', function(){ showTab('t-hla'); });
 document.getElementById('toscan2').addEventListener('click', function(){ showTab('t-prot'); });
 document.getElementById('homelink').addEventListener('click', showHome);
 document.getElementById('holderpill').addEventListener('click', function(){ showTab('t-hla'); });
-TABS.forEach(function(t){
-  document.getElementById(t[0]).addEventListener('click', function(){ showTab(t[0]); });
-});
-Array.prototype.forEach.call(document.querySelectorAll('.nextbtn'), function(btn){
+/* The numbers only show where you are. Back and Next are the whole of the navigation. */
+var ORDER=['view-home','view-hla','view-work','view-res','view-list','view-3d'];
+var lastStep='view-home';
+function hereNow(){
+  for(var i=0;i<VIEWS.length;i++){ if(!document.getElementById(VIEWS[i]).hidden) return VIEWS[i]; }
+  return 'view-home';
+}
+var STEPLABEL={'view-hla':'1','view-work':'2','view-res':'3','view-list':'4','view-3d':'5','view-info':'i'};
+/* the notes chooser: only while the notes are open */
+function showNote(key){
+  var any=false;
+  Array.prototype.forEach.call(document.querySelectorAll('.notepage'), function(sec){
+    var on = sec.getAttribute('data-note')===key; sec.hidden=!on; if(on) any=true;
+  });
+  if(!any){ var first=document.querySelector('.notepage'); if(first) first.hidden=false; }
+  var v=document.getElementById('view-info'); if(v) v.scrollTop=0;
+}
+function placeNoteSel(v){
+  var sel=document.getElementById('notesel'); if(!sel) return;
+  if(v!=='view-info') sel.value='';          // the menu always reads "Notes"
+  if(ORDER.indexOf(v)>=0) lastStep=v;        // remember where to come back to
+}
+function placeSwitch(v){
+  var sw=document.getElementById('modebtn'); if(!sw) return;
+  var host=document.querySelector('#'+v+' .modeslot');
+  if(host){ if(sw.parentNode!==host) host.appendChild(sw); sw.hidden=false; }
+  else { sw.hidden=true; }
+}
+function markNav(){
+  var now=hereNow(), i=ORDER.indexOf(now);
+  document.getElementById('nav-next').textContent = (now==='view-home') ? 'Start' : 'Next';
+  if(now==='view-info'){                     // the notes sit outside the walk
+    document.getElementById('nav-back').disabled=false;
+    document.getElementById('nav-next').disabled=true;
+  } else {
+    document.getElementById('nav-back').disabled=(i<=0);
+    document.getElementById('nav-next').disabled=(i>=ORDER.length-1);
+  }
+  var box=document.getElementById('stepbox'), num=document.getElementById('stepnum');
+  if(box&&num){
+    var lab=STEPLABEL[now];
+    box.classList.toggle('none', !lab);
+    if(lab) num.textContent=lab;
+  }
+}
+function stepBy(d){
+  var now=hereNow();
+  if(now==='view-info'){                     // Back leaves the notes the way you came
+    if(d<0) showTab((TABS.filter(function(t){return t[1]===lastStep;})[0]||['t-hla'])[0]);
+    markNav(); return;
+  }
+  var i=ORDER.indexOf(now); if(i<0) return;
+  var j=i+d; if(j<0||j>=ORDER.length) return;
+  var row=TABS.filter(function(t){ return t[1]===ORDER[j]; })[0];
+  if(row) showTab(row[0]); else showView(ORDER[j]);
+  var v=document.getElementById(ORDER[j]); if(v) v.scrollTop=0;
+  markNav();
+}
+(function(){
+  var sel=document.getElementById('notesel'); if(!sel) return;
+  sel.addEventListener('change', function(){
+    if(!sel.value) return;
+    showNote(sel.value);
+    if(hereNow()!=='view-info') showTab('t-info');
+    markNav();
+  });
+  var mail=document.getElementById('mailto');
+  if(mail){ var a='timelinelabteam@gmail.com'; mail.textContent=a; mail.href='mailto:'+a+'?subject=JO-One'; }
+  var vl=document.getElementById('verline');
+  if(vl){ var m2=(document.querySelector('.refs')||{textContent:''}).textContent.match(/V\d{4}/); vl.textContent=m2?m2[0]:''; }
+})();
+document.getElementById('nav-back').addEventListener('click', function(){ stepBy(-1); });
+document.getElementById('nav-next').addEventListener('click', function(){ stepBy(1); });
+window.JO1={ go:function(id){ showTab(id); markNav(); },
+  // the checks read the viewer's own orientation through this, nothing else uses it
+  view:function(){ try{ return viewer? viewer.getView():null; }catch(e){ return null; } },
+  vw:function(){ return viewer; } };
+/* the logo screen steps aside on its own, or on a tap */
+(function(){
+  var sp=document.getElementById('splash'); if(!sp) return;
+  var done=false;
+  function drop(){ if(done) return; done=true; sp.classList.add('gone');
+    setTimeout(function(){ sp.hidden=true; },360); }
+  sp.addEventListener('click', drop);
+  setTimeout(drop, 900);
+})();
+Array.prototype.forEach.call(document.querySelectorAll('.nextbtn,.backbtn'), function(btn){
   btn.addEventListener('click', function(){ showTab(btn.getAttribute('data-next')); });
 });
 
@@ -2365,53 +2628,319 @@ var AA_CLASS = {
   S:'polar',T:'polar',N:'polar',Q:'polar',C:'polar'
 };
 var CLASS_COL = {phobic:'#c9ced6', acid:'#c0564a', base:'#2f5fa8', polar:'#49937f'};
+/* The stage is a fixed dark panel in BOTH themes. It used to be read from a theme
+   token when the viewer was built and never again, so it kept whatever the machine
+   was wearing at that moment - black on a dark desktop even after the app went light.
+   The pale walls of the groove only read on a dark stage, so dark is the choice. */
+var STAGE='#0b1016';
+/* Reset used to re-apply the opening TURNS, which are relative - so every press
+   turned the picture further and you never got back. The opening view is saved
+   here instead, and Reset puts that view back, exactly. */
+var HOME_VIEW=null, BASE_VIEW=null, ZOOM_CELL=0.86;
+function markHome(){ try{ if(viewer) HOME_VIEW=viewer.getView(); }catch(e){} }
+/* the view before any turning, kept so the story picture can be built from a known
+   starting point instead of adding turns onto whatever the picture is wearing */
+function markBase(){ try{ if(viewer) BASE_VIEW=viewer.getView(); }catch(e){} }
+/* Chaining turns in the viewer lands somewhere other than where the maths says,
+   because each turn is taken about the frame the last one left. So the opening view
+   is SET, not chained: turn A about the model's own upright axis, then tip T.
+   Under that pair the upright axis can only swing straight up or straight down the
+   screen - never sideways - so the model's uprights stay upright, like the block's. */
+var VIEW_TURN=55, VIEW_TIP=35;
+function setTurnTip(a,t,zoomf){
+  if(!viewer||!viewer.setView) return false;
+  try{
+    viewer.zoomTo();
+    var v=viewer.getView(); if(!v||v.length<8) return false;
+    var ar=a*Math.PI/360, tr=t*Math.PI/360;
+    var st=Math.sin(tr), ct=Math.cos(tr), sa=Math.sin(ar), ca=Math.cos(ar);
+    v[4]=-st*ca; v[5]=st*sa; v[6]=ct*sa; v[7]=ct*ca;
+    viewer.setView(v);
+    viewer.zoomTo(); viewer.zoom(zoomf);
+    return true;
+  }catch(e){ return false; }
+}
+/* NAMES ON THE PARTS
+   One label per part of the groove, placed at the middle of that part's own atoms,
+   so the names sit on the thing they name whichever way the picture is turned. */
+function partLabel(m, sel, text, colour, off){
+  try{
+    var at=m.selectedAtoms(sel); if(!at.length) return;
+    var x=0,y=0,z=0;
+    for(var i=0;i<at.length;i++){ x+=at[i].x; y+=at[i].y; z+=at[i].z; }
+    x/=at.length; y/=at.length; z/=at.length;
+    /* pushed well clear of its own part, and each one in a different direction, or
+       all four names land on top of each other in the middle of the picture */
+    viewer.addLabel(text, {position:{x:x+off[0], y:y+off[1], z:z+off[2]},
+      fontSize:12, fontColor:'#ffffff', backgroundColor:colour, backgroundOpacity:0.9,
+      borderThickness:0, inFront:true, alignment:'center'});
+  }catch(e){}
+}
+/* THE SETTING
+   The groove does not float in nothing. It sits on the skin of a cell, on a stem,
+   with its open side facing outward - and an immune cell comes down onto that open
+   side to read what is held there. Those three things are drawn here.
+   They are an ILLUSTRATION, not measured atoms: the groove itself is to scale, the
+   skin, the stem and the reading cell are drawn to tell the story. The caption
+   says so whenever they are showing. */
+function addSetting(){
+  try{
+    /* A steady pretend-random, so the picture is the same every time it is drawn */
+    var seed=20261027;
+    function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+    /* A lump of protein: many small balls packed into an egg shape. Real protein is
+       lumpy, not a box - this reads as protein without pretending to be measured. */
+    function lump(cx,cy,cz, rx,ry,rz, n, col){
+      for(var i=0;i<n;i++){
+        var u=rnd()*2-1, v=rnd()*2-1, w=rnd()*2-1;
+        var d=Math.sqrt(u*u+v*v+w*w)||1; var t=Math.pow(rnd(),0.33)/d;
+        viewer.addSphere({center:{x:cx+u*t*rx, y:cy+v*t*ry, z:cz+w*t*rz},
+          radius:1.5+rnd()*1.3, color:col});
+      }
+    }
+    /* The skin of a cell is two layers of fatty molecules back to back, heads out.
+       Drawn as two sheets of heads, which is what it really looks like. */
+    function skin(z0, col1, col2){
+      for(var x=-21;x<=21;x+=5.2) for(var y=-16;y<=16;y+=5.2){
+        viewer.addSphere({center:{x:x,y:y,z:z0+2.6}, radius:2.1, color:col1});
+        viewer.addSphere({center:{x:x,y:y,z:z0-2.6}, radius:2.1, color:col2});
+      }
+    }
+    function thread(x,y,z1,z2,col){
+      viewer.addCylinder({start:{x:x,y:y,z:z1}, end:{x:x,y:y,z:z2},
+        radius:1.5, color:col, fromCap:1, toCap:1});
+    }
+
+    /* ABSTRACT is a teaching picture, not a likeness: fewer pieces, bigger and
+       plainer, so it can be read at a glance. Everything it shows is still true -
+       two cells facing each other, the holder through one skin, the reader through
+       the other - it is just drawn simply. */
+    if(ABS){
+      function band(z0, top, bottom){
+        for(var x=-21;x<=21;x+=7) for(var y=-7;y<=7;y+=7){
+          viewer.addSphere({center:{x:x,y:y,z:z0+3.4}, radius:3.4, color:top});
+          viewer.addSphere({center:{x:x,y:y,z:z0-3.4}, radius:3.4, color:bottom});
+        }
+      }
+      band(-30,'#f0c674','#cda255');          // the skin holding your piece up
+      band(44,'#9ec6f2','#6f9ad3');           // the immune cell's skin
+      // one plain stem, straight down through the skin
+      viewer.addCylinder({start:{x:0,y:0,z:-12}, end:{x:0,y:0,z:-38},
+        radius:6, color:'#b9c4d1', fromCap:1, toCap:1});
+      // the reader: one plain block on a stalk, sitting square on the piece
+      viewer.addBox({center:{x:0,y:0,z:14}, dimensions:{w:30,h:22,d:10},
+        color:'#4a86e8', opacity:1});
+      viewer.addCylinder({start:{x:0,y:0,z:19}, end:{x:0,y:0,z:42},
+        radius:5.5, color:'#4a86e8', fromCap:1, toCap:1});
+      return;
+    }
+
+    // ---- the cell that is showing the piece: its skin, low down
+    skin(-34,'#d8b878','#b4914f');
+    // the rest of the holder: two lumps under the groove, then threads THROUGH the skin
+    lump(-8,0,-20, 7,6.5,6, 34,'#9aa7b6');
+    lump( 8,0,-20, 7,6.5,6, 34,'#9aa7b6');
+    thread(-8,0,-26,-41,'#9aa7b6');
+    thread( 8,0,-26,-41,'#9aa7b6');
+
+    // ---- the immune cell, square on top, its face across both walls and the piece
+    lump(-6,0,13, 7,6.5,6, 34,'#5a8fd8');
+    lump( 6,0,13, 7,6.5,6, 34,'#5a8fd8');
+    lump(-6,0,25, 7,6.5,6, 30,'#3f74c0');
+    lump( 6,0,25, 7,6.5,6, 30,'#3f74c0');
+    thread(-6,0,31,44,'#3f74c0');
+    thread( 6,0,31,44,'#3f74c0');
+    // and its own skin above
+    skin(47,'#9ec0ea','#6f98cd');
+  }catch(e){}
+}
+function settingOn(){
+  var b=document.getElementById('b-cell');
+  return !!b && b.getAttribute('aria-pressed')==='true';
+}
+/* THE TEACHING PICTURE  (Abstract)
+   Drawn from plain shapes, like a school book, but every shape means something real:
+
+     the cradle  = the holder. Its floor carries FOUR SOCKETS - the four holes.
+     the bar     = your piece, one letter after another.
+     the pegs    = the four letters that drop into the sockets. That is the grip.
+     the studs   = the letters that face upward, the side the body reads.
+
+   Nothing here is measured. It is a diagram, and the caption says so. */
+function drawTeaching(){
+  var pep = (curReg && curReg.seq) ? curReg.seq : 'LKAQLGPDESKQKFV';
+  var n = Math.min(15, pep.length);
+  var holesOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  var teethOn = document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
+  var namesOn = document.getElementById('b-names').getAttribute('aria-pressed')==='true';
+  var HOLE = [cssv('--p1'),cssv('--p4'),cssv('--p6'),cssv('--p9')];
+  var AT   = [0,3,5,8];                      // where the four holes sit in the nine
+  var x0=-19, step=38/14;                    // the fifteen letters, evenly spread
+  function xa(i){ return x0+i*step; }
+
+  /* The cradle teaches what the walls are FOR. They are not scenery:
+       - they stand just wider than the piece, so it cannot slide out sideways;
+       - each one turns inward at the top into a LIP that hangs over the piece, so
+         it cannot lift out either - it is clipped in;
+       - the two lips leave a narrow SLOT down the middle, and that slot is the only
+         part of your piece anything can see. The studs poke up through it. That is
+         what the immune cell reads: the tops of the two walls and that strip. */
+  viewer.addBox({center:{x:0,y:0,z:-7}, dimensions:{w:46,h:24,d:3.4}, color:'#8fd3ab'});
+  /* The near wall is CUT AWAY over half its length - a section - so you can see
+     straight into the channel: the piece lying in it and the pegs underneath
+     dropping into their holes. The far wall is left whole so the shape still reads. */
+  viewer.addBox({center:{x:0,y:7.6,z:-0.6}, dimensions:{w:46,h:3.2,d:10}, color:'#63b98a'});
+  viewer.addBox({center:{x:0,y:4.7,z:4.0}, dimensions:{w:46,h:3.4,d:2.2}, color:'#4ea878'});
+  viewer.addBox({center:{x:12,y:-7.6,z:-0.6}, dimensions:{w:22,h:3.2,d:10}, color:'#63b98a'});
+  viewer.addBox({center:{x:12,y:-4.7,z:4.0}, dimensions:{w:22,h:3.4,d:2.2}, color:'#4ea878'});
+  // the cut face, so the section reads as a cut and not as a broken wall
+  viewer.addBox({center:{x:1.1,y:-7.6,z:-0.6}, dimensions:{w:0.6,h:3.2,d:10}, color:'#2f7d55'});
+  viewer.addBox({center:{x:1.1,y:-4.7,z:4.0}, dimensions:{w:0.6,h:3.4,d:2.2}, color:'#2f7d55'});
+
+  // the four sockets, sunk into the floor
+  for(var k=0;k<4;k++){
+    var i=AT[k];
+    if(curReg) i = curReg.start + AT[k];
+    if(i<0||i>=n) continue;
+    // the socket itself, sunk into the floor
+    viewer.addCylinder({start:{x:xa(i),y:0,z:-5.2}, end:{x:xa(i),y:0,z:-8.4},
+      radius:2.9, color: holesOn?HOLE[k]:'#4e9b74', fromCap:1, toCap:1});
+    /* and a ring around it, lying on the floor. The piece covers the socket from
+       above, so without this you cannot see where the holes are at all. */
+    viewer.addCylinder({start:{x:xa(i),y:0,z:-5.35}, end:{x:xa(i),y:0,z:-5.05},
+      radius:5.6, color: holesOn?HOLE[k]:'#4e9b74', fromCap:1, toCap:1});
+  }
+
+  // the bar: your piece, lying in the cradle
+  viewer.addBox({center:{x:0,y:0,z:0.4}, dimensions:{w:41,h:8.4,d:3.4}, color:'#eef2f7'});
+
+  for(var i2=0;i2<n;i2++){
+    var off = curReg ? i2-curReg.start : i2;
+    var hole = AT.indexOf(off);
+    var face = TCR_POS.indexOf(off)>=0;
+    if(hole>=0){
+      // a peg, dropping out of the bar into its socket
+      viewer.addCylinder({start:{x:xa(i2),y:0,z:-1.1}, end:{x:xa(i2),y:0,z:-7.4},
+        radius:2.3, color: holesOn?HOLE[hole]:'#b9c4d1', fromCap:1, toCap:1});
+    }
+    if(face && teethOn){
+      // a stud on top: a letter the body reads
+      viewer.addSphere({center:{x:xa(i2),y:0,z:4.4}, radius:2.2, color:cssv('--tcr')});
+    }
+    viewer.addLabel(pep[i2], {position:{x:xa(i2), y:0, z:8.6},
+      fontSize:12, fontColor:'#111720', backgroundColor:'#ffffff', backgroundOpacity:0.95,
+      borderThickness:0, inFront:true, alignment:'center'});
+  }
+
+  if(namesOn && !settingOn()){
+    viewer.addLabel('the cradle - your holder', {position:{x:-22,y:9,z:-12},
+      fontSize:12, fontColor:'#ffffff', backgroundColor:'#2f7d55', backgroundOpacity:0.92,
+      borderThickness:0, inFront:true, alignment:'center'});
+    viewer.addLabel('the walls clip it in', {position:{x:6,y:13,z:8},
+      fontSize:12, fontColor:'#ffffff', backgroundColor:'#3f8f62', backgroundOpacity:0.92,
+      borderThickness:0, inFront:true, alignment:'center'});
+    viewer.addLabel('only this strip can be seen', {position:{x:14,y:-13,z:10},
+      fontSize:12, fontColor:'#ffffff', backgroundColor:'#5a6472', backgroundOpacity:0.92,
+      borderThickness:0, inFront:true, alignment:'center'});
+    viewer.addLabel('your piece', {position:{x:17,y:0,z:13},
+      fontSize:12, fontColor:'#ffffff', backgroundColor:'#1565d8', backgroundOpacity:0.92,
+      borderThickness:0, inFront:true, alignment:'center'});
+    if(holesOn) viewer.addLabel('pegs in holes - the grip', {position:{x:-14,y:-13,z:-8},
+      fontSize:12, fontColor:'#ffffff', backgroundColor:'#a86f12', backgroundOpacity:0.92,
+      borderThickness:0, inFront:true, alignment:'center'});
+  }
+}
 function styleModel(surface){
   if(!viewer) return;
   var pep = (curReg && curReg.seq) ? curReg.seq : 'LKAQLGPDESKQKFV';
   var n = Math.min(15, pep.length);
   viewer.setStyle({},{});
+  /* Two different pictures, not one picture drawn a little thicker.
+
+     SCIENCE  - the protein as it is: the floor and the wall of the groove, thin and
+                grey, with the arrows that mark the sheet.
+     ABSTRACT - a teaching picture, drawn from plain shapes, the way a school book
+                would draw it. Everything in it is still TRUE: a cradle with four
+                sockets in its floor, and your piece as a bar with four pegs that
+                drop into them. Only the shapes are simple. */
+  if(ABS){
+    viewer.setStyle({chain:'A'},{});
+    viewer.setStyle({chain:'B'},{});
+    viewer.setStyle({chain:'P'},{});
+    viewer.removeAllLabels(); viewer.removeAllShapes();
+    drawTeaching();
+    if(settingOn()) addSetting();
+    viewer.render();
+    return;
+  }
   viewer.setStyle({chain:'A'},{cartoon:{color:'#aab7c7',thickness:0.55,arrows:true}});
   viewer.setStyle({chain:'B'},{cartoon:{color:'#e4eaf1',thickness:0.85,style:'oval'}});
   viewer.setStyle({chain:'P'},{});
   viewer.removeAllLabels(); viewer.removeAllShapes();
 
-  var anchorsOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  var holesOn = document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
+  var teethOn = document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
   var cols = {0:cssv('--p1'),3:cssv('--p4'),5:cssv('--p6'),8:cssv('--p9')};
   var m = viewer.getModel(0), prev = null;
-  for(var i=0;i<n;i++){
-    var ri = PEP_FIRST+i, aa = pep[i];
-    var off = curReg ? i-curReg.start : -99;
+  var pep2 = pep, n2 = n;
+  for(var i=0;i<n2;i++){
+    var ri = PEP_FIRST+i, aa = pep2[i];
+    var off = curReg ? i-curReg.start : i;
     var isAnchor = (cols[off]!==undefined && off>=0 && off<9);
     var isFace   = (TCR_POS.indexOf(off)>=0);
     var col = CLASS_COL[AA_CLASS[aa]] || '#c9ced6';
     var scale = 0.42;
-    if(anchorsOn && isAnchor){ col = cols[off]; scale = 0.64; }
-    else if(anchorsOn && isFace){ col = cssv('--tcr'); scale = 0.52; }
+    if(holesOn && isAnchor){ col = cols[off]; scale = 0.95; }
+    else if(teethOn && isFace){ col = cssv('--tcr'); scale = 0.62; }
     viewer.setStyle({chain:'P',resi:ri},{sphere:{scale:scale,color:col}});
     var at = m.selectedAtoms({chain:'P',resi:ri,atom:'CA'});
     if(at.length){
-      viewer.addLabel(aa, {position:{x:at[0].x, y:at[0].y, z:at[0].z+1.6},
-        fontSize:12, fontColor:cssv('--ink'), backgroundColor:cssv('--panel'), backgroundOpacity:0.82,
-        borderThickness:0, inFront:true, alignment:'center'});
+      viewer.addLabel(aa, {position:{x:at[0].x, y:at[0].y, z:at[0].z+3.0},
+        fontSize:12, fontColor:'#111720', backgroundColor:'#ffffff',
+        backgroundOpacity:0.82, borderThickness:0, inFront:true, alignment:'center'});
       if(prev) viewer.addCylinder({start:prev, end:{x:at[0].x,y:at[0].y,z:at[0].z},
-        radius:0.22, color:cssv('--mute'), fromCap:1, toCap:1});
+        radius:0.22, color:'#99a3b0', fromCap:1, toCap:1});
       prev = {x:at[0].x, y:at[0].y, z:at[0].z};
     }
   }
-  // the holder's own pocket-lining residues, read from IMGT/HLA for the selected type
   var pk = POCKETS_BY_ALLELE[alleleLabel()];
   if(pk && curReg){
     var spec=[['P1',0,cssv('--p1')],['P4',3,cssv('--p4')],['P6',5,cssv('--p6')],['P9',8,cssv('--p9')]];
     spec.forEach(function(sp){
       var idx = curReg.start + sp[1];
-      if(idx<0 || idx>=n) return;
-      var at = m.selectedAtoms({chain:'P',resi:PEP_FIRST+idx,atom:'CA'});
-      if(!at.length) return;
+      if(idx<0 || idx>=n2) return;
+      var at2 = m.selectedAtoms({chain:'P',resi:PEP_FIRST+idx,atom:'CA'});
+      if(!at2.length) return;
       viewer.addLabel(sp[0]+'  '+pk[sp[0]].split('').join(' '), {
-        position:{x:at[0].x, y:at[0].y-6.2, z:at[0].z-1.0},
+        position:{x:at2[0].x, y:at2[0].y-6.2, z:at2[0].z-1.0},
         fontSize:11, fontColor:'#ffffff', backgroundColor:sp[2], backgroundOpacity:0.92,
         borderThickness:0, inFront:true, alignment:'center'});
     });
+  }
+  if(document.getElementById('b-names').getAttribute('aria-pressed')==='true'){
+    partLabel(m,{chain:'P'}, 'your piece · peptide', '#1565d8', [16,0,11]);
+    if(!settingOn()){
+      partLabel(m,{chain:'A'}, 'the floor · sheet', '#4a5768', [-15,0,-10]);
+      partLabel(m,{chain:'B',resi:'105-130'}, 'a wall · helix', '#6b7889', [0,10,4]);
+      partLabel(m,{chain:'B',resi:'131-156'}, 'a wall · helix', '#6b7889', [0,-10,4]);
+    }
+  }
+  if(settingOn()){
+    addSetting();
+    if(document.getElementById('b-names').getAttribute('aria-pressed')==='true'){
+      viewer.addLabel(ABS?'the skin of the cell':'the cell membrane',
+        {position:{x:-30,y:0,z:-36}, fontSize:12, fontColor:'#ffffff',
+         backgroundColor:'#8a6a2e', backgroundOpacity:0.9, borderThickness:0,
+         inFront:true, alignment:'center'});
+      viewer.addLabel(ABS?'the stem':'the stem of the holder',
+        {position:{x:26,y:0,z:-20}, fontSize:12, fontColor:'#ffffff',
+         backgroundColor:'#6b7889', backgroundOpacity:0.9, borderThickness:0,
+         inFront:true, alignment:'center'});
+      viewer.addLabel(ABS?'the immune cell, reading it':'the T cell receptor',
+        {position:{x:0,y:0,z:36}, fontSize:12, fontColor:'#ffffff',
+         backgroundColor:'#2f6fd0', backgroundOpacity:0.92, borderThickness:0,
+         inFront:true, alignment:'center'});
+    }
   }
   if(surface) viewer.addSurface($3Dmol.SurfaceType.VDW,{opacity:0.55,color:'#cfd8e3'},{chain:'B'});
   else viewer.removeAllSurfaces();
@@ -2509,6 +3038,7 @@ function srcLine(seq){
              : (seq+'  \u00b7  '+alleleLabel()+'  \u00b7  scaled model, not measured atoms');
 }
 function loadReal(){
+  if(ABS) return;                 // Abstract is the drawing, on purpose
   if(realTried || !viewer) return; realTried=true;
   var cap=document.getElementById('molsrc');
   var cached=null; try{ cached=localStorage.getItem('jo1-pdb-'+RCSB_ID); }catch(e){}
@@ -2518,7 +3048,9 @@ function loadReal(){
             'https://files.rcsb.org/view/'+RCSB_ID+'.pdb'];
   function attempt(i){
     if(i>=urls.length){ realTried=false;
-      cap.textContent = ABS ? 'could not fetch the real groove \u00b7 showing the drawing'
+      /* the wording may have been switched to Abstract while this was still trying -
+         Abstract never asked for the measured structure, so it keeps its own line */
+      cap.textContent = ABS ? srcLine(curReg && curReg.seq)
                             : 'could not reach the protein databank \u00b7 showing the scaled model';
       return; }
     fetch(urls[i]).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
@@ -2532,6 +3064,7 @@ function loadReal(){
   attempt(0);
 }
 function useReal(text, fromCache){
+  if(ABS) return;   // the user switched to the drawing while this was downloading
   try{
     viewer.removeAllModels(); viewer.removeAllShapes(); viewer.removeAllSurfaces();
     viewer.removeAllLabels();
@@ -2555,7 +3088,7 @@ function useReal(text, fromCache){
 }
 function reskin3d(){
   if(!viewer) return;
-  viewer.setBackgroundColor(cssv('--sunk')||'#f3f6fa');
+  viewer.setBackgroundColor(STAGE);
   restyle();
   viewer.render();
 }
@@ -2567,14 +3100,18 @@ function restyle(){
 /* one line under the picture naming exactly what is on screen */
 function sayWhat(){
   var el=document.getElementById('molwhat'); if(!el) return;
+  /* Abstract no longer draws a ribbon at all - it draws a green cradle - so the
+     line has to name whichever picture is actually on screen. */
+  var HOLDER_IS = ABS ? 'The green cradle is the holder.'
+                      : 'The pale ribbon is the holder.';
   var holes=document.getElementById('b-anch').getAttribute('aria-pressed')==='true';
   var teeth=document.getElementById('b-teeth').getAttribute('aria-pressed')==='true';
   if(!curReg){
     el.innerHTML = (typeof results!=='undefined' && results.length)
-      ? '<b>No piece chosen.</b> The pale ribbon is the holder. '
+      ? '<b>No piece chosen.</b> ' + HOLDER_IS + ' '
         + 'Pick one in step 3, or take the tightest one now.'
         + '<br><button type="button" class="pickbtn" id="pickbest">Use the tightest piece</button>'
-      : '<b>Nothing scanned yet.</b> The pale ribbon is the holder. '
+      : '<b>Nothing scanned yet.</b> ' + HOLDER_IS + ' '
         + 'Scan a protein in step 2, then choose a piece in step 3.';
     var pb=document.getElementById('pickbest');
     if(pb) pb.addEventListener('click', function(){
@@ -2587,9 +3124,15 @@ function sayWhat(){
     return;
   }
   var bits=[];
-  if(teeth) bits.push('<b>dark chain</b> = your piece, '+curReg.seq);
-  if(holes) bits.push('<b>coloured clumps</b> = the four holes that hold it');
-  bits.push('<b>pale ribbon</b> = the rest of the holder');
+  if(ABS){
+    if(teeth) bits.push('<b>grey studs</b> = the side the body reads');
+    if(holes) bits.push('<b>coloured pegs</b> = the four holes that hold it');
+    bits.push('<b>green cradle</b> = your holder, '+curReg.seq+' lying in it');
+  }else{
+    if(teeth) bits.push('<b>dark chain</b> = your piece, '+curReg.seq);
+    if(holes) bits.push('<b>coloured clumps</b> = the four holes that hold it');
+    bits.push('<b>pale ribbon</b> = the rest of the holder');
+  }
   el.innerHTML = bits.join(' &middot; ');
 }
 window.__showPeptide=function(reg){
@@ -2599,17 +3142,112 @@ window.__showPeptide=function(reg){
   restyle();                      // the measured view re-threads with the new slice
 };
 
+/* put the simple drawn groove back on screen */
+function showDrawn(){
+  if(!viewer) return;
+  try{
+    viewer.removeAllModels(); viewer.removeAllShapes(); viewer.removeAllSurfaces();
+    viewer.removeAllLabels();
+    viewer.addModel(pdbText,'pdb');
+    isModel=true; realTried=false;
+    var tb=document.getElementById('b-real'); if(tb) tb.hidden=false;
+    styleModel(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
+    var cap=document.getElementById('molsrc');
+    if(cap) cap.textContent = srcLine(curReg && curReg.seq);
+    if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(0.62); }
+    viewer.render(); sayWhat(); markHome();
+  }catch(e){}
+}
+/* THE REFERENCE BLOCK
+   A small block in the corner of the picture showing which way you are looking.
+   It is built on the model's OWN measured axes - the groove runs along X, up is Z -
+   so the pale face carrying the mark really is the floor of the groove. It reads the
+   viewer's own orientation, so it turns whenever the picture turns. */
+var VC_V=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+var VC_F=[{i:[4,5,6,7],n:[0,0,1],f:'#f3f6fa',mark:1},
+          {i:[0,1,2,3],n:[0,0,-1],f:'#596679'},
+          {i:[1,2,6,5],n:[1,0,0],f:'#c3cedb'},
+          {i:[0,3,7,4],n:[-1,0,0],f:'#8f9dae'},
+          {i:[2,3,7,6],n:[0,1,0],f:'#a8b5c5'},
+          {i:[0,1,5,4],n:[0,-1,0],f:'#7d8b9d'}];
+function vcRot(q,v){
+  var x=v[0],y=v[1],z=v[2],qx=q[0],qy=q[1],qz=q[2],qw=q[3];
+  var ix=qw*x+qy*z-qz*y, iy=qw*y+qz*x-qx*z, iz=qw*z+qx*y-qy*x, iw=-qx*x-qy*y-qz*z;
+  return [ix*qw+iw*(-qx)+iy*(-qz)-iz*(-qy),
+          iy*qw+iw*(-qy)+iz*(-qx)-ix*(-qz),
+          iz*qw+iw*(-qz)+ix*(-qy)-iy*(-qx)];
+}
+var vcLast='';
+function drawViewCube(){
+  var host=document.getElementById('vcsvg'); if(!host||!viewer) return;
+  var v; try{ v=viewer.getView(); }catch(e){ return; }
+  if(!v||v.length<8) return;
+  var q=[v[4],v[5],v[6],v[7]];
+  var key=q[0].toFixed(3)+','+q[1].toFixed(3)+','+q[2].toFixed(3)+','+q[3].toFixed(3);
+  if(key===vcLast) return;              // nothing moved - draw nothing
+  vcLast=key;
+  /* An axonometric reference: the block turns, but its upright edges stay upright
+     on the screen. The picture itself carries a roll, so the block is turned back
+     in the plane of the screen until the model's UP points straight up. */
+  var U=vcRot(q,[0,0,1]), us=Math.sqrt(U[0]*U[0]+U[1]*U[1]), ca=1, sa=0;
+  if(us>0.08){
+    var ang=Math.atan2(-U[1],U[0]), d=(-Math.PI/2)-ang;
+    ca=Math.cos(d); sa=Math.sin(d);
+  }
+  var P=[],i;
+  for(i=0;i<VC_V.length;i++){
+    var r=vcRot(q,VC_V[i]);
+    var sx=r[0], sy=-r[1];
+    P.push([sx*ca-sy*sa, sx*sa+sy*ca, r[2]]);
+  }
+  var parts=[], marks=[];
+  for(var k=0;k<VC_F.length;k++){
+    var F=VC_F[k], nr=vcRot(q,F.n);
+    if(nr[2]<=0.03) continue;           // facing away
+    var pts=[];
+    for(i=0;i<4;i++) pts.push(P[F.i[i]][0].toFixed(3)+','+P[F.i[i]][1].toFixed(3));
+    parts.push('<polygon points="'+pts.join(' ')+'" fill="'+F.f
+      +'" stroke="#0b1016" stroke-width="0.045" stroke-linejoin="round"/>');
+    if(F.mark){
+      var cx=0, cy=0;
+      for(i=0;i<4;i++){ cx+=P[F.i[i]][0]/4; cy+=P[F.i[i]][1]/4; }
+      var sq=Math.max(0.18, Math.abs(nr[2]));
+      marks.push('<g transform="translate('+cx.toFixed(3)+' '+cy.toFixed(3)+') scale(1,'+sq.toFixed(3)+')">'
+        +'<rect x="-0.50" y="-0.21" width="0.50" height="0.42" rx="0.06" fill="#111720"/>'
+        +'<text x="-0.25" y="0.145" text-anchor="middle" font-size="0.37" font-weight="700" fill="#f3f6fa">JO</text>'
+        +'<text x="0.06" y="0.145" font-size="0.37" font-weight="700" fill="#111720">ONE</text></g>');
+    }
+  }
+  host.innerHTML = parts.join('') + marks.join('');
+  /* record which way the block's upright edges point, so a check can read it:
+     after the roll is taken out this must be straight up, (0, -1). */
+  var ux=U[0]*ca-(-U[1])*sa, uy=U[0]*sa+(-U[1])*ca, ul=Math.sqrt(ux*ux+uy*uy)||1;
+  host.setAttribute('data-up',(ux/ul).toFixed(4)+','+(uy/ul).toFixed(4));
+  var rl=Math.sqrt(U[0]*U[0]+U[1]*U[1])||1;
+  host.setAttribute('data-raw',(U[0]/rl).toFixed(4)+','+((-U[1])/rl).toFixed(4));
+}
+/* The loop runs only while the picture is on screen, so the app is not left
+   animating in the background on every other screen. */
+var vcRunning=false;
+function vcWatch(){
+  if(document.getElementById('view-3d').hidden){ vcRunning=false; vcLast=''; return; }
+  drawViewCube();
+  requestAnimationFrame(vcWatch);
+}
+function vcStart(){ if(vcRunning) return; vcRunning=true; requestAnimationFrame(vcWatch); }
 function boot3D(){
   var host=document.getElementById('mol');
   if(typeof $3Dmol==='undefined'){
     host.innerHTML='<div style="padding:20px;font-size:13px;color:var(--mute)">The 3D viewer could not load. The screen above still works.</div>';
     return;
   }
-  viewer=$3Dmol.createViewer(host,{backgroundColor:cssv('--sunk')||'#f3f6fa'});
+  viewer=$3Dmol.createViewer(host,{backgroundColor:STAGE});
   viewer.addModel(pdbText,'pdb');
   styleModel(false);
-  viewer.zoomTo(); viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); viewer.render();
-  sayWhat();
+  viewer.zoomTo(); markBase();
+  if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(0.62); } viewer.render();
+  sayWhat(); markHome();
+  drawViewCube(); vcStart();
 }
 document.getElementById('b-surf').addEventListener('click', function(){
   this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
@@ -2619,6 +3257,33 @@ document.getElementById('b-anch').addEventListener('click', function(){
 });
 document.getElementById('b-teeth').addEventListener('click', function(){
   this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
+});
+document.getElementById('b-names').addEventListener('click', function(){
+  this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true'); restyle();
+});
+document.getElementById('b-cell').addEventListener('click', function(){
+  var on = this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed', on?'true':'false');
+  restyle();
+  if(!viewer) return;
+  /* the setting is far bigger than the groove, so the picture has to step back */
+  try{
+    /* The layers - skin, stem, groove, immune cell - only read when seen from
+       nearer the side, so the picture tips over while the setting is showing. */
+    /* Looking ALONG the groove, not across it, so the layers stack straight up the
+       screen: skin, stem, groove with the piece, the reader, the other skin. */
+    /* The story view is set the same way: no turn, tipped right over, so you look
+       along the groove and the layers stack straight up the screen - uprights upright. */
+    if(on){ if(!setTurnTip(0,90,ZOOM_CELL)){ viewer.zoomTo(); viewer.zoom(ZOOM_CELL); } }
+    else if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){
+      if(HOME_VIEW && viewer.setView) viewer.setView(HOME_VIEW);
+      viewer.zoomTo(); viewer.zoom(0.62);
+    }
+    viewer.render();
+  }catch(e){}
+  var cap=document.getElementById('molsrc');
+  if(cap && on) cap.textContent='the groove is to scale \u00b7 the skin, stem and immune cell are drawn';
+  else if(cap && typeof srcLine==='function') cap.textContent=srcLine(curReg && curReg.seq);
 });
 (function(){
   var btn=document.getElementById('b-move'), pad=document.getElementById('molpan');
@@ -2642,8 +3307,10 @@ document.getElementById('b-teeth').addEventListener('click', function(){
   pad.addEventListener('pointermove', function(e){
     if(!dragging||!viewer) return;
     var dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
-    // the picture goes the way the finger goes
-    try{ viewer.translate(-dx,-dy,0,true); }catch(err){}
+    /* The picture goes the way the finger goes. Measured: the viewer's across axis
+       runs opposite to the screen's, the up/down one runs with it - so only the
+       across sign is flipped. Dragging right used to send the picture left. */
+    try{ viewer.translate(dx,-dy,0,true); }catch(err){}
   });
   function stop(){ dragging=false; }
   pad.addEventListener('pointerup', stop);
@@ -2670,10 +3337,18 @@ document.getElementById('b-reset').addEventListener('click', function(){
   document.getElementById('view-3d').classList.remove('full');
   document.getElementById('b-move').setAttribute('aria-pressed','false');
   document.getElementById('molpan').hidden=true;
+  // Reset also puts the setting away, so the view and what is drawn always agree
+  var cb=document.getElementById('b-cell');
+  if(cb && cb.getAttribute('aria-pressed')==='true'){
+    cb.setAttribute('aria-pressed','false');
+    try{ restyle(); }catch(e){}
+  }
   try{ viewer.resize(); }catch(e){}
-  viewer.zoomTo();
-  if(isModel){ viewer.rotate(-64,'x'); viewer.rotate(-14,'y'); viewer.zoom(1.08); }
+  /* put back the saved opening view - the same one every time */
+  if(HOME_VIEW && viewer.setView){ try{ viewer.setView(HOME_VIEW); }catch(e){ viewer.zoomTo(); } }
+  else viewer.zoomTo();
   viewer.render();
+  if(typeof sayWhat==='function') sayWhat();
 });
 /* walk the shortlist from inside the picture */
 function stepList(d){
@@ -2719,12 +3394,79 @@ document.getElementById('pdbin').addEventListener('change', function(e){
       isModel=false;
       document.getElementById('molsrc').textContent=f.name+' · solved structure';
       styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
-      viewer.zoomTo(); viewer.render();
+      viewer.zoomTo(); viewer.render(); markHome();
     }catch(err){ document.getElementById('molsrc').textContent='could not read that file'; }
   };
   rd.readAsText(f);
 });
 
+/* ================= packing the result up to pass on =================
+   Nothing is sent anywhere by the app. This writes out what was found, in plain
+   text, and the person copies it or opens their own mail with it. Everything in
+   it is already on this screen - no new numbers are invented here. */
+function sendText(){
+  var r = (typeof results!=='undefined' && selected>=0) ? results[selected] : null;
+  var L=[];
+  L.push('JO-One  ' + ((document.querySelector('.refs')||{textContent:''})
+          .textContent.match(/V\d{4}/)||['V?'])[0]);
+  L.push('made ' + new Date().toISOString().slice(0,10));
+  L.push('');
+  L.push('Holder (HLA type): ' + alleleLabel());
+  var pname = (document.getElementById('protname')||{value:''}).value;
+  L.push('Protein: ' + (pname ? pname : 'Jo-1 (histidyl-tRNA synthetase)'));
+  L.push('');
+  if(!r){
+    L.push('No slice chosen yet. Scan in step 2, then pick one in step 4.');
+  }else{
+    L.push('Chosen slice: ' + r.name);
+    L.push('Letters: ' + r.seq);
+    L.push('Predicted grip: ' + (r.ic50==null?'not scored':nm(r.ic50)+' nM')
+           + '   (lower = tighter)');
+    if(r.sel==null){
+      L.push('Checked against the other 116 types: not run yet (press Narrow).');
+    }else{
+      L.push('Of the other 116 holders, it grips tightly: ' + r.sel);
+      L.push(r.sel===0 ? 'So on this check it is yours alone.'
+                       : 'So it is not yours alone.');
+    }
+    if(typeof results!=='undefined') L.push('Out of ' + results.length + ' slices scanned.');
+  }
+  L.push('');
+  L.push('Made with JO-One, a research filter. Predictions from trained networks,');
+  L.push('not laboratory measurements. Not a clinical result and not medical advice.');
+  return L.join('\n');
+}
+function fillSend(){
+  var box=document.getElementById('sendtext'); if(!box) return;
+  var t=sendText();
+  box.textContent=t;
+  var mail=document.getElementById('b-mail');
+  if(mail) mail.href='mailto:timelinelabteam@gmail.com?subject='
+    + encodeURIComponent('JO-One result') + '&body=' + encodeURIComponent(t);
+}
+(function(){
+  var b=document.getElementById('b-send'), box=document.getElementById('sendbox'),
+      cp=document.getElementById('b-copy'), note=document.getElementById('sendnote');
+  if(!b) return;
+  b.addEventListener('click', function(){
+    var open = box.hidden;
+    if(open) fillSend();
+    box.hidden = !open;
+    b.textContent = open ? 'Hide' : 'Send';
+    if(note) note.textContent='';
+  });
+  if(cp) cp.addEventListener('click', function(){
+    var t=document.getElementById('sendtext').textContent;
+    function done(ok){ if(note) note.textContent = ok
+      ? 'Copied. Paste it wherever you want to send it.'
+      : 'Could not copy here - press and hold the text to select it.'; }
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(function(){done(true);},function(){done(false);});
+      }else{ done(false); }
+    }catch(e){ done(false); }
+  });
+})();
 /* ================= selectivity across every holder ================= */
 /* A peptide that grips many HLA types would blunt normal defence against germs,
    so tightness on the target is only half the question. */
@@ -2737,13 +3479,13 @@ function crossCheck(){
   btn.disabled=true; btn2.disabled=true; out.innerHTML='';
   stat.textContent='loading networks\u2026';
   prog2.hidden=false; band.hidden=true;
-  btn2.dataset.busy='1';
+  btn2.dataset.busy='1'; btn2.textContent='Checking\u2026';
   var i=0, vals=[];
   function step(){
     if(i>=ALLELES.length){
       bar.style.width='0%'; bar2.style.width='0%'; prog2.hidden=true;
       btn.disabled=false; btn2.disabled=false; stat.textContent='';
-      delete btn2.dataset.busy; btn2.removeAttribute('aria-label');
+      delete btn2.dataset.busy; btn2.textContent='Check'; btn2.removeAttribute('aria-label');
       render(); return;
     }
     var a=ALLELES[i];
@@ -2801,7 +3543,7 @@ function resetRank(){
       bt=document.getElementById('rankbtn');
   if(sr) sr.hidden=true;
   if(rn){ rn.hidden=true; rn.textContent=''; }
-  if(bt) delete bt.dataset.done;
+  if(bt){ delete bt.dataset.done; bt.textContent='Narrow'; }
 }
 function rankSelectivity(){
   if(!results.length) return;
@@ -2843,7 +3585,7 @@ function rankSelectivity(){
   function finish(){
     batch.forEach(function(r){ r.sel = r._other ? r._other.tight : null; delete r._other; });
     bar.style.width='0%'; prog.hidden=true; btn.disabled=false;
-    btn.dataset.done='1';
+    btn.dataset.done='1'; btn.textContent='Again';
     RANKED=true; SORTBY='sel'; srow.hidden=false;
     setSort('sel');
     var clean=batch.filter(function(r){ return r.sel===0; }).length;
@@ -2924,16 +3666,25 @@ setAllele();
   // pin the attribute to whatever is showing, so the sun/moon icon is never ambiguous
   R.setAttribute('data-theme', (saved==='light'||saved==='dark') ? saved : (sysDark()?'dark':'light'));
   var MKEY='jo1-mode', mb=document.getElementById('modebtn');
+  var bSci=document.getElementById('m-sci'), bAbs=document.getElementById('m-abs');
   function applyMode(m){
     ABS = (m==='abstract');
     R.setAttribute('data-mode', m);
-    mb.textContent = ABS ? 'Abstract' : 'Science';
-    mb.title = ABS ? 'Showing plain words \u2014 tap for the numbers'
-                   : 'Showing the numbers \u2014 tap for plain words';
+    bSci.setAttribute('aria-pressed', ABS?'false':'true');
+    bAbs.setAttribute('aria-pressed', ABS?'true':'false');
     if(typeof results!=='undefined' && results.length) drawRows();
     else if(typeof drawMap==='function') drawMap();
     // the lines written by script have to be re-written in the other language
     if(typeof runControls==='function'){ try{ runControls(); }catch(e){} }
+    // swap the picture FIRST, so nothing styles the model that is leaving
+    if(typeof viewer!=='undefined' && viewer){
+      if(ABS && !isModel && typeof showDrawn==='function') showDrawn();
+      else if(!ABS && isModel && typeof loadReal==='function') loadReal();
+      /* If the drawing is still what is on screen - either because Abstract always
+         uses it, or because the databank could not be reached - it has to be RE-DRAWN
+         in the other style. Without this the two wordings showed the same picture. */
+      if(isModel && typeof restyle==='function'){ try{ restyle(); }catch(e){} }
+    }
     if(typeof selected!=='undefined' && selected>=0 && typeof select==='function'){ try{ select(selected); }catch(e){} }
     if(typeof sayWhat==='function'){ try{ sayWhat(); }catch(e){} }
     var cap=document.getElementById('molsrc');
@@ -2943,11 +3694,13 @@ setAllele();
   }
   var m0='science'; try{ var sm=localStorage.getItem(MKEY); if(sm==='abstract'||sm==='science') m0=sm; }catch(e){}
   applyMode(m0);
-  mb.addEventListener('click', function(){
-    var next = ABS ? 'science' : 'abstract';
+  function pick(next){
+    if((next==='abstract')===ABS) return;
     try{ localStorage.setItem(MKEY,next); }catch(e){}
     applyMode(next);
-  });
+  }
+  bSci.addEventListener('click', function(){ pick('science'); });
+  bAbs.addEventListener('click', function(){ pick('abstract'); });
 
   var tb=document.getElementById('themebtn');
   if(tb) tb.addEventListener('click', function(){
