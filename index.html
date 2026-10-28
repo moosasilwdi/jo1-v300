@@ -205,6 +205,69 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 /* Abstract hides the laboratory wording and shows the plain one */
 .abs-only{display:none}
 :root[data-mode="abstract"] .abs-only{display:revert}
+/* ===== the two panels that carry WHY the app exists =====
+   This is the part that has to sell the idea, so it is drawn, not written: two roads
+   side by side, and what the app does with the protein. The four colours are the
+   four the app is built on - red only ever on the warning side, yellow on the lit
+   windows and never on type, green on the one lock, blue on the middle of the list.
+   They are declared here, scoped to these panels, so nothing else in the app shifts. */
+.whyp{--red:#e0342a;--blue:#1565d8;--yellow:#f5b700;--green:#15a05a;
+  --wall:#f3f6fa;--edge:#aeb9c7;--dark:#c3cbd6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .whyp{
+  --red:#ff5147;--blue:#4b92ff;--yellow:#ffc425;--green:#2fc274;
+  --wall:#1d2735;--edge:#45536a;--dark:#3b4a5e}}
+:root[data-theme="dark"] .whyp{--red:#ff5147;--blue:#4b92ff;--yellow:#ffc425;--green:#2fc274;
+  --wall:#1d2735;--edge:#45536a;--dark:#3b4a5e}
+.whyp h3{font-family:var(--sans);font-size:21px;font-weight:700;letter-spacing:-.015em;
+  line-height:1.25;color:var(--ink);text-transform:none;margin:0 0 4px}
+.whyp .sub{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);
+  font-family:var(--mono);font-weight:600;margin:0 0 11px;padding-bottom:11px;
+  border-bottom:1px solid var(--line)}
+.whyp .lede{font-size:15px;line-height:1.45;margin:0 0 12px}
+.whyp svg{display:block;width:100%;height:auto;overflow:visible}
+.whyp .sv{font-family:var(--mono);font-size:10.5px}
+/* V7400 - the third panel. The groove is drawn as a block with four pockets and the
+   slice as a bar with a peg down into each one. Depth is the whole lesson: a peg that
+   reaches the floor of a pocket is holding, a peg that stops short is not. Nothing
+   here is decoration. */
+.whykey{display:flex;gap:14px;margin:0 0 14px;font-size:12px;color:var(--mute);line-height:1.3}
+.whykey div{display:flex;gap:6px;align-items:flex-start}
+.whykey i{width:11px;height:11px;border-radius:3px;flex:0 0 auto;margin-top:1px}
+.whystep{border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+.whystep h4{font-size:15px;margin:0 0 2px}
+.whystep.a h4{color:var(--red)}
+.whystep.b h4{color:var(--green)}
+.whystep p{font-size:12.5px;line-height:1.45;color:var(--mute);margin:0 0 6px}
+.whystep p b{color:var(--ink)}
+.whyout{display:flex;align-items:center;gap:8px;border-radius:10px;padding:7px 10px;
+  border:1.5px solid;font-size:12.5px;margin-top:8px}
+.whyout b{font-size:14px}
+.whyout span{color:var(--mute)}
+.whystep.a .whyout{background:color-mix(in srgb,var(--red) 9%,var(--panel));
+  border-color:color-mix(in srgb,var(--red) 36%,var(--panel));color:var(--red)}
+.whystep.b .whyout{background:color-mix(in srgb,var(--green) 10%,var(--panel));
+  border-color:color-mix(in srgb,var(--green) 38%,var(--panel));color:var(--green)}
+.whycards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+.whycard{border-radius:12px;padding:10px 10px 12px;border:1.5px solid}
+.whycard.bad{background:color-mix(in srgb,var(--red) 9%,var(--panel));
+  border-color:color-mix(in srgb,var(--red) 38%,var(--panel))}
+.whycard.good{background:color-mix(in srgb,var(--green) 10%,var(--panel));
+  border-color:color-mix(in srgb,var(--green) 40%,var(--panel))}
+.whycard h4{font-size:14px;margin:8px 0 3px;letter-spacing:-.01em}
+.whycard.bad h4{color:var(--red)}
+.whycard.good h4{color:var(--green)}
+.whycard p{font-size:12px;line-height:1.42;margin:0;color:var(--mute)}
+.whyrows{display:grid;gap:7px;margin-top:4px}
+.whyrow{display:flex;align-items:center;gap:9px;border-radius:10px;padding:8px 10px;
+  border:1.5px solid;font-size:12.5px;line-height:1.3}
+.whyrow b{font-size:13px}
+.whyrow span{color:var(--mute)}
+.whyrow.r{background:color-mix(in srgb,var(--red) 9%,var(--panel));
+  border-color:color-mix(in srgb,var(--red) 36%,var(--panel));color:var(--red)}
+.whyrow.b{background:color-mix(in srgb,var(--blue) 9%,var(--panel));
+  border-color:color-mix(in srgb,var(--blue) 36%,var(--panel));color:var(--blue)}
+.whyrow.g{background:color-mix(in srgb,var(--green) 10%,var(--panel));
+  border-color:color-mix(in srgb,var(--green) 38%,var(--panel));color:var(--green)}
 :root[data-mode="abstract"] .sci-only{display:none!important}
 /* Surface puts a smooth skin on the measured atoms. The teaching drawing has no
    atoms to skin - the skin landed inside the solid cradle, so the button changed
@@ -538,7 +601,7 @@ input[type=file]{display:none}
    uprights. The sliding pad sits above this one and takes over when Move is on. */
 /* One line per part of the holder, each with its own switch. Turning a part off is
    how you learn what it is for: take the walls away and the floor is all that is
-   left holding your piece. */
+   left holding the piece. */
 .partsbox{position:absolute;left:10px;top:34px;z-index:4;width:188px;
   background:var(--panel);border:1px solid var(--line);border-radius:10px;
   padding:6px;box-shadow:0 6px 22px rgba(0,0,0,.28)}
@@ -761,7 +824,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <div class="hlafield">
           <select id="allele" aria-label="Which holder"></select>
         </div>
-        <p class="tiny" style="margin:11px 0 0"><span class="sci-only">117 types. If you don't know yours, leave <b>DRB1*03:01</b> &mdash; the one linked to anti-Jo-1.</span><span class="abs-only">117 kinds of holder. If you don't know which one is yours, leave it as it is &mdash; this is the one tied to the Jo-1 illness.</span></p>
+        <p class="tiny" style="margin:11px 0 0"><span class="sci-only">117 types. If the holder is not known, leave <b>DRB1*03:01</b> &mdash; the one linked to anti-Jo-1.</span><span class="abs-only">117 kinds of holder. If the holder is not known, leave it as it is &mdash; this is the one tied to the Jo-1 illness.</span></p>
       </div>
       <div class="panel">
         <h3><span class="sci-only">Checked live</span><span class="abs-only">Three known examples</span></h3>
@@ -964,6 +1027,112 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
     <div class="inner">
       <div class="modeslot"></div>
       <section class="notepage" data-note="about">
+      <div class="panel whyp">
+        <h3>Why go after one groove?</h3>
+        <p class="sub">The whole idea, in one picture</p>
+        <p class="lede">One road quiets the whole immune system. The other goes after
+        <b>one groove only</b> &mdash; a key for one lock, instead of cutting the power to
+        the whole building.</p>
+        <div class="whycards">
+          <div class="whycard bad">
+            <svg viewBox="0 0 150 200" aria-hidden="true">
+        <path d="M8 46 L74 16 L140 46" fill="none" stroke="var(--edge)" stroke-width="2.6" stroke-linejoin="round"/>
+        <rect x="16" y="46" width="116" height="116" rx="5" fill="var(--wall)" stroke="var(--edge)" stroke-width="2"/>
+        <g fill="var(--dark)">
+          <rect x="28" y="58" width="22" height="17" rx="2.5"/><rect x="63" y="58" width="22" height="17" rx="2.5"/><rect x="98" y="58" width="22" height="17" rx="2.5"/>
+          <rect x="28" y="84" width="22" height="17" rx="2.5"/><rect x="63" y="84" width="22" height="17" rx="2.5"/><rect x="98" y="84" width="22" height="17" rx="2.5"/>
+        </g>
+        <path d="M63 162 v-52 h22" fill="none" stroke="var(--red)" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M85 110 l12 -7 v52 l-12 7 z" fill="var(--panel)" stroke="var(--red)" stroke-width="2"/>
+        <g fill="var(--red)"><circle cx="124" cy="150" r="3.4"/><circle cx="137" cy="157" r="2.6"/><circle cx="147" cy="148" r="3"/></g>
+        <rect x="20" y="172" width="46" height="22" rx="11" fill="var(--wall)" stroke="var(--edge)" stroke-width="2"/>
+        <circle cx="31" cy="183" r="7.5" fill="var(--red)"/>
+        <text x="73" y="188" class="sv" fill="var(--red)">power off</text>
+      </svg>
+            <h4>Quiet everything</h4>
+            <p>It works &mdash; and the ordinary defences against germs go out with it.</p>
+          </div>
+          <div class="whycard good">
+            <svg viewBox="0 0 150 200" aria-hidden="true">
+        <path d="M8 46 L74 16 L140 46" fill="none" stroke="var(--edge)" stroke-width="2.6" stroke-linejoin="round"/>
+        <rect x="16" y="46" width="116" height="116" rx="5" fill="var(--wall)" stroke="var(--edge)" stroke-width="2"/>
+        <g fill="var(--yellow)">
+          <rect x="28" y="58" width="22" height="17" rx="2.5"/><rect x="63" y="58" width="22" height="17" rx="2.5"/><rect x="98" y="58" width="22" height="17" rx="2.5"/>
+          <rect x="28" y="84" width="22" height="17" rx="2.5"/><rect x="63" y="84" width="22" height="17" rx="2.5"/><rect x="98" y="84" width="22" height="17" rx="2.5"/>
+        </g>
+        <rect x="63" y="110" width="22" height="52" rx="3" fill="var(--panel)" stroke="var(--green)" stroke-width="2.6"/>
+        <circle cx="78" cy="134" r="2.8" fill="var(--green)"/>
+        <g stroke="var(--green)" stroke-width="2.4" fill="none" stroke-linecap="round">
+          <circle cx="112" cy="134" r="7"/><path d="M105 134 h-14"/><path d="M95 134 v6"/><path d="M100 134 v5"/>
+        </g>
+        <rect x="20" y="172" width="46" height="22" rx="11" fill="var(--wall)" stroke="var(--edge)" stroke-width="2"/>
+        <circle cx="55" cy="183" r="7.5" fill="var(--green)"/>
+        <text x="73" y="188" class="sv" fill="var(--green)">power on</text>
+      </svg>
+            <h4>One key, one lock</h4>
+            <p>Only the groove this disease is ordered from. The lights stay on.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel whyp">
+        <h3>So what does the app do?</h3>
+        <p class="sub">Every slice, checked against everyone</p>
+        <p class="lede">It cuts the protein into <b>495 stops</b> and asks of every one:
+        does it also fit most other holders?</p>
+        <svg viewBox="0 0 326 150" aria-hidden="true">
+          <text x="0" y="10" class="sv" fill="var(--mute)">every slice of Jo-1 &mdash; 495 of them, one dot each</text>
+          <g id="whydots" fill="var(--line)"></g>
+          <path d="M2 96 L128 142 M324 96 L198 142" fill="none" stroke="var(--line)"
+            stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        <div class="whyrows">
+          <div class="whyrow r"><b>Many</b><span>&mdash; it fits most other holders too</span></div>
+          <div class="whyrow b"><b>Some</b><span>&mdash; it fits a few of them</span></div>
+          <div class="whyrow g"><b>This holder only</b><span>&mdash; this is the one to take</span></div>
+        </div>
+        <p class="tiny" style="margin:9px 0 0">Jo-1 is 509 letters (UniProt P12081). The groove
+        holds 15. That makes 509 &minus; 15 + 1 = 495 slices &mdash; every one there is.</p>
+        <p style="font-size:12.5px;line-height:1.45;color:var(--mute);margin:10px 0 0">
+        <b style="color:var(--ink)">The tightest grip is often the worst candidate.</b> Rank the
+        shortlist by how few other people it fits and the order turns over &mdash; and that
+        reversal is the thing you cannot see by scoring one holder at a time.</p>
+      </div>
+
+      <div class="panel whyp">
+        <h3>Why is the strongest slice the wrong one?</h3>
+        <p class="sub">The same groove, two slices</p>
+        <p class="lede">A groove is a row of <b>pockets</b>. Three of them are the same
+        in all 117 holders. One is different in this holder only.</p>
+        <svg id="grip0" viewBox="0 0 326 222" aria-hidden="true"></svg>
+        <div class="whykey">
+          <div><i style="background:var(--blue)"></i><span>pockets every holder has</span></div>
+          <div><i style="background:var(--green)"></i><span>this holder&rsquo;s own pocket</span></div>
+        </div>
+        <div class="whystep a">
+          <h4>Slice A &mdash; a master key</h4>
+          <p>Its whole grip sits in the three shared pockets. Nothing reaches the odd
+          one. <b>Strong &mdash; and strong on the part everybody has.</b></p>
+          <svg id="gripa" viewBox="0 0 326 222" aria-hidden="true"></svg>
+          <div class="whyout"><b>82 of 117</b><span>holders take it &mdash; 81 of them
+            someone else&rsquo;s</span></div>
+        </div>
+        <div class="whystep b">
+          <h4>Slice B &mdash; a tailored key</h4>
+          <p>Part of its grip goes into the odd pocket. <b>Only a groove shaped like
+          this one has somewhere to put it.</b></p>
+          <svg id="gripb" viewBox="0 0 326 222" aria-hidden="true"></svg>
+          <div class="whyout"><b>4 of 117</b><span>holders take it</span></div>
+        </div>
+        <p class="tiny" style="margin:10px 0 0">These two slices are an example, drawn to
+        show the shape of it. The app&rsquo;s own numbers come from the screen.</p>
+        <p style="font-size:12.5px;line-height:1.45;color:var(--mute);margin:12px 0 0;
+          border-top:1px solid var(--line);padding-top:12px">
+        <b style="color:var(--ink)">So strong and single are two different things.</b>
+        Strength is built in the pockets everyone has. Fitting one holder alone is built
+        in the one pocket that differs. The app ranks on the second.</p>
+      </div>
+
       <div class="panel story">
         <h3>The story</h3>
         <p style="margin:0 0 8px">Jo-1 is a protein every one of your cells needs. In some people the
@@ -980,7 +1149,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         after his own diagnosis of anti-Jo-1 antisynthetase syndrome in 2026. Not a laboratory
         project &mdash; one person reading, asking, and checking.</p>
         <p style="margin:0 0 8px">The reading kept arriving at the same fork. One road quiets the whole
-        immune system: it works, and it costs you your ordinary defences against germs. The other road
+        immune system: it works, and it costs the ordinary defences against germs. The other road
         goes after one thing only &mdash; the single groove where this disease is ordered.
         <b>A key for one lock, instead of cutting the power to the whole building.</b></p>
         <p style="margin:0 0 8px">That is the method JO1 was built for. It does not treat anything
@@ -1019,7 +1188,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <dd>Science gives you the nanomolar numbers. Abstract gives you the same answer in plain
           words. One switch, same engine underneath.</dd>
           <dt>The groove is a real picture</dt>
-          <dd>Built on measured coordinates from PDB 1A6A, with your own letters laid along the
+          <dd>Built on measured coordinates from PDB 1A6A, with the chosen letters laid along the
           measured path &mdash; turn it, slide it, open it full screen. Not a cartoon drawn to look
           convincing.</dd>
         </dl>
@@ -1046,7 +1215,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <dd>Yes. Paste a sequence or drop a FASTA file and the whole thing is cut into fifteen-letter
           pieces and scored.</dd>
           <dt>What counts as a good result?</dt>
-          <dd>Tight on your holder <b>and</b> loose on the other 116. Tight on everything is the result
+          <dd>Tight on this holder <b>and</b> loose on the other 116. Tight on everything is the result
           that should stop you.</dd>
           <dt>Does this design a medicine?</dt>
           <dd>No. It narrows. It takes hundreds of possibilities down to a handful worth a laboratory's
@@ -1061,7 +1230,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <dl class="howto">
           <dt>1 &middot; Holder</dt>
           <dd>Pick whose HLA type you are testing. Every number in the app depends on this one choice.
-          If you do not know yours, leave DRB1*03:01 &mdash; the type linked to anti-Jo-1.</dd>
+          If the holder is not known, leave DRB1*03:01 &mdash; the type linked to anti-Jo-1.</dd>
           <dt>2 &middot; Protein</dt>
           <dd>Paste a protein, drop a FASTA file, or press <b>Load Jo-1</b>. Press <b>Scan</b> and every
           window along it is scored.</dd>
@@ -1089,7 +1258,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <p class="tiny" style="margin:0 0 6px">Strength is in nanomolar (nM). <b>Lower is tighter.</b>
         Under 50 is very tight, under 500 tight, under 5 000 moderate, above that loose.</p>
         <p class="tiny" style="margin:0">The 117-type check returns one of three verdicts.
-        <b>Selective</b> &mdash; it grips your holder and nothing else tightly.
+        <b>Selective</b> &mdash; it grips this holder and nothing else tightly.
         <b>Mostly selective</b> &mdash; one or two others.
         <b>Not selective</b> &mdash; three or more, which is the result that should stop you.</p>
       </div>
@@ -1161,7 +1330,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V7200 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V7400 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2405,7 +2574,7 @@ function drawRows(){
       + '<span class="nmv">'+nm(r.ic50)+'</span></span>'
       + '<span class="tagrow"><span class="vd '+v.k+'">'+v.t+'</span>'
       + (r.sel==null ? '' : '<span class="selchip s'+(r.sel===0?0:(r.sel<=2?1:2))+'">'
-          + (r.sel===0 ? 'yours alone' : 'grips '+r.sel+' other'+(r.sel===1?'':'s'))+'</span>')
+          + (r.sel===0 ? 'this holder alone' : 'grips '+r.sel+' other'+(r.sel===1?'':'s'))+'</span>')
       + '</span>'
       + '</div>';
   });
@@ -2812,7 +2981,7 @@ function addSetting(){
           viewer.addSphere({center:{x:x,y:y,z:z0-3.4}, radius:3.4, color:bottom});
         }
       }
-      band(-30,'#f0c674','#cda255');          // the skin holding your piece up
+      band(-30,'#f0c674','#cda255');          // the skin holding the piece up
       band(44,'#9ec6f2','#6f9ad3');           // the immune cell's skin
       // one plain stem, straight down through the skin
       viewer.addCylinder({start:{x:0,y:0,z:-12}, end:{x:0,y:0,z:-38},
@@ -2929,7 +3098,7 @@ function drawTeaching(){
   }
 
   if(namesOn && !settingOn()){
-    viewer.addLabel('the cradle - your holder', {position:{x:-22,y:9,z:-12},
+    viewer.addLabel('the cradle - the holder', {position:{x:-22,y:9,z:-12},
       fontSize:12, fontColor:'#ffffff', backgroundColor:'#2f7d55', backgroundOpacity:0.92,
       borderThickness:0, inFront:true, alignment:'center'});
     viewer.addLabel('the walls clip it in', {position:{x:6,y:13,z:8},
@@ -2938,7 +3107,7 @@ function drawTeaching(){
     viewer.addLabel('only this strip can be seen', {position:{x:14,y:-13,z:10},
       fontSize:12, fontColor:'#ffffff', backgroundColor:'#5a6472', backgroundOpacity:0.92,
       borderThickness:0, inFront:true, alignment:'center'});
-    viewer.addLabel('your piece', {position:{x:17,y:0,z:13},
+    viewer.addLabel('the piece', {position:{x:17,y:0,z:13},
       fontSize:12, fontColor:'#ffffff', backgroundColor:'#1565d8', backgroundOpacity:0.92,
       borderThickness:0, inFront:true, alignment:'center'});
     if(holesOn) viewer.addLabel('pegs in holes - the grip', {position:{x:-14,y:-13,z:-8},
@@ -2957,7 +3126,7 @@ function styleModel(surface){
                 grey, with the arrows that mark the sheet.
      ABSTRACT - a teaching picture, drawn from plain shapes, the way a school book
                 would draw it. Everything in it is still TRUE: a cradle with four
-                sockets in its floor, and your piece as a bar with four pegs that
+                sockets in its floor, and the piece as a bar with four pegs that
                 drop into them. Only the shapes are simple. */
   if(ABS){
     viewer.setStyle({chain:'A'},{});
@@ -3023,7 +3192,7 @@ function styleModel(surface){
   }
   if(document.getElementById('b-names').getAttribute('aria-pressed')==='true'){
     if(partOn('piece')) partLabel(m,{chain:'P'},
-      ABS?'your piece':'peptide', '#1565d8', [16,0,11]);
+      ABS?'the piece':'peptide', '#1565d8', [16,0,11]);
     if(!settingOn()){
       if(partOn('floor')) partLabel(m,{chain:'A'},
         ABS?'the floor':'\u03b2-sheet platform', '#4a5768', [-15,0,-10]);
@@ -3063,7 +3232,7 @@ var REAL_POCKETS=[
   ['P9','--p9',[9,57]]
 ];
 /* The peptide measured in 1A6A is CLIP, residues 87-101, fifteen long - the same
-   length as a window here. Its P1 sits at Met91. So a slice of yours can be laid on
+   length as a window here. Its P1 sits at Met91. So a slice of a protein can be laid on
    that measured path, letter for letter, P1 over P1. The path is measured; only the
    side branches of your own letters are modelled, and the caption says so. */
 var CLIP_FIRST=87, CLIP_P1=91;
@@ -3280,8 +3449,8 @@ function useReal(text, fromCache){
     viewer.addModel(text,'pdb');
     isModel=false;
     document.getElementById('molsrc').textContent = ABS
-      ? (RCSB_ID+' \u00b7 a real measured groove \u00b7 your letters laid along it')
-      : (RCSB_ID+' \u00b7 groove and path measured \u00b7 your letters laid on that path '
+      ? (RCSB_ID+' \u00b7 a real measured groove \u00b7 the chosen letters laid along it')
+      : (RCSB_ID+' \u00b7 groove and path measured \u00b7 the chosen letters laid on that path '
          + '\u00b7 their side branches are modelled');
     styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     sayWhat();
@@ -3338,7 +3507,7 @@ function partRows(){
              ['wall2','\u03b21 helix'],['piece','peptide'],
              ['body','\u03b12 and \u03b22 domains']];
   var abs = [['floor','the floor'],['wall1','wall, far side'],
-             ['wall2','wall, near side'],['piece','your piece'],
+             ['wall2','wall, near side'],['piece','the piece'],
              ['body','the rest of the protein']];
   var rows = (typeof ABS!=='undefined' && ABS) ? abs : sci;
   /* The drawing is the groove alone, and some measured files hold nothing but the
@@ -3417,9 +3586,9 @@ function sayWhat(){
   if(ABS){
     if(teeth) bits.push('<b>grey studs</b> = the side the body reads');
     if(holes) bits.push('<b>coloured pegs</b> = the four holes that hold it');
-    bits.push('<b>green cradle</b> = your holder, '+curReg.seq+' lying in it');
+    bits.push('<b>green cradle</b> = the holder, '+curReg.seq+' lying in it');
   }else{
-    if(teeth) bits.push('<b>dark chain</b> = your piece, '+curReg.seq);
+    if(teeth) bits.push('<b>dark chain</b> = the piece, '+curReg.seq);
     if(holes) bits.push('<b>coloured clumps</b> = the four holes that hold it');
     bits.push('<b>pale ribbon</b> = the rest of the holder');
   }
@@ -3589,6 +3758,82 @@ document.getElementById('b-cell').addEventListener('click', function(){
   if(cap && on) cap.textContent='the groove is to scale \u00b7 the skin, stem and immune cell are drawn';
   else if(cap && typeof srcLine==='function') cap.textContent=srcLine(curReg && curReg.seq);
 });
+/* exactly 495 dots - 45 across, 11 down - one for every slice of Jo-1 */
+(function(){
+  var g=document.getElementById('whydots'); if(!g) return;
+  var out='';
+  for(var r=0;r<11;r++) for(var c=0;c<45;c++)
+    out+='<circle cx="'+(4+c*7.2).toFixed(1)+'" cy="'+(22+r*6.6).toFixed(1)+'" r="1.8"/>';
+  g.innerHTML=out;
+})();
+/* V7400 - where a grip comes from, drawn three times: the groove alone, then the two
+   slices sitting in it. Isometric, so every upright edge stays upright on the page.
+   A peg that lands on the floor of its pocket is in contact, and contact is what the
+   yellow means; a peg that stops short is grey and you can see the gap under it. */
+(function(){
+  if(!document.getElementById('grip0')) return;
+  var S=23, OX=62, OY=52;
+  function P(x,y,z){ return [(OX+(x-y)*0.866*S).toFixed(1),(OY+(x+y)*0.5*S-z*S).toFixed(1)]; }
+  function poly(pts, fill, stroke, w){
+    return '<path d="M'+pts.map(function(p){return P(p[0],p[1],p[2]).join(' ');}).join('L')
+      +'Z" fill="'+fill+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+(w||1.6)
+      +'" stroke-linejoin="round"':'')+'/>';
+  }
+  var LX=9.6, LY=2.6, ZT=1.0;              /* the block: length, width, top face */
+  var PX=[0.85,3.0,5.15,7.3], PW=1.45;     /* four pockets along it */
+  var PY0=0.55, PY1=2.05;
+  var ODD=2;                               /* the one that differs between holders */
+  var DS=0.42, DD=0.92;                    /* shallow depth, deep depth */
+  function depth(i){ return i===ODD ? DD : DS; }
+  function pink(i){ return i===ODD ? 'var(--green)' : 'var(--blue)'; }
+  /* a box drawn as the three faces this view can see */
+  function box(x0,x1,y0,y1,z0,z1,top,side,edge){
+    return poly([[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]], top, edge)
+         + poly([[x0,y1,z1],[x1,y1,z1],[x1,y1,z0],[x0,y1,z0]], side, edge)
+         + poly([[x1,y0,z1],[x1,y1,z1],[x1,y1,z0],[x1,y0,z0]], side, edge);
+  }
+  function scene(id, pegs, label){
+    var el=document.getElementById(id); if(!el) return;
+    var s='';
+    s+=poly([[0,LY,ZT],[LX,LY,ZT],[LX,LY,0],[0,LY,0]],'var(--wall)','var(--edge)',1.6);
+    s+=poly([[LX,0,ZT],[LX,LY,ZT],[LX,LY,0],[LX,0,0]],'var(--dark)','var(--edge)',1.6);
+    var d='M'+[[0,0,ZT],[LX,0,ZT],[LX,LY,ZT],[0,LY,ZT]].map(function(p){
+      return P(p[0],p[1],p[2]).join(' ');}).join('L')+'Z';
+    PX.forEach(function(x){
+      d+='M'+[[x,PY0,ZT],[x+PW,PY0,ZT],[x+PW,PY1,ZT],[x,PY1,ZT]].map(function(p){
+        return P(p[0],p[1],p[2]).join(' ');}).join('L')+'Z';
+    });
+    s+='<path d="'+d+'" fill="var(--panel)" fill-rule="evenodd" stroke="var(--edge)" stroke-width="1.6"/>';
+    PX.forEach(function(x,i){
+      var dp=depth(i), zf=ZT-dp, x1=x+PW, c=pink(i);
+      s+=poly([[x,PY0,zf],[x1,PY0,zf],[x1,PY1,zf],[x,PY1,zf]],
+        'color-mix(in srgb,'+c+' 30%,var(--panel))','var(--edge)',1.2);
+      s+=poly([[x,PY0,ZT],[x,PY1,ZT],[x,PY1,zf],[x,PY0,zf]],
+        'color-mix(in srgb,'+c+' 14%,var(--panel))','var(--edge)',1.2);
+      s+=poly([[x,PY0,ZT],[x1,PY0,ZT],[x1,PY0,zf],[x,PY0,zf]],
+        'color-mix(in srgb,'+c+' 20%,var(--panel))','var(--edge)',1.2);
+    });
+    if(pegs){
+      var BZ=1.80;                                /* the underside of the slice */
+      PX.forEach(function(x,i){
+        var zf=pegs[i], cx=x+PW/2, w=PW*0.60;
+        var touching = Math.abs(zf-(ZT-depth(i)))<0.02;
+        s+=box(cx-w/2,cx+w/2,1.00,1.60,zf,BZ,
+          touching?'var(--yellow)':'var(--dark)',
+          touching?'color-mix(in srgb,var(--yellow) 60%,var(--panel))'
+                  :'color-mix(in srgb,var(--dark) 70%,var(--mute))','var(--edge)');
+      });
+      s+=box(PX[0]-0.25, PX[3]+PW+0.25, 0.92, 1.68, BZ, BZ+0.50,
+        'var(--panel)','var(--wall)','var(--edge)');
+    }
+    if(label){ var lp=P(LX+0.3, 2.0, label==='slice'?2.30:0.35);
+      s+='<text x="'+lp[0]+'" y="'+lp[1]+'" class="sv" fill="var(--mute)">the '+label+'</text>'; }
+    el.innerHTML=s;
+  }
+  scene('grip0', null, 'groove');
+  scene('gripa', [ZT-DS, ZT-DS, ZT+0.06, ZT-DS], 'slice');   /* stops short of the odd one */
+  scene('gripb', [ZT-DS, ZT-DS, ZT-DD,   ZT-DS], null);      /* reaches into it */
+})();
 /* Show a fade on whichever side of the control strip still has buttons out of
    sight, so a button at the edge is never just sliced off with no reason given. */
 (function(){
@@ -3802,8 +4047,8 @@ function sendText(){
       L.push('Checked against the other 116 types: not run yet (press Narrow).');
     }else{
       L.push('Of the other 116 holders, it grips tightly: ' + r.sel);
-      L.push(r.sel===0 ? 'So on this check it is yours alone.'
-                       : 'So it is not yours alone.');
+      L.push(r.sel===0 ? 'So on this check it fits this holder alone.'
+                       : 'So it does not fit this holder alone.');
     }
     if(typeof results!=='undefined') L.push('Out of ' + results.length + ' slices scanned.');
   }
