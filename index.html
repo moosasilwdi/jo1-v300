@@ -181,6 +181,26 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   background-color:var(--panel);background-position:right 10px center;background-size:10px 6px;
   border-color:color-mix(in srgb,var(--gold) 45%,var(--line));color:var(--accink);box-shadow:var(--lift)}
 .appbar .notesel[hidden]+.themebtn,.appbar .themebtn{margin-left:auto}
+/* V7600 - the menu moves to the left and the mark takes the centre of the bar. It is
+   centred on the WHOLE bar, not on what is left over, so it stays centred however
+   wide the menu or the holder pill happen to be. Below 366px there is no room for
+   four things and a dead-centre mark without shortening the holder's name, so the
+   smallest phones keep the bar they had. */
+@media (min-width:366px){
+  .appbar{position:relative}
+  .appbar .notesel{order:-1;margin-left:0;margin-right:auto}
+  .appbar .dot{order:-2}
+  .appbar .holderpill{order:8;margin-left:0}
+  .appbar .themebtn{order:9;margin-left:0}
+  .appbar .notesel:not([hidden])+.themebtn{margin-left:0}
+  .appbar .brandmid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    display:inline-flex;align-items:center;gap:7px;margin:0}
+}
+/* Measured at 390px: a centred mark, the BETA label, the holder pill and the theme
+   button do not all fit - the label runs into the pill. So on a phone the label
+   steps out of the bar and the mark takes the centre on its own. The word still
+   stands on the landing screen and in Notes. */
+@media (max-width:420px){ .appbar .beta{display:none} }
 .appbar .notesel:not([hidden])+.themebtn{margin-left:8px}
 /* both words on screen, one of them lit - a choice, not a label */
 
@@ -226,6 +246,35 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .whyp .lede{font-size:15px;line-height:1.45;margin:0 0 12px}
 .whyp svg{display:block;width:100%;height:auto;overflow:visible}
 .whyp .sv{font-family:var(--mono);font-size:10.5px}
+/* V7600 - the Saved screen. Every scan keeps itself, and the wall of marks is the
+   landing's own field: one mark per saved run, the one you are reading ringed. The
+   four colours are declared here the way the About panels declare them, so nothing
+   else in the app shifts. */
+.savedp{--red:#e0342a;--blue:#1565d8;--yellow:#f5b700;--green:#15a05a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .savedp{
+  --red:#ff5147;--blue:#4b92ff;--yellow:#ffc425;--green:#2fc274}}
+:root[data-theme="dark"] .savedp{--red:#ff5147;--blue:#4b92ff;--yellow:#ffc425;--green:#2fc274}
+.savedp svg.wall{display:block;width:100%;height:auto;cursor:pointer}
+.savedp .runlab{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--mute);font-weight:600;margin:0 0 6px}
+.savedp .runtop{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.savedp .runttl{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.savedp .runwhen{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--mute)}
+.savedp .runwho{font-family:var(--mono);font-size:11.5px;color:var(--mute);margin:0 0 11px}
+.savedp .runpep{display:flex;align-items:center;gap:9px;border-radius:10px;padding:8px 10px;
+  margin:0 0 11px;background:var(--sunk);border:1px solid var(--line);
+  font-family:var(--mono);font-size:11.5px}
+.savedp .runpep .tag{margin-left:auto;color:var(--mute);font-size:10.5px}
+.savedp .runsplit{display:flex;height:9px;border-radius:5px;overflow:hidden;margin:9px 0 7px;
+  gap:2px;background:var(--sunk)}
+.savedp .runkey{display:flex;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:10px;
+  color:var(--mute);margin:0 0 4px}
+.savedp .runkey span{display:flex;align-items:center;gap:5px}
+.savedp .runkey i{width:9px;height:7px;border-radius:2px;display:block;flex:0 0 auto}
+.savedp .runrow{display:flex;gap:8px;margin-top:11px}
+.savedp .runrow button{flex:1;font-size:12px;padding:8px 6px}
+.savedp .runempty{border:1px dashed var(--line);border-radius:12px;padding:18px 14px;
+  text-align:center;color:var(--mute);font-size:12.5px}
 /* V7400 - the third panel. The groove is drawn as a block with four pockets and the
    slice as a bar with a peg down into each one. Depth is the whole lesson: a peg that
    reaches the floor of a pocket is holding, a peg that stops short is not. Nothing
@@ -368,6 +417,7 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.splash .wm{animation:none}}
 /* BETA: a small plain label, not a coloured badge - white card, black letters */
+.appbar .brandmid{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto}
 .appbar .beta{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.08em;
   color:#111720;background:#fff;border:1px solid var(--line);border-radius:3px;padding:1px 4px;
   white-space:nowrap;flex:0 0 auto;line-height:1.35}
@@ -733,11 +783,12 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
   <svg class="wm wmbig" role="img" aria-label="JO1"><use href="#jo1mark"/></svg>
 </div>
 <div class="appbar">
-  <button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="wm" role="img" aria-label="JO1"><use href="#jo1mark"/></svg></button><span class="beta">BETA</span>
+  <span class="brandmid"><button type="button" class="home-link" id="homelink" title="Back to the start"><svg class="wm" role="img" aria-label="JO1"><use href="#jo1mark"/></svg></button><span class="beta">BETA</span></span>
   <span class="dot" id="statdot" title="network status" hidden></span>
   <button type="button" class="holderpill" id="holderpill" title="Change the holder" hidden>—</button>
   <select id="notesel" class="notesel" aria-label="Notes and contact">
     <option value="" selected>Notes</option>
+    <option value="saved">Saved runs</option>
     <option value="about">About</option>
     <option value="faq">Questions</option>
     <option value="how">How to use it</option>
@@ -933,7 +984,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <button type="button" class="go" id="toscan2">Go</button>
       </div>
       <div class="narrow">
-        <p class="btncap"><span class="sci-only">Rank the top 20 by selectivity, not by strength.</span><span class="abs-only">Find the fussiest pieces &mdash; the ones that grip you and few others.</span></p>
+        <p class="btncap"><span class="sci-only">Rank every slice by selectivity, not by strength.</span><span class="abs-only">Find the fussiest pieces &mdash; the ones that grip you and few others.</span></p>
         <button type="button" class="go" id="rankbtn">Narrow</button>
         <div class="prog" id="rkprog" hidden><i id="rkbar"></i></div>
         <p class="tiny" id="rknote" style="margin:8px 0 0" hidden></p>
@@ -1026,6 +1077,22 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
   <div class="view" id="view-info" hidden>
     <div class="inner">
       <div class="modeslot"></div>
+      <section class="notepage savedp" data-note="saved" hidden>
+        <div class="panel">
+          <h3>Saved runs</h3>
+          <p class="tiny" style="margin:0 0 11px">Every scan keeps itself. On this phone only
+          &mdash; nothing is sent anywhere.</p>
+          <svg id="runwall" class="wall" viewBox="0 0 298 40" role="img" aria-label="Saved runs"></svg>
+          <p class="fancap" id="runcap" style="margin:6px 0 10px"><b>0</b> saved</p>
+          <div class="ctrls">
+            <button type="button" id="runexall">Export all</button>
+            <label class="drop" for="runin">Open a file</label>
+            <input type="file" id="runin" accept=".json,application/json">
+          </div>
+        </div>
+        <div id="runcard"></div>
+      </section>
+
       <section class="notepage" data-note="about">
       <div class="panel whyp">
         <h3>Why go after one groove?</h3>
@@ -1178,7 +1245,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <dd>Not a feature buried in a menu. It is the button under the map, and the whole app is
           arranged around it.</dd>
           <dt>Narrowing turns the list upside down</dt>
-          <dd>Rank the top 20 by how few other people they grip and the order reverses: the tightest
+          <dd>Rank every slice by how few other people it grips and the order reverses: the tightest
           piece is often the worst candidate. That reversal is the finding, and it is the thing you
           cannot see by scoring one holder at a time.</dd>
           <dt>It runs on your phone, not on a server</dt>
@@ -1330,7 +1397,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V7400 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V7600 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2189,6 +2256,52 @@ var NUG = (function(){
   return {load:load, score:score, scoreWith:scoreWith, have:have, key:function(){ return loadedKey; }};
 })();
 
+/* ================= the Jo-1 table ================= */
+/* Jo-1 does not change, and neither do the 117 trained networks, so the answer to
+   every one of the 495 x 117 questions was worked out once on a desktop and shipped
+   with the app. 302 KB of finished numbers instead of 15.6 MB of networks for the
+   phone to download and then think with. The numbers are the app's own - they were
+   produced by this same code, written out float32, not rounded.
+   It speaks for Jo-1 cut into fifteens and nothing else; anything pasted still goes
+   to the networks. */
+var JTAB=(function(){
+  var data=null, pend=null, SLICES=495, ROWS=498;   /* 495 slices, then 3 controls */
+  function load(){
+    if(data) return Promise.resolve(data);
+    if(pend) return pend;
+    var tries=['w-jo1.txt','w/jo1.txt'];
+    function attempt(i){
+      return fetch(tries[i]).then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status+' for '+tries[i]);
+        return r.text();
+      }).catch(function(e){
+        if(i+1<tries.length) return attempt(i+1);
+        throw e;
+      });
+    }
+    pend=attempt(0).then(function(t){
+      t=t.replace(/\s+/g,'');
+      var raw=atob(t), buf=new ArrayBuffer(raw.length), v=new Uint8Array(buf);
+      for(var i=0;i<raw.length;i++) v[i]=raw.charCodeAt(i);
+      var f=new Float32Array(buf);
+      if(f.length!==ROWS*ALLELES.length)
+        throw new Error('the table holds '+f.length+' numbers, not '+(ROWS*ALLELES.length));
+      data=f; pend=null; return data;
+    }).catch(function(e){ pend=null; throw e; });
+    return pend;
+  }
+  function fits(seq,w){ return w===15 && seq===JO1_PROTEIN; }
+  function at(si,ai){ return data ? data[si*ALLELES.length+ai] : null; }
+  /* the last three rows are the control peptides, in the order CONTROLS lists them */
+  function ctrl(k,ai){ return at(SLICES+k, ai); }
+  function col(label){
+    for(var i=0;i<ALLELES.length;i++) if(ALLELES[i].label===label) return i;
+    return -1;
+  }
+  return {load:load, fits:fits, at:at, ctrl:ctrl, col:col,
+          ready:function(){ return !!data; }, slices:SLICES, rows:ROWS};
+})();
+
 function nm(v){
   if(v==null) return '—';
   if(v>=10000) return Math.round(v/1000)+'k';
@@ -2259,9 +2372,16 @@ function paintPockets(){
       }).join('') + '</div>';
 }
 function setAll(sel,txt){ Array.prototype.forEach.call(document.querySelectorAll(sel),function(e){ e.textContent=txt; }); }
+function ctrlVal(i, c){
+  if(JTAB.ready()){
+    var ci=JTAB.col(alleleLabel());
+    if(ci>=0){ var v=JTAB.ctrl(i,ci); if(v!=null && isFinite(v)) return v; }
+  }
+  var q=NUG.score(c.s); return q?q.ic50:null;
+}
 function runControls(){
-  var out=CONTROLS.map(function(c){
-    var q=NUG.score(c.s);
+  var out=CONTROLS.map(function(c,ci_){
+    var q={ic50:ctrlVal(ci_,c)};
     var hit=(c.home===alleleLabel());
     return (hit?'▸ ':'')+c.n+' '+nm(q?q.ic50:null)+' nM';
   }).join('   ·   ');
@@ -2290,6 +2410,16 @@ function setAllele(){
   loading=true;
   document.getElementById('statdot').className='dot';
   setBusy(true);
+  /* The three controls are in the table as well, so choosing a holder costs 303 KB
+     once, instead of a 7 MB bundle before the app will say anything. If the table
+     cannot be fetched, the networks are loaded exactly as they always were. */
+  return JTAB.load().then(function(){
+    loading=false; setBusy(false);
+    document.getElementById('statdot').className='dot on';
+    document.getElementById('holderpill').textContent=alleleLabel();
+    loadError=null;
+    runControls();
+  }).catch(function(){
   return NUG.load(sel.value).then(function(){
     loading=false; setBusy(false);
     document.getElementById('statdot').className='dot on';
@@ -2301,6 +2431,7 @@ function setAllele(){
     document.getElementById('statdot').className='dot bad';
     loadError = e.message;
     showError();
+  });
   });
 }
 function setBusy(b){
@@ -2439,6 +2570,7 @@ function stepBy(d){
   sel.addEventListener('change', function(){
     if(!sel.value) return;
     showNote(sel.value);
+    if(sel.value==='saved') renderSaved();
     if(hereNow()!=='view-info') showTab('t-info');
     markNav();
   });
@@ -2502,12 +2634,39 @@ function chunked(items, step, done){
   requestAnimationFrame(tick);
 }
 
+/* Nothing can be scored until something is in hand to score with. For Jo-1 that is
+   the table; for anything pasted it is the holder's own trained network, and only
+   then is the 7 MB bundle worth fetching. */
+function ensureNet(){
+  if(NUG.key()===sel.value) return Promise.resolve();
+  setBusy(true);
+  return NUG.load(sel.value).then(function(){ setBusy(false); loadError=null; })
+    .catch(function(e){ setBusy(false); loadError=e.message; showError(); throw e; });
+}
 function runProtein(){
   if(loadError){ showError(); return; }
   var seq=clean(document.getElementById('protseq').value);
   var w=parseInt(document.getElementById('win').value,10);
   if(seq.length<w){ document.getElementById('count').textContent='Paste a protein at least '+w+' residues long.'; return; }
   results=[]; selected=-1; RANKED=false; SORTBY='str'; resetRank();
+  var ci=JTAB.col(alleleLabel());
+  if(JTAB.fits(seq,w) && ci>=0){
+    setBusy(true);
+    JTAB.load().then(function(){
+      for(var s=0;s<JTAB.slices;s++)
+        results.push({name:(s+1)+'\u2013'+(s+w), seq:seq.slice(s,s+w), ic50:JTAB.at(s,ci), start:s});
+      setBusy(false);
+      results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
+      REF=null; drawRows(); showTab('t-res'); autoSave();
+    }).catch(function(){ setBusy(false); netScan(seq,w); });
+    return;
+  }
+  netScan(seq,w);
+}
+function netScan(seq,w){
+  ensureNet().then(function(){ scanJobs(seq,w); }).catch(function(){});
+}
+function scanJobs(seq,w){
   var jobs=[];
   for(var s=0;s+w<=seq.length;s++){
     (function(start){
@@ -2519,11 +2678,13 @@ function runProtein(){
   }
   chunked(jobs, 40, function(){
     results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
-    REF=null; drawRows(); showTab('t-res');
+    REF=null; drawRows(); showTab('t-res'); autoSave();
   });
 }
 
 function runDecoy(){
+  /* every swapped letter is a new peptide, so only the network can answer this one */
+  if(NUG.key()!==sel.value){ ensureNet().then(runDecoy).catch(function(){}); return; }
   var pep=clean(document.getElementById('pepseq').value);
   if(pep.length<9){ document.getElementById('count').textContent='A slice needs at least 9 residues.'; return; }
   var q=NUG.score(pep), reg=register(pep);
@@ -4152,7 +4313,28 @@ function crossCheck(){
     band.hidden=false;
     bandFor = r.seq;
   }
+  /* If this slice is a slice of Jo-1, all 117 answers are already in the table and
+     nothing has to be downloaded or worked out. If the table will not come, the
+     networks still answer exactly as before. */
+  if(tabFits() && r.start!=null && r.start<JTAB.slices){
+    JTAB.load().then(function(){
+      for(var k=0;k<ALLELES.length;k++)
+        vals.push({label:ALLELES[k].label, ic50:JTAB.at(r.start,k)});
+      bar.style.width='0%'; bar2.style.width='0%'; prog2.hidden=true;
+      btn.disabled=false; btn2.disabled=false; stat.textContent='';
+      delete btn2.dataset.busy; btn2.textContent='Check'; btn2.removeAttribute('aria-label');
+      render();
+    }).catch(function(){ step(); });
+    return;
+  }
   step();
+}
+/* the table answers for Jo-1 cut into fifteens, and for nothing else */
+function tabFits(){
+  var box=document.getElementById('protseq');
+  if(!box) return false;
+  var w=parseInt(document.getElementById('win').value,10);
+  return JTAB.fits(clean(box.value), w);
 }
 document.getElementById('crosscheck').addEventListener('click', crossCheck);
 document.getElementById('cc2').addEventListener('click', crossCheck);
@@ -4218,6 +4400,32 @@ function rankSelectivity(){
       : (batch.length+' slices checked against all 117 holders \u00b7 '
          + clean+' grip '+target+' alone \u00b7 '+mild+' grip one or two others \u00b7 '
          + (batch.length-clean-mild)+' grip three or more.');
+    autoSaveSel();
+  }
+  /* For Jo-1 every answer is already in the table, so there is no reason to stop at
+     the tightest twenty - all 495 can be narrowed, and it costs no waiting. If the
+     table will not come, the networks do the top twenty exactly as before. */
+  if(tabFits() && JTAB.col(target)>=0){
+    JTAB.load().then(function(){
+      var ti=JTAB.col(target);
+      batch = results.filter(function(r){
+        return r.ic50!=null && r.start!=null && r.start<JTAB.slices; });
+      if(!batch.length) return tick();
+      batch.forEach(function(r){
+        var o={tight:0, worst:null, n:0};
+        for(var k=0;k<ALLELES.length;k++){
+          if(k===ti) continue;
+          var v=JTAB.at(r.start,k);
+          if(v==null || !isFinite(v)) continue;
+          o.n++;
+          if(v<500) o.tight++;
+          if(o.worst==null || v<o.worst) o.worst=v;
+        }
+        r._other=o;
+      });
+      finish();
+    }).catch(function(){ tick(); });
+    return;
   }
   tick();
 }
@@ -4336,6 +4544,234 @@ setAllele();
   var h = document.getElementById('installhint');
   if(h && ios && !standalone) h.style.display='block';
 })();
+
+/* ================= V7600 - saved runs ================= */
+/* Every scan keeps itself, on this phone, so the work is never lost by closing a
+   tab. A run is its 495 numbers, the holder, the date, the tightest slice, and -
+   once Narrow has run - how many other holders grip each slice. Roughly 6 KB each.
+   Nothing is sent anywhere; Export writes a file you keep yourself. */
+var RUNKEY='jo1-runs-v1', RUNS=[], CURRUN=null, PICKRUN=0, RUNCAP=200;
+function runsLoad(){
+  try{ var r=JSON.parse(localStorage.getItem(RUNKEY)||'[]'); RUNS=(r&&r.length)?r:[]; }
+  catch(e){ RUNS=[]; }
+}
+function runsStore(){ try{ localStorage.setItem(RUNKEY, JSON.stringify(RUNS)); }catch(e){} }
+function runsFind(id){ for(var i=0;i<RUNS.length;i++) if(RUNS[i].id===id) return i; return -1; }
+
+function autoSave(){
+  if(!results.length) return;
+  var w=parseInt(document.getElementById('win').value,10);
+  var seq=clean(document.getElementById('protseq').value);
+  var byStart=results.slice().sort(function(a,b){ return a.start-b.start; });
+  var ic=byStart.map(function(r){ return r.ic50==null?null:+r.ic50.toFixed(1); });
+  var best=results.slice().sort(function(a,b){
+    return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; })[0];
+  var run={ id:Date.now(), at:Date.now(), holder:alleleLabel(),
+    name:(seq===JO1_PROTEIN?'Jo-1':'Pasted protein'), seq:seq.slice(0,24000),
+    win:w, n:ic.length, ic:ic, sel:null, h117:null,
+    best:{start:best.start, seq:best.seq, ic50:(best.ic50==null?null:+best.ic50.toFixed(1))} };
+  /* the 117 holders for that tightest slice, when the table can answer at no cost */
+  if(JTAB.ready() && JTAB.fits(seq,w) && best.start!=null){
+    run.h117=[]; for(var k=0;k<ALLELES.length;k++) run.h117.push(+JTAB.at(best.start,k).toFixed(1));
+  }
+  RUNS.unshift(run); if(RUNS.length>RUNCAP) RUNS.length=RUNCAP;
+  CURRUN=run.id; PICKRUN=0; runsStore();
+}
+function autoSaveSel(){
+  var i=runsFind(CURRUN); if(i<0) return;
+  var m={}; results.forEach(function(r){ if(r.sel!=null && r.start!=null) m[r.start]=r.sel; });
+  var arr=[], any=false;
+  for(var s=0;s<RUNS[i].n;s++){ var v=(m[s]==null?null:m[s]); if(v!=null) any=true; arr.push(v); }
+  if(!any) return;
+  RUNS[i].sel=arr; runsStore();
+  if(!document.querySelector('[data-note="saved"]').hidden) renderSaved();
+}
+
+function runWhen(ms){
+  var d=new Date(ms), M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function two(n){ return (n<10?'0':'')+n; }
+  return d.getDate()+' '+M[d.getMonth()]+', '+two(d.getHours())+':'+two(d.getMinutes());
+}
+function runCounts(r){
+  if(!r.sel) return null;
+  var a=0,b=0,c=0;
+  r.sel.forEach(function(v){ if(v==null) return; if(v===0) a++; else if(v<=2) b++; else c++; });
+  return {alone:a, mild:b, many:c, tot:a+b+c};
+}
+/* the wall: the landing's field, one mark per saved run, the marks shrinking as it
+   fills so the block never grows taller than the landing's own */
+function drawWall(){
+  var el=document.getElementById('runwall'); if(!el) return;
+  var n=RUNS.length, W=298;
+  if(!n){ el.setAttribute('viewBox','0 0 298 10'); el.innerHTML=''; return; }
+  var cols, gx, mw, mh, gy, rows, H;
+  for(cols=12; cols<=48; cols++){
+    gx=W/cols; mw=gx*0.62; mh=mw*0.66; gy=mh*2.1;
+    rows=Math.ceil(n/cols); H=gy*rows+4;
+    if(H<=80) break;
+  }
+  var out='';
+  for(var i=0;i<cols*rows;i++){
+    var c=i%cols, rr=(i/cols)|0, x=c*gx+(gx-mw)/2, y=rr*gy+4;
+    if(i<n) out+='<rect data-i="'+i+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+mw.toFixed(1)
+      +'" height="'+mh.toFixed(1)+'" rx="2.2" fill="var(--mute)" opacity=".72"/>';
+    else out+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+mw.toFixed(1)
+      +'" height="'+mh.toFixed(1)+'" rx="2.2" fill="var(--line)"/>';
+  }
+  var pc=PICKRUN%cols, pr=(PICKRUN/cols)|0, px=pc*gx+(gx-mw)/2, py=pr*gy+4;
+  out+='<rect x="'+px.toFixed(1)+'" y="'+py.toFixed(1)+'" width="'+mw.toFixed(1)+'" height="'
+    +mh.toFixed(1)+'" rx="2.2" fill="var(--wm3)"/>';
+  out+='<rect x="'+(px-3.4).toFixed(1)+'" y="'+(py-3.4).toFixed(1)+'" width="'+(mw+6.8).toFixed(1)
+    +'" height="'+(mh+6.8).toFixed(1)+'" rx="4.6" fill="none" stroke="var(--wm3)" stroke-width="1.1" opacity=".55"/>';
+  el.setAttribute('viewBox','0 0 '+W+' '+H.toFixed(1));
+  el.innerHTML=out;
+}
+/* the profile of a run: every slice, tighter drawn taller */
+function runLine(ic){
+  var v=ic.filter(function(x){ return x!=null && x>0; });
+  if(v.length<4) return '';
+  var W=326, H=50, lo=Math.log(Math.min.apply(null,v)), hi=Math.log(Math.max.apply(null,v));
+  if(hi-lo<1e-6) hi=lo+1;
+  var pts=[], n=ic.length;
+  for(var i=0;i<n;i++){
+    var x=(i/(n-1))*W, val=(ic[i]==null||ic[i]<=0)?Math.exp(hi):ic[i];
+    pts.push(x.toFixed(1)+' '+(H-3-(hi-Math.log(val))/(hi-lo)*(H-8)).toFixed(1));
+  }
+  var d='M'+pts.join('L');
+  return '<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'
+    +'<path d="'+d+'L'+W+' '+H+'L0 '+H+'Z" fill="color-mix(in srgb,var(--yellow) 16%,transparent)"/>'
+    +'<path d="'+d+'" fill="none" stroke="var(--yellow)" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+}
+/* all 117 holders for the run's tightest slice - the same rectangles as About */
+function run117(r){
+  if(!r.h117) return '';
+  var mine=-1;
+  for(var k=0;k<ALLELES.length;k++) if(ALLELES[k].label===r.holder) mine=k;
+  var cols=13, rows=Math.ceil(r.h117.length/cols), W=298;
+  var gx=W/cols, mw=gx*0.80, mh=mw*0.42, gy=mh*1.85, out='';
+  var tight=0, mid=0, loose=0;
+  for(var i=0;i<r.h117.length;i++){
+    var v=r.h117[i], cls=(i===mine)?0:(v<500?1:(v<2000?2:3));
+    if(i!==mine){ if(cls===1) tight++; else if(cls===2) mid++; else loose++; }
+    var c=i%cols, rr=(i/cols)|0, x=c*gx+(gx-mw)/2, y=rr*gy+4;
+    var col=['var(--green)','var(--red)','var(--blue)','var(--line)'][cls];
+    out+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+mw.toFixed(1)+'" height="'
+      +mh.toFixed(1)+'" rx="1.8" fill="'+col+'"/>';
+  }
+  return '<p class="runlab">All 117 holders, for this slice</p>'
+    +'<svg viewBox="0 0 '+W+' '+(gy*rows+4).toFixed(1)+'" aria-hidden="true">'+out+'</svg>'
+    +'<div class="runkey">'
+    +'<span><i style="background:var(--green)"></i>this holder</span>'
+    +'<span><i style="background:var(--red)"></i>'+tight+' others grip it</span>'
+    +'<span><i style="background:var(--blue)"></i>'+mid+' hold it loosely</span>'
+    +'<span><i style="background:var(--line)"></i>'+loose+' do not</span></div>';
+}
+function renderSaved(){
+  runsLoad.done || (runsLoad(), runsLoad.done=true);
+  var cap=document.getElementById('runcap'), card=document.getElementById('runcard');
+  if(!cap||!card) return;
+  if(PICKRUN>=RUNS.length) PICKRUN=0;
+  drawWall();
+  cap.innerHTML='<b>'+RUNS.length+'</b> saved'+(RUNS.length?' · tap one to open it':'');
+  if(!RUNS.length){
+    card.innerHTML='<div class="panel savedp"><p class="runempty">Nothing saved yet. '
+      +'Run a scan in step 2 and it keeps itself.</p></div>';
+    return;
+  }
+  var r=RUNS[PICKRUN], c=runCounts(r), out='';
+  out+='<div class="panel savedp">';
+  out+='<div class="runtop"><span class="runttl">'+esc(r.name)+'</span>'
+     +'<span class="runwhen">'+runWhen(r.at)+'</span></div>';
+  out+='<p class="runwho">'+esc(r.holder)+' · '+r.n+' slices · window '+r.win+'</p>';
+  out+=runLine(r.ic);
+  if(c){
+    out+='<div class="runsplit">'
+      +'<i style="background:var(--green);width:'+(c.alone/c.tot*100).toFixed(1)+'%"></i>'
+      +'<i style="background:var(--blue);width:'+(c.mild/c.tot*100).toFixed(1)+'%"></i>'
+      +'<i style="background:var(--red);width:'+(c.many/c.tot*100).toFixed(1)+'%"></i></div>'
+      +'<div class="runkey">'
+      +'<span><i style="background:var(--green)"></i>'+c.alone+' this holder alone</span>'
+      +'<span><i style="background:var(--blue)"></i>'+c.mild+' one or two</span>'
+      +'<span><i style="background:var(--red)"></i>'+c.many+' more</span></div>';
+  } else {
+    out+='<p class="tiny" style="margin:8px 0 2px">Narrow this run in step 4 and the split appears here.</p>';
+  }
+  if(r.best && r.best.seq){
+    out+='<div class="runpep"><span>'+esc(r.best.seq)+'</span><span class="tag">'
+      +(r.best.start+1)+'–'+(r.best.start+r.win)+' · '+nm(r.best.ic50)+' nM</span></div>';
+  }
+  out+=run117(r);
+  out+='<div class="runrow">'
+     +'<button type="button" class="go" id="runopen">Open</button>'
+     +'<button type="button" id="runexp">Export</button>'
+     +'<button type="button" id="rundel">Delete</button></div>';
+  out+='</div>';
+  card.innerHTML=out;
+  document.getElementById('runopen').addEventListener('click', function(){ openRun(RUNS[PICKRUN]); });
+  document.getElementById('runexp').addEventListener('click', function(){
+    dlJSON('JO1-'+r.name.replace(/\s+/g,'-')+'-'+r.id+'.json', {jo1:1, runs:[r]}); });
+  document.getElementById('rundel').addEventListener('click', function(){
+    RUNS.splice(PICKRUN,1); if(PICKRUN>=RUNS.length) PICKRUN=Math.max(0,RUNS.length-1);
+    runsStore(); renderSaved(); });
+}
+function dlJSON(name, obj){
+  try{
+    var bl=new Blob([JSON.stringify(obj)],{type:'application/json'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(bl); a.download=name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ try{ URL.revokeObjectURL(a.href); }catch(e){} a.remove(); }, 500);
+  }catch(e){}
+}
+/* putting a saved run back on the screen you left it on */
+function openRun(r){
+  document.getElementById('protseq').value=r.seq||'';
+  var wsel=document.getElementById('win');
+  for(var i=0;i<wsel.options.length;i++) if(wsel.options[i].value===String(r.win)) wsel.selectedIndex=i;
+  for(var k=0;k<sel.options.length;k++) if(sel.options[k].textContent===r.holder){ sel.selectedIndex=k; break; }
+  results=[]; selected=-1; RANKED=false; SORTBY='str'; resetRank(); REF=null;
+  for(var s2=0;s2<r.n;s2++)
+    results.push({name:(s2+1)+'–'+(s2+r.win), seq:(r.seq||'').slice(s2,s2+r.win),
+                  ic50:r.ic[s2], start:s2, sel:(r.sel?r.sel[s2]:null)});
+  if(r.sel){ RANKED=true; SORTBY='sel';
+    var srow=document.getElementById('sortrow'); if(srow) srow.hidden=false; }
+  results.sort(function(a,b){ return (a.ic50==null)-(b.ic50==null) || a.ic50-b.ic50; });
+  if(RANKED && typeof setSort==='function') setSort('sel'); else drawRows();
+  showTab('t-res'); markNav();
+  setAllele();
+}
+(function(){
+  runsLoad(); runsLoad.done=true;
+  var wall=document.getElementById('runwall');
+  if(wall) wall.addEventListener('click', function(e){
+    var t=e.target, i=t&&t.getAttribute&&t.getAttribute('data-i');
+    if(i==null) return;
+    PICKRUN=parseInt(i,10); renderSaved();
+  });
+  var ex=document.getElementById('runexall');
+  if(ex) ex.addEventListener('click', function(){ dlJSON('JO1-saved-runs.json', {jo1:1, runs:RUNS}); });
+  var inp=document.getElementById('runin');
+  if(inp) inp.addEventListener('change', function(e){
+    var f=e.target.files&&e.target.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      try{
+        var o=JSON.parse(String(rd.result)), add=(o&&o.runs)||[];
+        add.forEach(function(r){ if(r&&r.id!=null && runsFind(r.id)<0) RUNS.push(r); });
+        RUNS.sort(function(a,b){ return b.at-a.at; });
+        if(RUNS.length>RUNCAP) RUNS.length=RUNCAP;
+        PICKRUN=0; runsStore(); renderSaved();
+      }catch(err){}
+      e.target.value='';
+    };
+    rd.readAsText(f);
+  });
+})();
+window.JO1RUNS=function(){ return RUNS; };
+
 window.NUG=NUG;
+window.JTAB=JTAB;            /* so the table can be measured from outside */
+window.CONTROLS=CONTROLS;
+window.RESULTS=function(){ return results; };
+window.JO1SEQ=JO1_PROTEIN;
 })();
 </script>
