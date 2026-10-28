@@ -181,12 +181,14 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   background-color:var(--panel);background-position:right 10px center;background-size:10px 6px;
   border-color:color-mix(in srgb,var(--gold) 45%,var(--line));color:var(--accink);box-shadow:var(--lift)}
 .appbar .notesel[hidden]+.themebtn,.appbar .themebtn{margin-left:auto}
-/* V7600 - the menu moves to the left and the mark takes the centre of the bar. It is
-   centred on the WHOLE bar, not on what is left over, so it stays centred however
-   wide the menu or the holder pill happen to be. Below 366px there is no room for
-   four things and a dead-centre mark without shortening the holder's name, so the
-   smallest phones keep the bar they had. */
-@media (min-width:366px){
+/* V7700 - the menu on the left, the mark on the centre of the bar. It is centred on
+   the WHOLE bar, not on what is left over, so it stays centred however wide the menu
+   or the holder pill happen to be.
+   The line is at 360px, which is measured, not guessed: at 360 there are 8px of air
+   on each side of the mark, at 350 only 3, and at 340 the mark and the pill touch.
+   Most phones report 360 or more. Narrower than that and the bar stays as it was,
+   because the alternative is shortening the holder's name. */
+@media (min-width:360px){
   .appbar{position:relative}
   .appbar .notesel{order:-1;margin-left:0;margin-right:auto}
   .appbar .dot{order:-2}
@@ -251,6 +253,38 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
    four colours are declared here the way the About panels declare them, so nothing
    else in the app shifts. */
 .savedp{--red:#e0342a;--blue:#1565d8;--yellow:#f5b700;--green:#15a05a}
+/* V7800 - the landing carries the result itself: the field of 495 behind everything,
+   the count in front of it, and one question. Everything that used to crowd it is on
+   the page after. */
+/* the one green the landing uses, and the grey the empty state wears */
+:root{--lgreen:#15a05a;--dim:#aeb9c7}
+:root[data-theme="dark"]{--lgreen:#2fc274;--dim:#45536a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--lgreen:#2fc274;--dim:#45536a}}
+.inner.home{position:relative;min-height:calc(100vh - 168px);display:flex;
+  flex-direction:column;align-items:center;justify-content:center}
+.inner.home>*{position:relative;z-index:1}
+#homefield{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.bignum{font-family:var(--sans);font-weight:800;font-size:84px;letter-spacing:-.04em;
+  line-height:1;color:#15a05a;text-align:center;transform-origin:50% 50%;will-change:transform}
+:root[data-theme="dark"] .bignum{color:#2fc274}
+.homelib{font-size:12.5px;line-height:1.45;color:var(--mute);margin:26px 18px 0;text-align:center}
+.homelib b{color:var(--ink)}
+.howhead{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mute);font-weight:600;margin:4px 0 14px;text-align:center}
+/* The field breathes with one CSS animation and a delay per row, so the browser does
+   the work and the phone does none: a soft band drifting from the top to the bottom. */
+#homefield circle{animation:hsweep 7.5s linear infinite}
+@keyframes hsweep{
+  0%{opacity:var(--o)} 6%{opacity:var(--o2)} 16%{opacity:var(--o)} 100%{opacity:var(--o)} }
+.bignum{animation:numbreath 3.4s ease-in-out infinite}
+@keyframes numbreath{
+  0%,100%{transform:scale(.955); text-shadow:0 0 9px rgba(21,160,90,.22)}
+  50%{transform:scale(1.045); text-shadow:0 0 30px rgba(21,160,90,.52)} }
+.bigcap{font-family:var(--mono);font-size:11px;color:var(--mute);margin:12px 0 0;text-align:center}
+.bigcap b{color:var(--accink);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){
+  .bignum{transform:none!important;animation:none!important}
+  #homefield circle{animation:none!important} }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .savedp{
   --red:#ff5147;--blue:#4b92ff;--yellow:#ffc425;--green:#2fc274}}
 :root[data-theme="dark"] .savedp{--red:#ff5147;--blue:#4b92ff;--yellow:#ffc425;--green:#2fc274}
@@ -788,7 +822,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
   <button type="button" class="holderpill" id="holderpill" title="Change the holder" hidden>—</button>
   <select id="notesel" class="notesel" aria-label="Notes and contact">
     <option value="" selected>Notes</option>
-    <option value="saved">Saved runs</option>
     <option value="about">About</option>
     <option value="faq">Questions</option>
     <option value="how">How to use it</option>
@@ -836,11 +869,19 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <p class="fancap"><b>495</b> stops along Jo-1 &middot; <span class="sci-only">one grips tightest</span><span class="abs-only">one is held tightest</span></p>
       </div>
       <p class="homelede">Which piece of a protein does the immune system grip?</p>
+      <p class="homelib">The runs are kept in the <b>shared library</b> &mdash; the last page.</p>
+    </div>
+  </div>
+
+  <!-- V7800: the words that used to crowd the landing now have a page of their own -->
+  <div class="view" id="view-how" hidden>
+    <div class="inner">
+      <p class="howhead">How it works</p>
       <p class="homeclaim">A selectivity filter. It scores every slice of a protein against
       117 HLA class II types and flags the ones that grip too many.</p>
 
       <div class="journey">
-        <svg class="snake" viewBox="0 0 100 330" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="snake" viewBox="0 0 100 396" preserveAspectRatio="none" aria-hidden="true">
           <defs><linearGradient id="jg" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="var(--wm1)"/><stop offset="30%" stop-color="var(--wm2)"/>
             <stop offset="62%" stop-color="var(--wm3)"/><stop offset="100%" stop-color="var(--wm4)"/>
@@ -850,7 +891,8 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <path d="M17 55 V62 Q17 67 24 67 H76 Q83 67 83 72 V79
                    M83 121 V128 Q83 133 76 133 H24 Q17 133 17 138 V145
                    M17 187 V194 Q17 199 24 199 H76 Q83 199 83 204 V211
-                   M83 253 V260 Q83 265 76 265 H24 Q17 265 17 270 V277"
+                   M83 253 V260 Q83 265 76 265 H24 Q17 265 17 270 V277
+                   M17 319 V326 Q17 331 24 331 H76 Q83 331 83 336 V343"
                 fill="none" stroke="url(#jg)" stroke-width="2" stroke-linecap="round"
                 opacity=".75" vector-effect="non-scaling-stroke"/>
         </svg>
@@ -860,12 +902,14 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M3 31 L10 22 L15 27 L20 9 L26 24 L31 17 L37 27" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="9" r="3.8" fill="currentColor"/></svg><div><b>Walk the graph</b><span>Every stop, scored</span></div></li>
           <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="10" width="34" height="5.6" rx="2.8" fill="currentColor"/><rect x="3" y="19" width="23" height="5.6" rx="2.8" fill="currentColor" opacity=".55"/><rect x="3" y="28" width="13" height="5.6" rx="2.8" fill="currentColor" opacity=".3"/></svg><div><b>Read the shortlist</b><span>Narrow to the fussiest few</span></div></li>
           <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 11 Q20 2 36 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 29 Q20 38 36 29" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3.6" fill="currentColor"/><circle cx="20" cy="20" r="3.6" fill="currentColor"/><circle cx="28" cy="20" r="3.6" fill="currentColor"/></svg><div><b>See it in the groove</b><span>The chosen piece, held</span></div></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="7" width="13" height="8" rx="2.4" fill="currentColor"/><rect x="23" y="7" width="13" height="8" rx="2.4" fill="currentColor" opacity=".45"/><rect x="4" y="19" width="13" height="8" rx="2.4" fill="currentColor" opacity=".45"/><rect x="23" y="19" width="13" height="8" rx="2.4" fill="currentColor" opacity=".45"/><rect x="4" y="31" width="13" height="8" rx="2.4" fill="currentColor" opacity=".45"/><rect x="23" y="31" width="13" height="8" rx="2.4" fill="currentColor" opacity=".2"/></svg><div><b>Shared library</b><span>Every scan saves itself</span></div></li>
         </ol>
       </div>
 
       <p class="homefoot"><b>Beta.</b> A research filter, not a clinical tool. See <b>Notes</b> for the sources and the safety record.</p>
     </div>
   </div>
+
   <div class="view" id="view-hla">
     <div class="inner">
       <p class="steplede sci-only"><b>Step 1 of 4</b> &middot; whose holder</p>
@@ -1074,25 +1118,28 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
     </div>
   </div>
 
+  <!-- V7800: the shared library, the last page of the walk -->
+  <div class="view" id="view-lib" hidden>
+    <div class="inner savedp">
+      <div class="panel">
+        <h3>Shared library</h3>
+        <p class="tiny" style="margin:0 0 11px">Every scan keeps itself here. Export writes a
+        file anyone you invite can open.</p>
+        <svg id="runwall" class="wall" viewBox="0 0 298 40" role="img" aria-label="Runs in the library"></svg>
+        <p class="fancap" id="runcap" style="margin:6px 0 10px"><b>0</b> saved</p>
+        <div class="ctrls">
+          <button type="button" id="runexall">Export all</button>
+          <label class="drop" for="runin">Open a file</label>
+          <input type="file" id="runin" accept=".json,application/json">
+        </div>
+      </div>
+      <div id="runcard"></div>
+    </div>
+  </div>
+
   <div class="view" id="view-info" hidden>
     <div class="inner">
       <div class="modeslot"></div>
-      <section class="notepage savedp" data-note="saved" hidden>
-        <div class="panel">
-          <h3>Saved runs</h3>
-          <p class="tiny" style="margin:0 0 11px">Every scan keeps itself. On this phone only
-          &mdash; nothing is sent anywhere.</p>
-          <svg id="runwall" class="wall" viewBox="0 0 298 40" role="img" aria-label="Saved runs"></svg>
-          <p class="fancap" id="runcap" style="margin:6px 0 10px"><b>0</b> saved</p>
-          <div class="ctrls">
-            <button type="button" id="runexall">Export all</button>
-            <label class="drop" for="runin">Open a file</label>
-            <input type="file" id="runin" accept=".json,application/json">
-          </div>
-        </div>
-        <div id="runcard"></div>
-      </section>
-
       <section class="notepage" data-note="about">
       <div class="panel whyp">
         <h3>Why go after one groove?</h3>
@@ -1397,7 +1444,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V7600 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V7800 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2463,11 +2510,13 @@ function setMode(m){
   drawRows();
 }
 var TABS=[['t-hla','view-hla'],['t-prot','view-work'],['t-res','view-res'],['t-list','view-list'],['t-3d','view-3d'],['t-info','view-info']];
-var VIEWS=['view-home','view-hla','view-work','view-res','view-list','view-3d','view-info'];
+var VIEWS=['view-home','view-how','view-hla','view-work','view-res','view-list','view-3d','view-lib','view-info'];
 function showView(v){
   VIEWS.forEach(function(x){ document.getElementById(x).hidden=(x!==v); });
   // the reference block only draws while the picture is on screen
   if(v==='view-3d' && typeof vcStart==='function') vcStart();
+  if(v==='view-lib' && typeof renderSaved==='function') renderSaved();
+  if(v==='view-home' && typeof paintHome==='function') setTimeout(paintHome,0);
   if(typeof placeSwitch==='function') placeSwitch(v);
   if(typeof placeNoteSel==='function') placeNoteSel(v);
   if(typeof markNav==='function') setTimeout(markNav,0);
@@ -2508,13 +2557,13 @@ document.getElementById('toscan2').addEventListener('click', function(){ showTab
 document.getElementById('homelink').addEventListener('click', showHome);
 document.getElementById('holderpill').addEventListener('click', function(){ showTab('t-hla'); });
 /* The numbers only show where you are. Back and Next are the whole of the navigation. */
-var ORDER=['view-home','view-hla','view-work','view-res','view-list','view-3d'];
+var ORDER=['view-home','view-how','view-hla','view-work','view-res','view-list','view-3d','view-lib'];
 var lastStep='view-home';
 function hereNow(){
   for(var i=0;i<VIEWS.length;i++){ if(!document.getElementById(VIEWS[i]).hidden) return VIEWS[i]; }
   return 'view-home';
 }
-var STEPLABEL={'view-hla':'1','view-work':'2','view-res':'3','view-list':'4','view-3d':'5','view-info':'i'};
+var STEPLABEL={'view-hla':'1','view-work':'2','view-res':'3','view-list':'4','view-3d':'5','view-lib':'6','view-info':'i'};
 /* the notes chooser: only while the notes are open */
 function showNote(key){
   var any=false;
@@ -2570,7 +2619,6 @@ function stepBy(d){
   sel.addEventListener('change', function(){
     if(!sel.value) return;
     showNote(sel.value);
-    if(sel.value==='saved') renderSaved();
     if(hereNow()!=='view-info') showTab('t-info');
     markNav();
   });
@@ -4576,6 +4624,7 @@ function autoSave(){
   }
   RUNS.unshift(run); if(RUNS.length>RUNCAP) RUNS.length=RUNCAP;
   CURRUN=run.id; PICKRUN=0; runsStore();
+  if(typeof paintHome==='function') paintHome();
 }
 function autoSaveSel(){
   var i=runsFind(CURRUN); if(i<0) return;
@@ -4584,7 +4633,9 @@ function autoSaveSel(){
   for(var s=0;s<RUNS[i].n;s++){ var v=(m[s]==null?null:m[s]); if(v!=null) any=true; arr.push(v); }
   if(!any) return;
   RUNS[i].sel=arr; runsStore();
-  if(!document.querySelector('[data-note="saved"]').hidden) renderSaved();
+  if(typeof paintHome==='function') paintHome();
+  var lv=document.getElementById('view-lib');
+  if(lv && !lv.hidden) renderSaved();
 }
 
 function runWhen(ms){
@@ -4741,6 +4792,7 @@ function openRun(r){
 }
 (function(){
   runsLoad(); runsLoad.done=true;
+  setTimeout(function(){ if(typeof paintHome==='function') paintHome(); }, 60);
   var wall=document.getElementById('runwall');
   if(wall) wall.addEventListener('click', function(e){
     var t=e.target, i=t&&t.getAttribute&&t.getAttribute('data-i');
@@ -4767,6 +4819,80 @@ function openRun(r){
   });
 })();
 window.JO1RUNS=function(){ return RUNS; };
+
+/* ================= V7800 - the landing shows the newest run ================= */
+/* The field behind the landing is not decoration: one mark for every one of the 495
+   slices, in order along the protein, green where that slice grips this holder and
+   nothing else. The number in front of it is the count of those. Before any scan has
+   run there is nothing true to show, so it says 495 in grey and stays still. */
+function homeRun(){
+  for(var i=0;i<RUNS.length;i++) if(RUNS[i].sel) return RUNS[i];
+  return null;
+}
+function paintHome(){
+  var fan=document.querySelector('.inner.home .fan'); if(!fan) return;
+  var inner=document.querySelector('.inner.home');
+  var r=homeRun(), alone=0, best=-1, bestIc=Infinity;
+  if(r){
+    for(var i=0;i<r.n;i++){
+      if(r.sel[i]===0) alone++;
+      if(r.ic[i]!=null && r.ic[i]<bestIc){ bestIc=r.ic[i]; best=i; }
+    }
+  }
+  fan.innerHTML = r
+    ? '<div class="bignum">'+alone+'</div><p class="bigcap">of <b>'+r.n+'</b> slices grip '
+      +esc(r.holder)+' alone</p>'
+    : '<div class="bignum" style="color:var(--dim);animation:none">495</div>'
+      +'<p class="bigcap">slices of Jo-1, none of them asked yet</p>';
+  var old=document.getElementById('homefield'); if(old) old.remove();
+  var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.id='homefield'; svg.setAttribute('preserveAspectRatio','none');
+  svg.setAttribute('aria-hidden','true');
+  inner.insertBefore(svg, inner.firstChild);
+  var box=inner.getBoundingClientRect();
+  var COLS=16, ROWS=31, W=Math.max(200,Math.round(box.width)), H=Math.max(300,Math.round(box.height));
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  var gx=W/COLS, gy=H/ROWS;
+  /* a dot that lands behind a word is dimmed, so the words stay the loudest thing */
+  var rects=[];
+  Array.prototype.forEach.call(inner.querySelectorAll('p,.bignum'), function(e){
+    if(e.textContent.trim().length<2) return;
+    var q=e.getBoundingClientRect();
+    rects.push([q.left-box.left-4, q.top-box.top-3, q.right-box.left+4, q.bottom-box.top+3]);
+  });
+  function behind(x,y){
+    for(var k=0;k<rects.length;k++){
+      var t=rects[k];
+      if(x>=t[0]&&x<=t[2]&&y>=t[1]&&y<=t[3]) return true;
+    }
+    return false;
+  }
+  var out='', n=r? r.n : 495, CAP=0.35;
+  for(var i2=0;i2<n && i2<COLS*ROWS;i2++){
+    var c=i2%COLS, row=(i2/COLS)|0, x=c*gx+gx/2, y=row*gy+gy/2;
+    var green = !!(r && r.sel[i2]===0);
+    var o=green?0.18:0.13, o2=Math.min(CAP, o*2.1);
+    if(behind(x,y)){ o*=0.42; o2*=0.42; }
+    out+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(green?3.9:3.3)
+      +'" fill="'+(green?'var(--lgreen)':'var(--line)')+'" style="--o:'+o.toFixed(3)
+      +';--o2:'+o2.toFixed(3)+';opacity:'+o.toFixed(3)
+      +';animation-delay:'+(-(row/ROWS)*7.5).toFixed(2)+'s"/>';
+  }
+  if(r && best>=0){
+    var bc=best%COLS, br=(best/COLS)|0, bx=bc*gx+gx/2, by=br*gy+gy/2;
+    var k2=behind(bx,by)?0.34:1;
+    out+='<circle cx="'+bx.toFixed(1)+'" cy="'+by.toFixed(1)+'" r="10" fill="none" '
+      +'stroke="var(--wm3)" stroke-width="1.4" style="--o:'+(0.45*k2).toFixed(2)
+      +';--o2:'+(0.8*k2).toFixed(2)+';opacity:'+(0.45*k2).toFixed(2)
+      +';animation-delay:'+(-(br/ROWS)*7.5).toFixed(2)+'s"/>';
+    if(k2===1)
+      out+='<circle cx="'+bx.toFixed(1)+'" cy="'+by.toFixed(1)+'" r="4" fill="var(--wm3)" '
+        +'style="--o:.6;--o2:.9;opacity:.6"/>';
+  }
+  svg.innerHTML=out;
+}
+window.JO1HOME=paintHome;
+
 
 window.NUG=NUG;
 window.JTAB=JTAB;            /* so the table can be measured from outside */
