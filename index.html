@@ -29,6 +29,13 @@
   --wm1:#1565d8; --wm2:#cf2c20; --wm3:#f5b700; --wm4:#1ea84c;
   --mono:'IBM Plex Mono','DejaVu Sans Mono',monospace;
   --sans:'IBM Plex Sans','DejaVu Sans',sans-serif;
+  /* V8200 - the face Moos wants on the numbers. Both of his are desktop fonts, not
+     web fonts: Agency FB ships with Windows and Office, BankGothic Md BT is a
+     Bitstream licence. Named first, they are used wherever the reader already has
+     them - which includes his own machine - and nothing is downloaded for it. Any
+     phone that has neither falls back to the app's own face, as before, so the app
+     does not get one byte slower. */
+  --num:'Agency FB','BankGothic Md BT','Bank Gothic',var(--sans);
   --barh:54px; --tabh:58px;
   --backdrop:#1b1f26; --frame:#39404a;
 }
@@ -183,6 +190,11 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
      first screen is gold, so the menu read as a coloured button. It is black on white
      in light and white on black in dark, and nothing else. */
   border-color:var(--line);color:var(--ink);box-shadow:var(--lift)}
+/* V8200 - and on a dark page it turns over with everything else: a white pill with
+   dark type, the same way Start does. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .appbar .notesel{
+  background-color:#e8edf4;color:#0d141d;border-color:#e8edf4}}
+:root[data-theme="dark"] .appbar .notesel{background-color:#e8edf4;color:#0d141d;border-color:#e8edf4}
 .appbar .notesel[hidden]+.themebtn,.appbar .themebtn{margin-left:auto}
 /* V7700 - the menu on the left, the mark on the centre of the bar. It is centred on
    the WHOLE bar, not on what is left over, so it stays centred however wide the menu
@@ -205,8 +217,11 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
      on the holder's name by 4px at every width wide enough to show it. */
   .appbar .brandmid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     display:block;line-height:0;margin:0}
-  .appbar .brandmid .beta{position:absolute;right:calc(100% + 7px);top:50%;
-    transform:translateY(-50%);margin:0}
+  /* V8200 - BETA sits low on the mark's right, like a small note after a name, rather
+     than level with it. Being smaller and tucked down is what lets it go back on the
+     right without landing on the holder's name. */
+  .appbar .brandmid .beta{position:absolute;left:calc(100% - 5px);top:auto;bottom:-1px;
+    transform:none;margin:0}
 }
 /* Measured at 390px: a centred mark, the BETA label, the holder pill and the theme
    button do not all fit - the label runs into the pill. So on a phone the label
@@ -216,6 +231,10 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
    clears the Notes menu by only 1.4px at exactly that width, so it now steps out
    below 430px, where the clearance is 5.9px. Everywhere wider it is a steady 4.9px. */
 @media (max-width:429px){ .appbar .beta{display:none} }
+/* V8200 - the mark a little larger, but only where it fits. At 360px - the phone
+   this is read on - 58px wide puts it 0.3px into the holder's name, so phones keep
+   the 52.5px mark and anything 430px and wider gets the bigger one. */
+@media (min-width:430px){ .appbar .wm{height:21px;width:58.0px} }
 /* V7900, still true at V8000 - the lungs mark is wider than the drawn one it replaced
    (45.6px then, 52.5px now), and at 360px that ran it into the holder pill. Measured:
    pulling the bar's own side padding in from 14px to 8px below 366px gives back 6px,
@@ -290,7 +309,7 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   flex-direction:column;align-items:center;justify-content:center}
 .inner.home>*{position:relative;z-index:1}
 #homefield{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.bignum{font-family:var(--sans);font-weight:800;font-size:84px;letter-spacing:-.04em;
+.bignum{font-family:var(--num);font-weight:800;font-size:84px;letter-spacing:-.04em;
   line-height:1;color:#15a05a;text-align:center;transform-origin:50% 50%;will-change:transform}
 :root[data-theme="dark"] .bignum{color:#2fc274}
 /* V8100 - the number before any scan. It used to wear --dim, the same colour as the
@@ -500,8 +519,8 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 @media (prefers-reduced-motion:reduce){.splash .wm{animation:none}}
 /* BETA: a small plain label, not a coloured badge - white card, black letters */
 .appbar .brandmid{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto}
-.appbar .beta{font-family:var(--mono);font-size:7px;font-weight:600;letter-spacing:.07em;
-  color:#111720;background:#fff;border:1px solid var(--line);border-radius:3px;padding:0 3px;
+.appbar .beta{font-family:var(--mono);font-size:6px;font-weight:600;letter-spacing:.06em;
+  color:#111720;background:#fff;border:1px solid var(--line);border-radius:2px;padding:0 2px;
   white-space:nowrap;flex:0 0 auto;line-height:1.5}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .appbar .beta{background:#e8edf4;color:#0d141d;border-color:#e8edf4}}
@@ -515,9 +534,12 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 
 /* tabs */
 /* the walking buttons keep one ink on every page - they are not part of the page's colour */
-:root{--nav:#111720}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav:#39445a}}
-:root[data-theme="dark"]{--nav:#39445a}
+/* V8200 - Start is near-black on a light page, so on a dark page it is near-white
+   with dark type. It used to be #39445a, a slate - darker than the page's controls
+   but not the opposite of anything. --navink is the type that rides on it. */
+:root{--nav:#111720;--navink:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav:#e8edf4;--navink:#0d141d}}
+:root[data-theme="dark"]{--nav:#e8edf4;--navink:#0d141d}
 /* bottom tab bar — the app's home row */
 .tabstrip{flex:0 0 auto;order:3;display:flex;align-items:center;justify-content:center;gap:0;background:var(--panel);
   border-top:1px solid var(--line);min-height:var(--tabh);
@@ -526,7 +548,7 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 /* Back, the number and Next are ONE control: two black halves with the number
    built into the seam between them. Black on every page, whatever colour the page is. */
 .tabstrip .navbtn{flex:0 0 112px;width:112px;height:46px;padding:0;font-size:15px;margin:0;
-  background:var(--nav);border-color:var(--nav);color:#fff;text-shadow:none}
+  background:var(--nav);border-color:var(--nav);color:var(--navink);text-shadow:none}
 #nav-back{border-radius:999px 0 0 999px;padding-right:21px}
 #nav-next{border-radius:0 999px 999px 0;padding-left:21px}
 .tabstrip .navbtn:disabled{opacity:.3}
@@ -582,8 +604,11 @@ select{appearance:none;-webkit-appearance:none;padding-right:30px;cursor:pointer
   background-image:var(--chev);background-repeat:no-repeat;
   background-position:right 11px center;background-size:11px 7px}
 select:hover,input[type=text]:hover,textarea:hover{border-color:var(--mute)}
+/* V8200 - a focus ring is an accent on a control, so it carries no colour. It used to
+   be gold, which on the first screen is the page's own accent - that is the yellow
+   that kept showing on the Notes menu the moment it was clicked. */
 select:focus-visible,input[type=text]:focus-visible,textarea:focus-visible{
-  outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+  outline:2px solid var(--ink);outline-offset:1px;border-color:var(--ink)}
 textarea{width:100%;min-height:76px;resize:vertical;line-height:1.6;font-size:11.5px}
 input[type=text]{width:min(320px,100%)}
 button{font-family:var(--sans);font-size:13px;background:var(--panel);color:var(--ink);
@@ -594,7 +619,7 @@ button:active{box-shadow:var(--press);transform:translateY(1px)}
 .appbar .home-link{box-shadow:none}
 .appbar .home-link:active{box-shadow:none;transform:none}
 button[aria-pressed="true"]{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);font-weight:600}
-button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 button.go{background:var(--btn);color:#fff;text-shadow:var(--btnsh);
   border-color:var(--btn);font-weight:600;padding:11px 18px;
   box-shadow:0 1px 0 rgba(0,0,0,.25), 0 6px 14px -8px color-mix(in srgb,var(--btn) 70%,transparent)}
@@ -699,7 +724,7 @@ input[type=file]{display:none}
   background-position:right 14px center;background-size:13px 8px;
   box-shadow:var(--sink), 0 0 0 3px color-mix(in srgb,var(--gold) 13%,transparent)}
 .hlafield select:hover{border-color:var(--gold)}
-.hlafield select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hlafield select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .pocketbars{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-top:9px}
 .pb{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 11px;
   box-shadow:var(--raise);border-top:3px solid var(--line)}
@@ -1496,7 +1521,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V8100 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V8200 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -3899,7 +3924,16 @@ function vcRot(q,v){
           iy*qw+iw*(-qy)+iz*(-qx)-ix*(-qz),
           iz*qw+iw*(-qz)+ix*(-qy)-iy*(-qx)];
 }
-var VC_MARK='M1103.5 588.9 C1088.4 587.6 1064.9 583.4 1050.7 579.5 C1013.5 569.3 976.9 550.9 946.0 526.9 C933.8 517.5 912.1 496.3 901.7 483.7 C834.6 402.6 815.8 291.3 852.7 193.5 C882.9 113.7 944.7 51.9 1024.5 21.7 C1054.5 10.4 1084.5 4.5 1118.0 3.3 C1188.9 0.8 1259.5 25.0 1314.7 70.7 C1327.3 81.1 1348.5 102.8 1357.9 115.0 C1381.9 145.8 1400.3 182.6 1410.5 219.7 C1414.6 234.5 1418.5 257.5 1420.0 274.5 C1423.7 318.4 1415.5 368.3 1397.9 409.7 C1382.3 446.4 1362.8 475.3 1334.5 503.5 C1306.3 531.8 1277.4 551.3 1240.7 566.9 C1198.9 584.7 1148.5 592.7 1103.5 588.9 Z M68.0 463.3 C61.1 462.7 47.1 460.1 41.5 458.3 C33.1 455.7 23.3 450.0 18.9 445.3 C13.6 439.6 8.6 428.8 5.8 417.5 C3.8 409.0 3.7 405.6 3.3 359.5 L2.9 310.4 L41.7 303.1 C63.0 299.1 81.3 295.6 82.2 295.4 C83.9 294.9 84.0 297.8 84.0 346.9 L84.0 399.0 L163.0 399.0 L242.0 399.0 L242.0 258.5 L242.0 118.0 L282.0 118.0 L322.0 118.0 L322.0 258.8 C322.0 376.8 321.8 401.0 320.5 409.0 C317.0 432.3 309.5 445.7 296.1 452.9 C288.3 457.0 283.4 458.7 272.0 461.2 C262.8 463.3 259.9 463.3 167.5 463.5 C115.2 463.6 70.5 463.5 68.0 463.3 Z M1179.0 289.4 C1179.0 123.7 1178.9 114.9 1177.2 115.3 C1176.3 115.6 1143.2 120.7 1103.8 126.6 L1032.0 137.4 L1032.0 160.7 L1032.0 184.0 L1069.0 184.0 L1106.0 184.0 L1106.0 324.0 L1106.0 464.0 L1142.5 464.0 L1179.0 464.0 L1179.0 289.4 Z M434.5 457.9 C414.6 455.6 398.8 449.6 390.4 441.3 C381.9 432.8 376.1 417.0 374.0 396.9 C372.6 383.2 372.6 188.3 374.0 175.2 C377.1 146.8 385.9 130.4 402.5 122.5 C411.2 118.4 423.3 115.4 436.9 114.0 C451.5 112.6 721.0 112.6 735.6 114.1 C754.9 116.0 769.9 120.9 779.2 128.2 C784.7 132.5 790.6 142.1 793.5 151.3 C798.9 168.4 799.0 169.6 799.0 286.0 C799.0 376.4 798.7 395.1 797.5 403.5 C794.0 426.9 786.4 440.8 773.2 447.8 C765.3 452.0 760.5 453.7 749.0 456.3 C739.6 458.4 738.2 458.4 591.0 458.6 C505.8 458.7 439.1 458.4 434.5 457.9 Z M719.0 284.5 L719.0 175.0 L586.5 175.0 L454.0 175.0 L454.0 284.5 L454.0 394.0 L586.5 394.0 L719.0 394.0 L719.0 284.5 Z';
+/* V8200 - the face's mark, pulled out of the stylesheet so there is only ever one
+   copy of the picture in the file. Read once and kept. */
+var vcHref='';
+function vcMarkHref(){
+  if(vcHref) return vcHref;
+  var v=getComputedStyle(document.documentElement).getPropertyValue('--wmlight').trim();
+  var mm=v.match(/url\(\s*["']?([^"')]+)["']?\s*\)/);
+  vcHref = mm ? mm[1] : '';
+  return vcHref;
+}
 var vcLast='';
 function drawViewCube(){
   var host=document.getElementById('vcsvg'); if(!host||!viewer) return;
@@ -3941,10 +3975,18 @@ function drawViewCube(){
       var ox=(A[0]+B[0]+C[0]+D[0])/4, oy=(A[1]+B[1]+C[1]+D[1])/4;
       var fux=(A[0]-D[0])/2, fuy=(A[1]-D[1])/2;    // the way the writing runs
       var fvx=(A[0]-B[0])/2, fvy=(A[1]-B[1])/2;    // the way the letters stand
+      /* V8200 - the mark on the face is Moos's JO ONE lockup now, the same one the bar
+         and the opening screen carry. It is a picture rather than a drawn path, so it
+         goes on as an <image>; inside the face's matrix it still leans and foreshortens
+         with the face. The picture is NOT written in again - it is read back out of the
+         --wmlight custom property the stylesheet already holds, so it costs no bytes.
+         The face is pale in both themes, so the dark-lettered copy is always the right
+         one. 0.73 of the half-width is what the old drawn mark covered. */
+      var MW=1.46, MH=MW/2.763;
       marks.push('<g transform="matrix('+fux.toFixed(4)+' '+fuy.toFixed(4)+' '
         +fvx.toFixed(4)+' '+fvy.toFixed(4)+' '+ox.toFixed(4)+' '+oy.toFixed(4)+')">'
-        +'<g transform="scale(0.0010253) translate(-712.0 -296.5)">'
-        +'<path fill="#111720" fill-rule="evenodd" d="'+VC_MARK+'"/></g></g>');
+        +'<image href="'+vcMarkHref()+'" x="'+(-MW/2)+'" y="'+(-MH/2)+'" width="'+MW+'" height="'+MH
+        +'" preserveAspectRatio="none"/></g>');
     }
   }
   host.innerHTML = parts.join('') + marks.join('');
@@ -4921,12 +4963,19 @@ function paintHome(){
     }
     return false;
   }
-  var out='', n=r? r.n : 495, CAP=0.35;
+  /* V8200 - how strongly the field is drawn. A mark in the open has nothing over it,
+     so it can be as strong as it looks right. A mark UNDER a word is what decides
+     whether that word stays readable, so those two are set on their own and are the
+     numbers the contrast check holds to - raising them is what costs readability,
+     raising the open ones costs nothing. */
+  var OPEN_LO=0.34, OPEN_HI=0.74;        // a mark in the open
+  var TEXT_LO=0.10, TEXT_HI=0.17;        // a mark under a word
+  var out='', n=r? r.n : 495;
   for(var i2=0;i2<n && i2<COLS*ROWS;i2++){
     var c=i2%COLS, row=(i2/COLS)|0, x=c*gx+gx/2, y=row*gy+gy/2;
     var green = !!(r && r.sel[i2]===0);
-    var o=green?0.26:0.20, o2=green?0.60:0.46;
-    if(behind(x,y)){ o=Math.min(o,CAP)*0.42; o2=Math.min(o2,CAP)*0.42; }
+    var o=green?OPEN_LO*1.3:OPEN_LO, o2=green?Math.min(0.95,OPEN_HI*1.3):OPEN_HI;
+    if(behind(x,y)){ o=TEXT_LO; o2=TEXT_HI; }
     out+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(green?3.9:3.3)
       +'" fill="'+(green?'var(--lgreen)':'var(--dim)')+'" style="--o:'+o.toFixed(3)
       +';--o2:'+o2.toFixed(3)+';opacity:'+o.toFixed(3)
