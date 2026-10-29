@@ -179,7 +179,10 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .appbar .notesel{margin-left:auto;flex:0 1 auto;max-width:168px;font-family:var(--sans);
   font-size:12.5px;font-weight:600;padding:7px 28px 7px 11px;border-radius:999px;
   background-color:var(--panel);background-position:right 10px center;background-size:10px 6px;
-  border-color:color-mix(in srgb,var(--gold) 45%,var(--line));color:var(--accink);box-shadow:var(--lift)}
+  /* V8100 - no colour on this control. It used to take the page's accent, which on the
+     first screen is gold, so the menu read as a coloured button. It is black on white
+     in light and white on black in dark, and nothing else. */
+  border-color:var(--line);color:var(--ink);box-shadow:var(--lift)}
 .appbar .notesel[hidden]+.themebtn,.appbar .themebtn{margin-left:auto}
 /* V7700 - the menu on the left, the mark on the centre of the bar. It is centred on
    the WHOLE bar, not on what is left over, so it stays centred however wide the menu
@@ -195,14 +198,24 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   .appbar .holderpill{order:8;margin-left:0}
   .appbar .themebtn{order:9;margin-left:0}
   .appbar .notesel:not([hidden])+.themebtn{margin-left:0}
+  /* V8100 - the MARK is what sits on the centre line, not the mark-plus-BETA lockup.
+     Before, BETA was part of the centred box, so it pushed the mark left of true
+     centre by half the label's width. BETA now hangs off the mark's right edge and is
+     taken out of the centring entirely. It hangs on the LEFT: on the right it landed
+     on the holder's name by 4px at every width wide enough to show it. */
   .appbar .brandmid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    display:inline-flex;align-items:center;gap:7px;margin:0}
+    display:block;line-height:0;margin:0}
+  .appbar .brandmid .beta{position:absolute;right:calc(100% + 7px);top:50%;
+    transform:translateY(-50%);margin:0}
 }
 /* Measured at 390px: a centred mark, the BETA label, the holder pill and the theme
    button do not all fit - the label runs into the pill. So on a phone the label
    steps out of the bar and the mark takes the centre on its own. The word still
    stands on the landing screen and in Notes. */
-@media (max-width:420px){ .appbar .beta{display:none} }
+/* V8100 - BETA used to step out below 421px. With it hanging off the mark's left it
+   clears the Notes menu by only 1.4px at exactly that width, so it now steps out
+   below 430px, where the clearance is 5.9px. Everywhere wider it is a steady 4.9px. */
+@media (max-width:429px){ .appbar .beta{display:none} }
 /* V7900, still true at V8000 - the lungs mark is wider than the drawn one it replaced
    (45.6px then, 52.5px now), and at 360px that ran it into the holder pill. Measured:
    pulling the bar's own side padding in from 14px to 8px below 366px gives back 6px,
@@ -280,6 +293,13 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
 .bignum{font-family:var(--sans);font-weight:800;font-size:84px;letter-spacing:-.04em;
   line-height:1;color:#15a05a;text-align:center;transform-origin:50% 50%;will-change:transform}
 :root[data-theme="dark"] .bignum{color:#2fc274}
+/* V8100 - the number before any scan. It used to wear --dim, the same colour as the
+   field's marks: 1.74:1 in light and 2.45:1 in dark, both under the 3.0 that type
+   this size needs. It still has to read as not-yet-asked, so it stays grey - just a
+   grey that can actually be seen. Measured against the plain page: 3.28 and 5.11. */
+.bignum.numoff,
+:root[data-theme="dark"] .bignum.numoff{color:#78859a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bignum.numoff{color:#78859a}}
 .homelib{font-size:12.5px;line-height:1.45;color:var(--mute);margin:26px 18px 0;text-align:center}
 .homelib b{color:var(--ink)}
 .howhead{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
@@ -480,9 +500,9 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 @media (prefers-reduced-motion:reduce){.splash .wm{animation:none}}
 /* BETA: a small plain label, not a coloured badge - white card, black letters */
 .appbar .brandmid{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto}
-.appbar .beta{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.08em;
-  color:#111720;background:#fff;border:1px solid var(--line);border-radius:3px;padding:1px 4px;
-  white-space:nowrap;flex:0 0 auto;line-height:1.35}
+.appbar .beta{font-family:var(--mono);font-size:7px;font-weight:600;letter-spacing:.07em;
+  color:#111720;background:#fff;border:1px solid var(--line);border-radius:3px;padding:0 3px;
+  white-space:nowrap;flex:0 0 auto;line-height:1.5}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .appbar .beta{background:#e8edf4;color:#0d141d;border-color:#e8edf4}}
 :root[data-theme="dark"] .appbar .beta{background:#e8edf4;color:#0d141d;border-color:#e8edf4}
@@ -514,6 +534,11 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 .tabstrip .stepbox.none{display:none}
 .tabstrip .stepbox.none+.navbtn{padding-left:0}
 .tabstrip .stepbox.none~#nav-back,.tabstrip #nav-back:has(+.stepbox.none){padding-right:0}
+/* V8100 - the first screen has nowhere to go back to, so Back is not shown there at
+   all rather than shown greyed out. With one button left, the pill closes up: Start
+   takes both ends and sits on the centre line on its own. */
+.tabstrip.solo #nav-back{display:none}
+.tabstrip.solo #nav-next{border-radius:999px;padding-left:0;flex:0 0 150px;width:150px}
 /* where you are - shown, never pressed */
 .dots{display:none}
 /* one box, and the number inside it changes - set into the seam, so the three read as one */
@@ -1471,7 +1496,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V8000 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V8100 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2621,6 +2646,8 @@ function markNav(){
     document.getElementById('nav-back').disabled=(i<=0);
     document.getElementById('nav-next').disabled=(i>=ORDER.length-1);
   }
+  var strip=document.getElementById('tabstrip');
+  if(strip) strip.classList.toggle('solo', now==='view-home');
   var box=document.getElementById('stepbox'), num=document.getElementById('stepnum');
   if(box&&num){
     var lab=STEPLABEL[now];
@@ -4869,7 +4896,7 @@ function paintHome(){
   fan.innerHTML = r
     ? '<div class="bignum">'+alone+'</div><p class="bigcap">of <b>'+r.n+'</b> slices grip '
       +esc(r.holder)+' alone</p>'
-    : '<div class="bignum" style="color:var(--dim);animation:none">495</div>'
+    : '<div class="bignum numoff" style="animation:none">495</div>'
       +'<p class="bigcap">slices of Jo-1, none of them asked yet</p>';
   var old=document.getElementById('homefield'); if(old) old.remove();
   var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -4901,7 +4928,7 @@ function paintHome(){
     var o=green?0.26:0.20, o2=green?0.60:0.46;
     if(behind(x,y)){ o=Math.min(o,CAP)*0.42; o2=Math.min(o2,CAP)*0.42; }
     out+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(green?3.9:3.3)
-      +'" fill="'+(green?'var(--lgreen)':'var(--line)')+'" style="--o:'+o.toFixed(3)
+      +'" fill="'+(green?'var(--lgreen)':'var(--dim)')+'" style="--o:'+o.toFixed(3)
       +';--o2:'+o2.toFixed(3)+';opacity:'+o.toFixed(3)
       +';animation-delay:'+(-(row/ROWS)*6).toFixed(2)+'s"/>';
   }
