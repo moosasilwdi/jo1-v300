@@ -575,9 +575,17 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 /* V8200 - Start is near-black on a light page, so on a dark page it is near-white
    with dark type. It used to be #39445a, a slate - darker than the page's controls
    but not the opposite of anything. --navink is the type that rides on it. */
-:root{--nav:#111720;--navink:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav:#e8edf4;--navink:#0d141d}}
-:root[data-theme="dark"]{--nav:#e8edf4;--navink:#0d141d}
+/* V8800 - true black on a light page, true white on a dark one. They were #111720 and
+   #e8edf4 - a near-black and a near-white - and once they went see-through in V8600 the
+   page showing through pulled them to grey. Moos: "black in light mode and white in dark
+   mode". So the colour is pure and the pill is solid. I tried 92% first, to keep a trace
+   of the page showing through: measured, 0.2 points of the pill changed when the page
+   scrolled under it - nothing anyone could see - so there is no honest claim to make for
+   it, and it is 100%. The BAR is still gone: the page still runs the full height of the
+   screen under the two buttons. --navmix is kept as the one place that share lives. */
+:root{--nav:#000;--navink:#fff;--navmix:100%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav:#fff;--navink:#000}}
+:root[data-theme="dark"]{--nav:#fff;--navink:#000}
 /* V8600 - Back and Next FLOAT over the page instead of standing on a bar of their own.
    The strip used to be a solid panel with a line along its top, and that line was the
    bottom edge of the app: everything above it was the app, everything below it was
@@ -593,8 +601,8 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 /* Back, the number and Next are ONE control: two black halves with the number
    built into the seam between them. Black on every page, whatever colour the page is. */
 .tabstrip .navbtn{flex:0 0 112px;width:112px;height:46px;padding:0;font-size:15px;margin:0;
-  background:color-mix(in srgb,var(--nav) 72%,transparent);
-  border-color:color-mix(in srgb,var(--nav) 72%,transparent);
+  background:color-mix(in srgb,var(--nav) var(--navmix),transparent);
+  border-color:color-mix(in srgb,var(--nav) var(--navmix),transparent);
   color:var(--navink);text-shadow:none;
   -webkit-backdrop-filter:blur(9px) saturate(1.1);backdrop-filter:blur(9px) saturate(1.1)}
 #nav-back{border-radius:999px 0 0 999px;padding-right:21px}
@@ -622,7 +630,7 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
   /* V8600 - the ring used to be the bar's own colour, so it vanished into it. With the
      bar gone it takes the floating buttons' colour instead, so Back, the number and
      Next still read as one control rather than three things over the page. */
-  border:3px solid color-mix(in srgb,var(--nav) 72%,transparent);box-shadow:none}
+  border:3px solid color-mix(in srgb,var(--nav) var(--navmix),transparent);box-shadow:none}
 .stepbox.none{visibility:hidden}
 .dots button{border:0;background:none;padding:0;box-shadow:none;cursor:default;pointer-events:none}
 .dots button:focus-visible{outline:none}
@@ -1293,7 +1301,6 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
         <button type="button" id="b-move" aria-pressed="false" title="Drag to slide the model">Move</button>
         <button type="button" id="b-reset">Reset</button>
         <button type="button" id="b-full" title="Give the picture the whole screen">Full view</button>
-        <button type="button" id="b-real" title="Download the measured structure">Real structure</button>
         <label class="drop" for="pdbin">Load .pdb</label>
         <input type="file" id="pdbin" accept=".pdb,.ent,.cif,.mmcif">
       </div>
@@ -1634,7 +1641,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V8700 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V8800 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -4412,14 +4419,37 @@ document.getElementById('b-cell').addEventListener('click', function(){
 (function(){
   var pad=document.getElementById('molrot');
   if(!pad) return;
-  var dragging=false, lx=0, ly=0, moved=0;
+  /* V8800 - two fingers zoom. Until now the pad took the FIRST finger for turning and
+     threw the second away (isPrimary), so on a phone a pinch did nothing at all; only a
+     mouse wheel zoomed, and a phone has no wheel. Every finger down on the pad is kept
+     here by its id. One finger turns the picture as before. The moment a second one
+     lands, turning stops and the distance between the two is the zoom: the picture
+     grows by the same share the gap grows. When one finger lifts, the other carries on
+     turning from where it is, so nothing jumps. */
+  var pts={}, count=0, dragging=false, lx=0, ly=0, moved=0, pinchD=0;
+  function dist(){
+    var ids=Object.keys(pts); if(ids.length<2) return 0;
+    var a=pts[ids[0]], b=pts[ids[1]];
+    return Math.hypot(a.x-b.x, a.y-b.y);
+  }
   pad.addEventListener('pointerdown', function(e){
-    if(e.isPrimary===false) return;
-    dragging=true; moved=0; lx=e.clientX; ly=e.clientY;
-    pad.setPointerCapture && pad.setPointerCapture(e.pointerId);
+    pts[e.pointerId]={x:e.clientX, y:e.clientY}; count=Object.keys(pts).length;
+    try{ pad.setPointerCapture(e.pointerId); }catch(err){}
+    if(count===1){ dragging=true; moved=0; lx=e.clientX; ly=e.clientY; }
+    else { dragging=false; pinchD=dist(); }
   });
   pad.addEventListener('pointermove', function(e){
-    if(!dragging||!viewer) return;
+    if(!pts[e.pointerId] || !viewer) return;
+    pts[e.pointerId]={x:e.clientX, y:e.clientY};
+    if(count>=2){
+      var d=dist();
+      if(pinchD>0 && d>0){
+        try{ viewer.zoom(d/pinchD); viewer.render(); }catch(err){}
+      }
+      pinchD=d;
+      return;
+    }
+    if(!dragging) return;
     var dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
     moved += Math.abs(dx)+Math.abs(dy);
     /* The picture goes the way the finger goes. Measured: dragging DOWN used to send
@@ -4434,7 +4464,15 @@ document.getElementById('b-cell').addEventListener('click', function(){
     if(curTip>90) curTip=90; if(curTip<8) curTip=8;
     if(applyTurnTip()) viewer.render();
   });
-  function stop(){ dragging=false; }
+  function stop(e){
+    delete pts[e.pointerId]; count=Object.keys(pts).length;
+    if(count>=2){ pinchD=dist(); return; }
+    pinchD=0;
+    if(count===1){
+      /* the finger that is left takes over the turning from where it now is */
+      var id=Object.keys(pts)[0]; lx=pts[id].x; ly=pts[id].y; dragging=true;
+    } else dragging=false;
+  }
   pad.addEventListener('pointerup', stop);
   pad.addEventListener('pointercancel', stop);
   /* the wheel and two-finger pinch still belong to the viewer underneath */
@@ -4541,24 +4579,16 @@ function markStep(){
 }
 document.getElementById('s-prev').addEventListener('click', function(){ stepList(-1); });
 document.getElementById('s-next').addEventListener('click', function(){ stepList(1); });
-/* Real structure is a SWITCH, not a one-way door. It used to load the measured file
-   and then hide itself, leaving no way back to the drawing. Now it says which way it
-   will go, and goes back when pressed again. Pressed in Abstract it used to do
-   nothing at all - the drawing was put straight back - so now it moves the wording
-   to Science first, because the measured atoms are what Science means. */
-function syncRealBtn(){
-  var tb=document.getElementById('b-real'); if(!tb) return;
-  tb.hidden=false;
-  if(isModel){ tb.textContent='Real structure'; tb.setAttribute('aria-pressed','false');
-               tb.title='Download the measured structure'; }
-  else { tb.textContent='Drawing'; tb.setAttribute('aria-pressed','true');
-         tb.title='Go back to the drawing'; }
-}
-document.getElementById('b-real').addEventListener('click', function(){
-  if(!isModel){ showDrawn(); syncRealBtn(); return; }   // the measured file is showing - go back
-  if(ABS){ var sci=document.getElementById('m-sci'); if(sci){ sci.click(); syncRealBtn(); return; } }
-  realTried=false; loadReal();
-});
+/* V8800 - the "Real structure / Drawing" button is gone. Moos: the one word was the
+   state AND the action at the same time - "Real structure" meant you were on the
+   drawing - so nobody could tell which was which, and in Abstract pressing it silently
+   flipped the wording to Science. It also doubled the SCIENCE / ABSTRACT switch, which
+   already says drawing-or-real. So: Science fetches the measured 1A6A by itself (that
+   is what Science means), Abstract is the drawing, and the line over the picture says
+   which one you got. Nothing to press, nothing to misread. Load .pdb stays - dropping
+   in your own structure is a real need - and syncRealBtn is now a no-op kept only so
+   the old call sites do not throw. */
+function syncRealBtn(){}
 document.getElementById('pdbin').addEventListener('change', function(e){
   var f=e.target.files&&e.target.files[0]; if(!f||!viewer) return;
   var rd=new FileReader();
