@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-title" content="JO1">
 <meta name="theme-color" content="#eceff3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e131a" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAwFBMVEX8/P0AAAABevkQhPkBAQEAAADU6Pw0lvqw1vxTpfoYGBhutPsKCgqSx/vo6OgDAwNCnfqBvftirfoFBQUoKChXWFlra2uGhoY6OjohjfoMDAwYGBja2toaGhoQEBAiIiJHSEh4eHepqaq2trf///8AbfmVlZahzvzA3v0gIB8hISExMTFISEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACkfuNCAAAAQHRSTlP+AP///c3//////v9q//yv////mgj8/foH/1UL/DJRLPr5/PwB//v//////wcAAAAAAAAAAAAAAAAAAAAAAAAAsDY3GQAAAflJREFUeNplk9li4zAIRQlCm215T5w9bZYmbef/v28Ax1NnykMioWOELgCLHzsVnWXritPMCdPiT2GJKPv8zPjPFuv/gaOlbHneA9v+vMrIbl+AdUc0lHIavfyWQ0Zd/wPsKnrTjwG8Gf/LJVW7CVhXtIKn1Ztp9U5V/wS68fzROAY4gmvCSHQjcKQ33rqIaEbAI9bMwpK2AqwtcXrOoDEYJIcgK8NEmdk1A0canucG0wSMxAcVC7hqgJqd7YaBjQKRCXlvZq9woiXAXaLm/vZwxgR3843s7wArOkBBZ0nLxBRCBJOCKWMIqdUQFyqgor3eGps68AMB+LGhbnIO4aCkCmzGPgZqRJeiqp0coteUOQkFolyJwYkQwKcuoHjiP4BTQO8gZwggIebg1DUDsHUxNHIkWLq3IuwISJIe8xQxBIOt3hfCrU051pqkPDN6Fson7yVCxDomEcpEfaYI1Yi2eW5ESr5iw2uRu1GhrpyEk4wCu6QAWorASfJGpF4UXCxRku+WFLQu2LZc8rFYWm7+yj/rM1Z240XIjPqpYVQq78Zme2hv5FPDSMu9C5FP3cjdJbcNVD17sq+YcA5mxruB7G7e9iW8GLe9nQ1O31E2zJEPHpzdy+htefRWF2XKy+/RkyA6vF/f3186vP2v6WY7FJWMf1UcZs6/QqAa3r5SC0kAAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" sizes="512x512" href="icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/3dmol@2.5.5/build/3Dmol-min.js"></script>
 <style>
@@ -209,7 +212,11 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
    on each side of the mark, at 350 only 3, and at 340 the mark and the pill touch.
    Most phones report 360 or more. Narrower than that and the bar stays as it was,
    because the alternative is shortening the holder's name. */
-@media (min-width:360px){
+/* V8400 - this used to start at 360px, so a phone reporting less than that - which
+   an Android with a larger display-size setting does - never got the centred bar
+   at all: the mark sat at the left and the menu in the middle. Measured at 300px,
+   everything the bar carries still fits inside 292px, so the line moved to 300. */
+@media (min-width:300px){
   .appbar{position:relative}
   .appbar .notesel{order:-1;margin-left:0;margin-right:auto}
   .appbar .dot{order:-2}
@@ -266,6 +273,15 @@ body{margin:0;background:var(--backdrop);color:var(--ink);font-family:var(--sans
   .appbar .notesel{max-width:118px}
   .appbar .holderpill{padding:6px 7px;font-size:11px}
   .appbar{gap:7px}
+}
+/* V8400 - under 340px the centred mark runs into the holder's name: measured at 320px
+   it overlapped by 8.7px. The mark keeps its size and the two things beside it give
+   way instead - the menu to 100px and the name to 62px, which shortens the name with
+   an ellipsis. The whole name still stands on step 1, where it is chosen. At 340px
+   the gap was only 1.3px with the caps lifted, so they run to 359px. */
+@media (max-width:359px){
+  .appbar .notesel{max-width:100px}
+  .appbar .holderpill{max-width:62px}
 }
 .appbar .notesel:not([hidden])+.themebtn{margin-left:8px}
 /* both words on screen, one of them lit - a choice, not a label */
@@ -562,18 +578,30 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 :root{--nav:#111720;--navink:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav:#e8edf4;--navink:#0d141d}}
 :root[data-theme="dark"]{--nav:#e8edf4;--navink:#0d141d}
-/* bottom tab bar — the app's home row */
-.tabstrip{flex:0 0 auto;order:3;display:flex;align-items:center;justify-content:center;gap:0;background:var(--panel);
-  border-top:1px solid var(--line);min-height:var(--tabh);
+/* V8600 - Back and Next FLOAT over the page instead of standing on a bar of their own.
+   The strip used to be a solid panel with a line along its top, and that line was the
+   bottom edge of the app: everything above it was the app, everything below it was
+   furniture. Taking the bar away gives the page the whole height of the screen and the
+   app reads as a larger screen. The strip itself is now nothing - it catches no taps,
+   only the two buttons do - so the page that scrolls under it stays reachable. */
+.tabstrip{position:absolute;left:0;right:0;bottom:0;z-index:40;
+  display:flex;align-items:center;justify-content:center;gap:0;
+  background:none;border-top:0;min-height:var(--tabh);pointer-events:none;
   padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
   padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+.tabstrip>*{pointer-events:auto}
 /* Back, the number and Next are ONE control: two black halves with the number
    built into the seam between them. Black on every page, whatever colour the page is. */
 .tabstrip .navbtn{flex:0 0 112px;width:112px;height:46px;padding:0;font-size:15px;margin:0;
-  background:var(--nav);border-color:var(--nav);color:var(--navink);text-shadow:none}
+  background:color-mix(in srgb,var(--nav) 72%,transparent);
+  border-color:color-mix(in srgb,var(--nav) 72%,transparent);
+  color:var(--navink);text-shadow:none;
+  -webkit-backdrop-filter:blur(9px) saturate(1.1);backdrop-filter:blur(9px) saturate(1.1)}
 #nav-back{border-radius:999px 0 0 999px;padding-right:21px}
 #nav-next{border-radius:0 999px 999px 0;padding-left:21px}
-.tabstrip .navbtn:disabled{opacity:.3}
+/* V8600 - a disabled button used to be 0.3 over a solid bar. Over the page it would
+   nearly vanish, so it is lifted to 0.45: still plainly not available, still a shape. */
+.tabstrip .navbtn:disabled{opacity:.45}
 /* with no number to show, the two halves close into one plain pill */
 .tabstrip .stepbox.none{display:none}
 .tabstrip .stepbox.none+.navbtn{padding-left:0}
@@ -591,7 +619,10 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 .stepbox i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;
   width:44px;height:44px;border-radius:50%;font-family:var(--mono);font-size:17px;font-weight:600;
   background:var(--btn);color:#fff;text-shadow:var(--btnsh);
-  border:3px solid var(--panel);box-shadow:none}
+  /* V8600 - the ring used to be the bar's own colour, so it vanished into it. With the
+     bar gone it takes the floating buttons' colour instead, so Back, the number and
+     Next still read as one control rather than three things over the page. */
+  border:3px solid color-mix(in srgb,var(--nav) 72%,transparent);box-shadow:none}
 .stepbox.none{visibility:hidden}
 .dots button{border:0;background:none;padding:0;box-shadow:none;cursor:default;pointer-events:none}
 .dots button:focus-visible{outline:none}
@@ -600,7 +631,7 @@ button.go.start{width:100%;max-width:300px;padding:14px 20px;font-size:15.5px;bo
 .views{flex:1 1 auto;min-height:0;position:relative}
 .view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
   padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));
-  padding-block:14px calc(22px + env(safe-area-inset-bottom,0px))}
+  padding-block:14px calc(var(--tabh) + 22px + env(safe-area-inset-bottom,0px))}
 .view::-webkit-scrollbar{width:0;height:0}
 .view{scrollbar-width:none;-ms-overflow-style:none}
 .view[hidden]{display:none}
@@ -682,6 +713,14 @@ input[type=file]{display:none}
 .noscan p{font-size:13px;color:var(--mute);margin:0 0 12px;line-height:1.5}
 .noscan .go{width:100%}
 :root[data-mode="abstract"] .noscan p::after{content:""}
+/* the library already holds this one: say so, and let him choose */
+.twinnote{background:var(--panel);border:2px solid var(--gold);border-radius:13px;
+  padding:14px;margin:12px 0 0;box-shadow:var(--lift)}
+.twinnote h4{font-size:13.5px;margin:0 0 5px;color:var(--ink);font-weight:600}
+.twinnote p{font-size:12.5px;color:var(--mute);margin:0 0 11px;line-height:1.5}
+.twinnote .pair{display:flex;gap:8px}
+.twinnote .pair button{flex:1;font-size:13px;padding:11px 8px}
+.twinnote .go{background:var(--btn);color:var(--onbtn);border-color:var(--btn)}
 .narrow{margin:0 0 12px}
 .narrow .go{width:100%;font-size:13.5px;padding:12px 10px}
 .sortrow{display:flex;gap:7px;margin-top:10px}
@@ -832,6 +871,44 @@ a.sendmail:active{filter:brightness(.96)}
 .vtools{flex:0 0 auto;display:block;
   padding:9px max(12px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));
   background:var(--panel);border-top:1px solid var(--line)}
+/* V8600 - step 5 gives the picture the whole screen.
+   The controls used to stand on a panel UNDER the picture, and that panel was 149px of
+   the 790 the screen has - the picture got 77% of its own stage. They float over the
+   picture now, just as the reference block always has, each one a small chip the page
+   shows through. The strip itself catches no taps, so the picture can still be turned
+   by dragging anywhere between the chips. */
+#view-3d .vtools{position:absolute;left:0;right:0;z-index:5;
+  bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px));
+  background:none;border-top:0;pointer-events:none;
+  padding:0 max(10px,env(safe-area-inset-left,0px)) 4px}
+#view-3d .vtools>*{pointer-events:auto}
+#view-3d .vrow button,#view-3d .vrow .drop{font-size:11.5px;padding:6px 11px;border-radius:999px;
+  background:color-mix(in srgb,var(--panel) 88%,transparent);border-color:var(--line);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#view-3d .vrow button[aria-pressed="true"]{background:var(--btn);border-color:var(--btn);color:#fff}
+#view-3d .molwhat{font-size:11px;line-height:1.45;margin:0 0 5px;
+  background:color-mix(in srgb,var(--panel) 88%,transparent);border-radius:9px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#view-3d .molwhat:not(:empty){padding:6px 9px}
+#view-3d .vtools .key{margin-top:5px;font-size:10px;gap:5px 9px;
+  background:color-mix(in srgb,var(--panel) 88%,transparent);border-radius:9px;padding:5px 8px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#view-3d .vtools .key i{width:9px;height:9px}
+/* the fades that show the strip slides are painted in the STAGE's colour now, not the
+   panel's - over a picture a panel-coloured band is a band across the picture */
+#view-3d .vwrap::before{background:linear-gradient(to right,var(--sunk) 34%,rgba(0,0,0,0))}
+#view-3d .vwrap::after{background:linear-gradient(to left,var(--sunk) 34%,rgba(0,0,0,0))}
+/* the wording switch moves ABOVE the picture. It used to sit under it, and with the
+   picture taking the whole screen it ended up beneath the floating Back and Next. */
+#view-3d .modeslot{order:0}
+#view-3d .molstage{order:1}
+#view-3d .stepstrip{order:2}
+/* The reference block moves to the TOP right corner. It stood bottom right, which is
+   where a drawing usually puts it - but the controls float along the bottom now, and a
+   block behind a row of chips tells nobody which way they are looking. Said plainly:
+   this is what giving the picture the whole screen costs. */
+#view-3d .viewcube{top:40px;bottom:auto;right:9px}
+#view-3d.full .viewcube{top:auto;bottom:14px;right:14px}
 /* one strip of controls that slides sideways, so it never eats the picture */
 .vrow{display:flex;gap:7px;flex-wrap:nowrap;align-items:center;overflow-x:auto;
   scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-inline:14px}
@@ -877,7 +954,7 @@ a.sendmail:active{filter:brightness(.96)}
 /* the line over the picture is painted in the stage's own colour, so it turns over
    with it instead of leaving a dark band across a white stage */
 #view-3d .caption{position:absolute;top:0;left:0;right:0;z-index:2;
-  font-size:10.5px;line-height:1.4;color:#59636f;font-family:var(--mono);
+  font-size:9.5px;line-height:1.4;color:#59636f;font-family:var(--mono);
   pointer-events:none;padding:7px max(12px,env(safe-area-inset-left,0px));
   background:linear-gradient(to bottom, rgba(255,255,255,.95) 72%, rgba(255,255,255,0))}
 @media (prefers-color-scheme:dark){
@@ -1072,6 +1149,14 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
 
       <p class="btncap"><span class="sci-only">Cuts the protein into every slice and scores each one.</span><span class="abs-only">Cuts the protein into every piece and tests each one.</span></p>
       <button type="button" class="go" id="runprot">Scan</button>
+      <div class="twinnote" id="twinnote" hidden>
+        <h4>Already in the library</h4>
+        <p id="twinwhen"></p>
+        <div class="pair">
+          <button type="button" class="go" id="twinopen">Open it</button>
+          <button type="button" id="twinagain">Scan again</button>
+        </div>
+      </div>
       <button type="button" class="go" id="rundec" hidden>Scan</button>
     </div>
   </div>
@@ -1543,7 +1628,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V8300 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V8600 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -2662,6 +2747,9 @@ function hereNow(){
   for(var i=0;i<VIEWS.length;i++){ if(!document.getElementById(VIEWS[i]).hidden) return VIEWS[i]; }
   return 'view-home';
 }
+var PAGENAME={'view-home':'Start', 'view-how':'Steps', 'view-hla':'Holder',
+  'view-work':'Protein', 'view-res':'Graph', 'view-list':'Shortlist',
+  'view-3d':'Groove', 'view-lib':'Library', 'view-info':'Notes'};
 var STEPLABEL={'view-hla':'1','view-work':'2','view-res':'3','view-list':'4','view-3d':'5','view-lib':'6','view-info':'i'};
 /* the notes chooser: only while the notes are open */
 function showNote(key){
@@ -2695,6 +2783,14 @@ function markNav(){
   }
   var strip=document.getElementById('tabstrip');
   if(strip) strip.classList.toggle('solo', now==='view-home');
+  /* V8400 - the menu says where you ARE, not just that notes exist. Its first line -
+     the one showing when no note is open - carries the stage's own short name, and
+     its ring already carries the stage's colour. Opening it still gives the same
+     notes; only the resting word changes. Kept short because the control is held to
+     100px on the narrowest phones - 'How it works' needed 131px there, so that
+     page is called Steps, which is what its map shows. */
+  var sel0=document.getElementById('notesel');
+  if(sel0 && sel0.options.length) sel0.options[0].textContent = PAGENAME[now] || 'Notes';
   var box=document.getElementById('stepbox'), num=document.getElementById('stepnum');
   if(box&&num){
     var lab=STEPLABEL[now];
@@ -2797,6 +2893,8 @@ function runProtein(){
   var seq=clean(document.getElementById('protseq').value);
   var w=parseInt(document.getElementById('win').value,10);
   if(seq.length<w){ document.getElementById('count').textContent='Paste a protein at least '+w+' residues long.'; return; }
+  if(!TWINOK){ var twin=runTwin(seq,w,alleleLabel()); if(twin){ showTwin(twin); return; } }
+  TWINOK=false; hideTwin();
   results=[]; selected=-1; RANKED=false; SORTBY='str'; resetRank();
   var ci=JTAB.col(alleleLabel());
   if(JTAB.fits(seq,w) && ci>=0){
@@ -2859,6 +2957,13 @@ function runDecoy(){
   });
 }
 document.getElementById('runprot').addEventListener('click', runProtein);
+/* the note answers one exact question, so any change to the question takes it away */
+['protseq','win'].forEach(function(id){
+  var e=document.getElementById(id);
+  if(e) e.addEventListener('input', function(){ TWINOK=false; hideTwin(); });
+  if(e) e.addEventListener('change', function(){ TWINOK=false; hideTwin(); });
+});
+if(sel) sel.addEventListener('change', function(){ TWINOK=false; hideTwin(); });
 document.getElementById('rundec').addEventListener('click', runDecoy);
 document.getElementById('pepseq').addEventListener('keydown', function(e){ if(e.key==='Enter') runDecoy(); });
 document.getElementById('filt').addEventListener('change', function(){ if(mode==='dec') runDecoy(); });
@@ -3190,7 +3295,7 @@ var STAGE='#0b1016';
 /* Reset used to re-apply the opening TURNS, which are relative - so every press
    turned the picture further and you never got back. The opening view is saved
    here instead, and Reset puts that view back, exactly. */
-var HOME_VIEW=null, BASE_VIEW=null, CELL_BACK=null, ZOOM_CELL=0.86;
+var HOME_VIEW=null, BASE_VIEW=null, CELL_BACK=null, CELL_ZOOM=null, ZOOM_CELL=0.86;
 var HOME_TURN=55, HOME_TIP=35, CELL_TURN=55, CELL_TIP=35;
 function markHome(){ try{ if(viewer){ HOME_VIEW=viewer.getView(); HOME_TURN=curTurn; HOME_TIP=curTip; } }catch(e){} }
 /* the view before any turning, kept so the story picture can be built from a known
@@ -3202,6 +3307,15 @@ function markBase(){ try{ if(viewer) BASE_VIEW=viewer.getView(); }catch(e){} }
    Under that pair the upright axis can only swing straight up or straight down the
    screen - never sideways - so the model's uprights stay upright, like the block's. */
 var VIEW_TURN=55, VIEW_TIP=35;
+/* V8600 - ONE number for how far back the picture sits, used at every place that opens
+   it, so there is no second opinion anywhere in the file.
+   It came down from 0.62 when step 5 was given the whole screen. The box got taller but
+   not wider, and the groove is a WIDE thing seen at 55 and 35 - 3Dmol fits a model to
+   the box's height, so a taller, relatively narrower box let the ends of the groove run
+   off the left and right edges. Measured on the picture's own pixels: at 0.62 the
+   drawing touched the edge on 130 pixels in Science and 168 in Abstract. At 0.50
+   nothing touches it in either. */
+var VIEW_ZOOM=0.50;
 /* Where the picture is looked at from, kept as two plain angles: how far it is
    swung round, and how far it is tipped. Nothing else. A view built from only
    these two can never be ROLLED - so the model's uprights stay upright and every
@@ -3223,12 +3337,49 @@ function applyTurnTip(){
     return true;
   }catch(e){ return false; }
 }
+/* V8400 - aiming the camera at a structure that is not the built one.
+   quatFor() builds its turn and tip in WORLD axes, which only mean anything for the
+   model the app builds itself: there the groove runs along x and the open side faces
+   up z. A file from the databank sits in its own crystal axes, so the Cell view's
+   "tip right over and look along the groove" came out on the diagonal - which is the
+   tilt. This takes the frame measured from the atoms, works out the turn that would
+   put that frame back onto the built model's axes, and applies it first. On the built
+   model the measured frame IS those axes, so this is the identity and nothing moves. */
+function matQuat(r){
+  var tr=r[0][0]+r[1][1]+r[2][2], w,x,y,z,sq;
+  if(tr>0){ sq=Math.sqrt(tr+1)*2; w=0.25*sq;
+    x=(r[2][1]-r[1][2])/sq; y=(r[0][2]-r[2][0])/sq; z=(r[1][0]-r[0][1])/sq; }
+  else if(r[0][0]>r[1][1] && r[0][0]>r[2][2]){
+    sq=Math.sqrt(1+r[0][0]-r[1][1]-r[2][2])*2; w=(r[2][1]-r[1][2])/sq;
+    x=0.25*sq; y=(r[0][1]+r[1][0])/sq; z=(r[0][2]+r[2][0])/sq; }
+  else if(r[1][1]>r[2][2]){
+    sq=Math.sqrt(1+r[1][1]-r[0][0]-r[2][2])*2; w=(r[0][2]-r[2][0])/sq;
+    x=(r[0][1]+r[1][0])/sq; y=0.25*sq; z=(r[1][2]+r[2][1])/sq; }
+  else{
+    sq=Math.sqrt(1+r[2][2]-r[0][0]-r[1][1])*2; w=(r[1][0]-r[0][1])/sq;
+    x=(r[0][2]+r[2][0])/sq; y=(r[1][2]+r[2][1])/sq; z=0.25*sq; }
+  return [x,y,z,w];
+}
+function qMul(a,b){
+  return [a[3]*b[0]+a[0]*b[3]+a[1]*b[2]-a[2]*b[1],
+          a[3]*b[1]-a[0]*b[2]+a[1]*b[3]+a[2]*b[0],
+          a[3]*b[2]+a[0]*b[1]-a[1]*b[0]+a[2]*b[3],
+          a[3]*b[3]-a[0]*b[0]-a[1]*b[1]-a[2]*b[2]];
+}
+/* the turn that carries the measured frame onto the built model's axes */
+function frameFix(){
+  var F = LAST_SPLIT && LAST_SPLIT.frame;
+  if(!F) return [0,0,0,1];
+  return matQuat([[F.along.x, F.along.y, F.along.z],
+                  [F.across.x, F.across.y, F.across.z],
+                  [F.up.x, F.up.y, F.up.z]]);
+}
 function setTurnTip(a,t,zoomf){
   if(!viewer||!viewer.setView) return false;
   try{
     viewer.zoomTo();
     var v=viewer.getView(); if(!v||v.length<8) return false;
-    var q=quatFor(a,t);
+    var q=qMul(quatFor(a,t), frameFix());
     v[4]=q[0]; v[5]=q[1]; v[6]=q[2]; v[7]=q[3];
     viewer.setView(v);
     viewer.zoomTo(); viewer.zoom(zoomf);
@@ -3795,8 +3946,14 @@ function useReal(text, fromCache){
          + '\u00b7 their side branches are modelled');
     styleReal(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     sayWhat();
-    viewer.zoomTo({chain:'C'}); viewer.zoom(0.75);
-    viewer.rotate(-18,'x'); viewer.render();
+    /* V8500 - a downloaded structure used to be aimed its own way - zoom on chain C,
+       then tip 18 degrees - which is not the view the built model opens at. So the
+       same app opened at two different angles depending on whether the databank
+       answered. It opens at the one default now, measured from its own frame. */
+    if(!setTurnTip(VIEW_TURN,VIEW_TIP,VIEW_ZOOM)){
+      viewer.zoomTo({chain:'C'}); viewer.zoom(0.75); viewer.rotate(-18,'x');
+    }
+    viewer.render();
     if(typeof syncRealBtn==='function') syncRealBtn();
   }catch(e){
     realTried=false;
@@ -3954,7 +4111,7 @@ function showDrawn(){
     styleModel(document.getElementById('b-surf').getAttribute('aria-pressed')==='true');
     var cap=document.getElementById('molsrc');
     if(cap) cap.textContent = srcLine(curReg && curReg.seq);
-    if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(0.62); }
+    if(!setTurnTip(VIEW_TURN,VIEW_TIP,VIEW_ZOOM)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(VIEW_ZOOM); }
     viewer.render(); sayWhat(); markHome();
   }catch(e){}
 }
@@ -4069,7 +4226,7 @@ function boot3D(){
   viewer.addModel(pdbText,'pdb');
   styleModel(false);
   viewer.zoomTo(); markBase();
-  if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(0.62); } viewer.render();
+  if(!setTurnTip(VIEW_TURN,VIEW_TIP,VIEW_ZOOM)){ viewer.rotate(-35,'x'); viewer.zoomTo(); viewer.zoom(VIEW_ZOOM); } viewer.render();
   sayWhat(); markHome(); syncRealBtn();
   drawViewCube(); vcStart();
 }
@@ -4104,12 +4261,14 @@ document.getElementById('b-cell').addEventListener('click', function(){
        screen: skin, stem, groove with the piece, the reader, the other skin. */
     /* The story view is set the same way: no turn, tipped right over, so you look
        along the groove and the layers stack straight up the screen - uprights upright. */
-    if(on){ if(!setTurnTip(0,90,ZOOM_CELL)){ viewer.zoomTo(); viewer.zoom(ZOOM_CELL); } }
-    else if(CELL_BACK && viewer.setView){ viewer.setView(CELL_BACK); curTurn=CELL_TURN; curTip=CELL_TIP; }
-    else if(!setTurnTip(VIEW_TURN,VIEW_TIP,0.62)){
-      if(HOME_VIEW && viewer.setView) viewer.setView(HOME_VIEW);
-      viewer.zoomTo(); viewer.zoom(0.62);
-    }
+    /* V8500 - pressing a button no longer moves the picture. Cell used to tip it right
+       over and pull it back, so the angle you had turned it to was taken away from you
+       and given back when you pressed it again. The setting is drawn where the picture
+       already is; only the zoom opens out far enough to hold it, and that comes back
+       to exactly where it was when the setting goes away. */
+    if(on){ try{ CELL_ZOOM=viewer.getView(); }catch(e){ CELL_ZOOM=null; }
+            viewer.zoomTo(); viewer.zoom(ZOOM_CELL); }
+    else if(CELL_ZOOM && viewer.setView){ viewer.setView(CELL_ZOOM); }
     viewer.render();
   }catch(e){}
   var cap=document.getElementById('molsrc');
@@ -4754,6 +4913,31 @@ function runsLoad(){
 }
 function runsStore(){ try{ localStorage.setItem(RUNKEY, JSON.stringify(RUNS)); }catch(e){} }
 function runsFind(id){ for(var i=0;i<RUNS.length;i++) if(RUNS[i].id===id) return i; return -1; }
+/* The same protein, the same window, the same holder is the same question, and it has
+   an answer already. Scanning it again spends the time to arrive back where the
+   library stands. So the question is asked rather than the work repeated - and a scan
+   that IS run again replaces the old entry instead of standing beside it as a twin. */
+function runTwin(seq,w,holder){
+  var s=(seq||'').slice(0,24000);
+  for(var i=0;i<RUNS.length;i++){
+    var r=RUNS[i];
+    if(r && r.win===w && r.holder===holder && (r.seq||'')===s) return r;
+  }
+  return null;
+}
+var TWINOK=false;
+function hideTwin(){ var n=document.getElementById('twinnote'); if(n) n.hidden=true; }
+function showTwin(r){
+  var n=document.getElementById('twinnote'); if(!n) return;
+  var w=document.getElementById('twinwhen');
+  if(w) w.textContent=r.holder+' · '+(r.name||'protein')+' · scanned '+runWhen(r.at)
+    +'. Opening it costs nothing; scanning again does the same work and replaces it.';
+  n.hidden=false;
+  n.scrollIntoView({block:'nearest', behavior:'smooth'});
+  var o=document.getElementById('twinopen'), a=document.getElementById('twinagain');
+  if(o) o.onclick=function(){ hideTwin(); PICKRUN=0; openRun(r); };
+  if(a) a.onclick=function(){ hideTwin(); TWINOK=true; runProtein(); };
+}
 
 function autoSave(){
   if(!results.length) return;
@@ -4771,6 +4955,9 @@ function autoSave(){
   if(JTAB.ready() && JTAB.fits(seq,w) && best.start!=null){
     run.h117=[]; for(var k=0;k<ALLELES.length;k++) run.h117.push(+JTAB.at(best.start,k).toFixed(1));
   }
+  /* the same question answered again replaces its own old entry, never twins it */
+  var old=runTwin(seq,w,run.holder);
+  if(old){ var oi=runsFind(old.id); if(oi>=0) RUNS.splice(oi,1); }
   RUNS.unshift(run); if(RUNS.length>RUNCAP) RUNS.length=RUNCAP;
   CURRUN=run.id; PICKRUN=0; runsStore();
   if(typeof paintHome==='function') paintHome();
