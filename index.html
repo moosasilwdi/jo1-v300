@@ -908,7 +908,9 @@ a.sendmail:active{filter:brightness(.96)}
    block behind a row of chips tells nobody which way they are looking. Said plainly:
    this is what giving the picture the whole screen costs. */
 #view-3d .viewcube{top:40px;bottom:auto;right:9px}
-#view-3d.full .viewcube{top:auto;bottom:14px;right:14px}
+/* and in Full view it stays in that same top corner. It used to drop back to the bottom
+   right, straight behind the floating Back and Next. */
+#view-3d.full .viewcube{top:40px;bottom:auto;right:14px}
 /* one strip of controls that slides sideways, so it never eats the picture */
 .vrow{display:flex;gap:7px;flex-wrap:nowrap;align-items:center;overflow-x:auto;
   scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-inline:14px}
@@ -948,6 +950,10 @@ a.sendmail:active{filter:brightness(.96)}
   font-size:12px;padding:9px 13px;border-radius:999px;
   background:var(--panel);border:1px solid var(--line);color:var(--ink);box-shadow:var(--raise)}
 #view-3d.full .bigout{display:block}
+/* V8700 - the way out of Full view sat in the bottom right corner, which is where Back
+   and Next now float: it was hidden behind them, with only the word "tons" showing. It
+   sits above them now, by the height of the strip they occupy. */
+#view-3d.full .bigout{bottom:calc(var(--tabh) + 12px + env(safe-area-inset-bottom,0px))}
 /* The stage behind the picture is a fixed dark panel, so the line over it is dark
    too. It used to be drawn in the page's pale panel colour, which washed a white
    band down over the top of the picture. */
@@ -1628,7 +1634,7 @@ ul{margin:0;padding-left:17px}li{margin-bottom:4px}
           DR3 motif: Geluk A, et al. <i>J Immunol</i> 1994;152:5742. Pockets: Doytchinova IA, Flower DR; Kaabinejadian S, et al. <i>Front Immunol</i> 2022;13:835454; Scholz EM, et al. <i>Front Immunol</i> 2017;8:984. HLA risk: Rothwell S, et al. <i>Ann Rheum Dis</i> 2019. Jo-1 protein: UniProt P12081. Structure referenced: PDB 1A6A (Ghosh P, et al. <i>Nature</i> 1995;378:457).<br>
           Allele sequences: IPD-IMGT/HLA release 3.66.0 protein alignments (Robinson J, et al. <i>Nucleic Acids Res</i>). Pocket residues extracted from those alignments; the parser was calibrated by reproducing the nine DRB1*03:01 residues reported in the literature.<br>
           Trials: Bielekova B, et al. <i>Nat Med</i> 2000; Kappos L, et al. <i>Nat Med</i> 2000;6:1176.<br><br>
-          JO1 &middot; V8600 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
+          JO1 &middot; V8700 &middot; built for Moosa Silwadi, October 2026 &middot; A research filter, not a clinical tool and not medical advice.
         </div>
       </div>
       </section>
@@ -3295,7 +3301,12 @@ var STAGE='#0b1016';
 /* Reset used to re-apply the opening TURNS, which are relative - so every press
    turned the picture further and you never got back. The opening view is saved
    here instead, and Reset puts that view back, exactly. */
-var HOME_VIEW=null, BASE_VIEW=null, CELL_BACK=null, CELL_ZOOM=null, ZOOM_CELL=0.86;
+/* V8700 - ZOOM_CELL came down from 0.86. With the setting shrunk to read at the
+   default angle, zoomTo() fits a smaller sphere and the camera comes closer - close
+   enough that in Science the drawing began touching the sides: measured, 348 pixels on
+   the left edge and 342 on the right. At 0.76 nothing touches the edge in either
+   wording and the drawing still fills 709 of the picture's 780 pixels across. */
+var HOME_VIEW=null, BASE_VIEW=null, CELL_BACK=null, CELL_ZOOM=null, ZOOM_CELL=0.76;
 var HOME_TURN=55, HOME_TIP=35, CELL_TURN=55, CELL_TIP=35;
 function markHome(){ try{ if(viewer){ HOME_VIEW=viewer.getView(); HOME_TURN=curTurn; HOME_TIP=curTip; } }catch(e){} }
 /* the view before any turning, kept so the story picture can be built from a known
@@ -3439,8 +3450,13 @@ function addSetting(){
     }
     /* The skin of a cell is two layers of fatty molecules back to back, heads out.
        Drawn as two sheets of heads, which is what it really looks like. */
+    /* V8700 - the sheets were 42 by 32 Angstrom. Turned 55 degrees, that 32 across the
+       groove projects into screen WIDTH, and with the setting no longer forcing the
+       camera miles back it ran off both sides - measured, 348 pixels of the drawing on
+       the left edge and 342 on the right. Narrowed across the groove to match the
+       proportion Abstract has always used. */
     function skin(z0, col1, col2){
-      for(var x=-21;x<=21;x+=5.2) for(var y=-16;y<=16;y+=5.2){
+      for(var x=-19;x<=19;x+=5.2) for(var y=-8;y<=8;y+=5.2){
         viewer.addSphere({center:P(x,y,z0+2.6), radius:2.1, color:col1});
         viewer.addSphere({center:P(x,y,z0-2.6), radius:2.1, color:col2});
       }
@@ -3461,36 +3477,49 @@ function addSetting(){
           viewer.addSphere({center:P(x,y,z0-3.4), radius:3.4, color:bottom});
         }
       }
-      band(-30,'#f0c674','#cda255');          // the skin holding the piece up
-      band(44,'#9ec6f2','#6f9ad3');           // the immune cell's skin
+      /* V8700 - these used to stand at -30 and +44, with the stem reaching -38 and the
+         stalk +42: a stack 85 Angstrom tall around a groove only 15 tall. Seen from the
+         default 55 and 35 that stack does not read as skin-below and reader-above at
+         all - it projects as a diagonal smear across the walls and runs off both edges
+         of the picture. The pieces were in the right PLACE; they were the wrong SIZE
+         for the angle. Brought in to -15 and +24, the whole setting is 46 tall - three
+         times the groove instead of six - and it reads where the picture already is,
+         with no button having to move the camera. */
+      band(-15,'#f0c674','#cda255');          // the skin holding the piece up
+      band(24,'#9ec6f2','#6f9ad3');           // the immune cell's skin
       // one plain stem, straight down through the skin
-      viewer.addCylinder({start:P(0,0,-12), end:P(0,0,-38),
-        radius:6, color:'#b9c4d1', fromCap:1, toCap:1});
+      viewer.addCylinder({start:P(0,0,-8), end:P(0,0,-16),
+        radius:5, color:'#b9c4d1', fromCap:1, toCap:1});
       // the reader: one plain block on a stalk, sitting square on the piece
-      viewer.addBox({center:P(0,0,14), dimensions:{w:30,h:22,d:10},
+      viewer.addBox({center:P(0,0,11), dimensions:{w:30,h:22,d:9},
         color:'#4a86e8', opacity:1});
-      viewer.addCylinder({start:P(0,0,19), end:P(0,0,42),
-        radius:5.5, color:'#4a86e8', fromCap:1, toCap:1});
+      viewer.addCylinder({start:P(0,0,15), end:P(0,0,23),
+        radius:5, color:'#4a86e8', fromCap:1, toCap:1});
       return;
     }
 
+    /* V8700 - same correction as Abstract above, and for the same reason: this stack
+       stood from -41 to +49, ninety Angstrom around a fifteen-Angstrom groove, and at
+       the default angle it read as a smear rather than as layers. It is 47 tall now.
+       The lumps are also flatter in z, so they sit under and over the groove instead
+       of swallowing it. */
     // ---- the cell that is showing the piece: its skin, low down
-    skin(-34,'#d8b878','#b4914f');
+    skin(-15,'#d8b878','#b4914f');
     // the rest of the holder: two lumps under the groove, then threads THROUGH the skin
-    lump(-8,0,-20, 7,6.5,6, 34,'#9aa7b6');
-    lump( 8,0,-20, 7,6.5,6, 34,'#9aa7b6');
-    thread(-8,0,-26,-41,'#9aa7b6');
-    thread( 8,0,-26,-41,'#9aa7b6');
+    lump(-8,0,-9, 7,6.5,4, 34,'#9aa7b6');
+    lump( 8,0,-9, 7,6.5,4, 34,'#9aa7b6');
+    thread(-8,0,-12,-18,'#9aa7b6');
+    thread( 8,0,-12,-18,'#9aa7b6');
 
     // ---- the immune cell, square on top, its face across both walls and the piece
-    lump(-6,0,13, 7,6.5,6, 34,'#5a8fd8');
-    lump( 6,0,13, 7,6.5,6, 34,'#5a8fd8');
-    lump(-6,0,25, 7,6.5,6, 30,'#3f74c0');
-    lump( 6,0,25, 7,6.5,6, 30,'#3f74c0');
-    thread(-6,0,31,44,'#3f74c0');
-    thread( 6,0,31,44,'#3f74c0');
+    lump(-6,0,9,  7,6.5,4, 34,'#5a8fd8');
+    lump( 6,0,9,  7,6.5,4, 34,'#5a8fd8');
+    lump(-6,0,16, 7,6.5,4, 30,'#3f74c0');
+    lump( 6,0,16, 7,6.5,4, 30,'#3f74c0');
+    thread(-6,0,19,26,'#3f74c0');
+    thread( 6,0,19,26,'#3f74c0');
     // and its own skin above
-    skin(47,'#9ec0ea','#6f98cd');
+    skin(26,'#9ec0ea','#6f98cd');
   }catch(e){}
 }
 function settingOn(){
@@ -3902,6 +3931,17 @@ function threadSlice(m, pepChain, pepResi){
 
 /* ---- the measured structure, fetched by the browser from the protein databank ---- */
 var RCSB_ID='1A6A', realTried=false;
+/* V8700 - ONE place decides the line over the picture, and it reads the Cell button
+   rather than being told. Reset switches Cell off and redraws, but it never rewrote
+   that line, so the picture said "the skin, stem and immune cell are drawn" with none
+   of them on screen. Anything that changes what is drawn calls this now. */
+function capLine(){
+  var cap=document.getElementById('molsrc'); if(!cap) return;
+  var cb=document.getElementById('b-cell');
+  if(cb && cb.getAttribute('aria-pressed')==='true')
+    cap.textContent='the groove is to scale · the skin, stem and immune cell are drawn';
+  else cap.textContent=srcLine(curReg && curReg.seq);
+}
 function srcLine(seq){
   if(!seq) return ABS ? 'a drawing of the groove' : 'scaled geometric model';
   return ABS ? (seq+'  \u00b7  '+alleleLabel()+'  \u00b7  a drawing, not real measured atoms')
@@ -4271,9 +4311,7 @@ document.getElementById('b-cell').addEventListener('click', function(){
     else if(CELL_ZOOM && viewer.setView){ viewer.setView(CELL_ZOOM); }
     viewer.render();
   }catch(e){}
-  var cap=document.getElementById('molsrc');
-  if(cap && on) cap.textContent='the groove is to scale \u00b7 the skin, stem and immune cell are drawn';
-  else if(cap && typeof srcLine==='function') cap.textContent=srcLine(curReg && curReg.seq);
+  capLine();
 });
 /* exactly 495 dots - 45 across, 11 down - one for every slice of Jo-1 */
 (function(){
@@ -4471,6 +4509,7 @@ document.getElementById('b-reset').addEventListener('click', function(){
   else viewer.zoomTo();
   viewer.render();
   if(typeof sayWhat==='function') sayWhat();
+  capLine();
 });
 /* walk the shortlist from inside the picture */
 function stepList(d){
